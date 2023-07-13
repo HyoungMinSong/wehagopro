@@ -1,0 +1,116 @@
+--테이블 삭제
+
+DROP TABLE IF EXISTS t_user;
+DROP TABLE IF EXISTS t_company;
+DROP TABLE IF EXISTS t_employee;
+DROP TABLE IF EXISTS t_service;
+DROP TABLE IF EXISTS t_service_published;
+DROP TABLE IF EXISTS t_package;
+DROP TABLE IF EXISTS t_components;
+DROP TABLE IF EXISTS t_organization;
+
+--테이블 생성
+
+CREATE TABLE t_user (
+  t_user_no SERIAL PRIMARY KEY,
+  t_user_id VARCHAR(100) NOT NULL,
+  t_user_password VARCHAR(100) NOT NULL,
+  t_user_call VARCHAR(100),
+  t_user_phone VARCHAR(100) NOT NULL,
+  t_user_email VARCHAR(100) NOT NULL,
+  t_user_photo_name VARCHAR(100) NOT NULL DEFAULT '기본사진',
+  t_user_photo_path VARCHAR(100) NOT NULL DEFAULT '기본경로',
+  t_user_sign_date DATE NOT NULL DEFAULT CURRENT_DATE,
+  t_user_delete_date DATE,
+  t_user_delete INTEGER NOT NULL DEFAULT 0,
+  t_user_update_date DATE
+);
+
+CREATE TABLE t_company (
+  t_company_no SERIAL PRIMARY KEY,
+  t_company_name VARCHAR(100) NOT NULL,
+  t_package_no INTEGER NOT NULL,
+  t_company_com_reg_num INTEGER,
+  t_company_clasification VARCHAR(100) NOT NULL,
+  t_company_cor_reg_num INTEGER,
+  t_company_business_num INTEGER,
+  t_company_industry_num INTEGER NOT NULL,
+  t_company_business VARCHAR(100) NOT NULL,
+  t_company_sectors VARCHAR(100) NOT NULL,
+  t_company_representative VARCHAR(100) NOT NULL,
+  t_company_call_num INTEGER NOT NULL,
+  t_company_adress VARCHAR(100) NOT NULL,
+  t_company_adress_sub VARCHAR(100),
+  t_company_document_name VARCHAR(100) NOT NULL,
+  t_company_document_path VARCHAR(100) NOT NULL,
+  t_company_founding_date DATE NOT NULL DEFAULT CURRENT_DATE,
+  t_company_delete_date DATE,
+  t_company_delete INTEGER NOT NULL DEFAULT 0
+);
+
+CREATE TABLE t_employee (
+  t_employee_no SERIAL PRIMARY KEY,
+  t_user_no INTEGER NOT NULL,
+  t_company_no INTEGER NOT NULL,
+  t_employee_auth VARCHAR(100) NOT NULL,
+  t_employee_date DATE NOT NULL DEFAULT CURRENT_DATE,
+  t_employee_delete INTEGER NOT NULL DEFAULT 0,
+  t_employee_delete_date DATE,
+  t_employee_duty VARCHAR(100) NOT NULL,
+  t_employee_position VARCHAR(100) NOT NULL,
+  t_organization_no INTEGER,
+  t_employee_update_date DATE
+);
+
+CREATE TABLE t_service (
+  t_service_no SERIAL PRIMARY KEY,
+  t_service_name VARCHAR(100) NOT NULL,
+  t_service_price INTEGER NOT NULL,
+  t_service_path VARCHAR(100) NOT NULL,
+  t_service_description VARCHAR(200) NOT NULL,
+  t_service_main_icon_name VARCHAR(100) NOT NULL,
+  t_service_main_icon_path VARCHAR(100) NOT NULL,
+  t_service_menu_icon_name VARCHAR(100) NOT NULL,
+  t_service_menu_icon_path VARCHAR(100) NOT NULL,
+  t_service_free INTEGER NOT NULL,
+  t_service_create_date DATE NOT NULL DEFAULT CURRENT_DATE,
+  t_service_delete_date DATE,
+  t_service_delete INTEGER NOT NULL DEFAULT 0
+);
+
+CREATE TABLE t_service_published (
+  t_service_published_no SERIAL PRIMARY KEY,
+  t_user_no INTEGER NOT NULL,
+  t_service_no INTEGER NOT NULL,
+  t_service_published_order SERIAL NOT NULL,
+  t_service_published_date DATE NOT NULL DEFAULT CURRENT_DATE,
+  t_service_recall INTEGER NOT NULL DEFAULT 0,
+  t_service_recall_date DATE
+);
+
+CREATE TABLE t_package (
+  t_package_no SERIAL PRIMARY KEY,
+  t_package_name VARCHAR(100) NOT NULL,
+  t_package_price INTEGER NOT NULL
+);
+
+CREATE TABLE t_components (
+  t_components_no SERIAL PRIMARY KEY,
+  t_package_no INTEGER NOT NULL,
+  t_service_no INTEGER NOT NULL,
+  t_components_num INTEGER NOT NULL
+);
+
+CREATE TABLE t_organization (
+  t_organization_no SERIAL PRIMARY KEY,
+  t_organization_name VARCHAR(100) NOT NULL,
+  t_organization_parent INTEGER NOT NULL DEFAULT -1
+);
+
+
+
+
+
+
+
+
