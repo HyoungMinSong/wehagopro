@@ -15,6 +15,7 @@ CREATE TABLE t_user (
   t_user_no SERIAL PRIMARY KEY,
   t_user_id VARCHAR(100) NOT NULL,
   t_user_password VARCHAR(100) NOT NULL,
+  t_user_name VARCHAR(100) NOT NULL,
   t_user_call VARCHAR(100),
   t_user_phone VARCHAR(100) NOT NULL,
   t_user_email VARCHAR(100) NOT NULL,
