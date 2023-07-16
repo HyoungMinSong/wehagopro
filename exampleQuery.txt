@@ -15,6 +15,7 @@ CREATE TABLE t_user (
   t_user_no SERIAL PRIMARY KEY,
   t_user_id VARCHAR(100) NOT NULL,
   t_user_password VARCHAR(100) NOT NULL,
+  t_user_name VARCHAR(100) NOT NULL,
   t_user_call VARCHAR(100),
   t_user_phone VARCHAR(100) NOT NULL,
   t_user_email VARCHAR(100) NOT NULL,
@@ -106,6 +107,54 @@ CREATE TABLE t_organization (
   t_organization_name VARCHAR(100) NOT NULL,
   t_organization_parent INTEGER NOT NULL DEFAULT -1
 );
+
+
+
+
+-- t_organization 테이블의 더미 데이터 생성
+INSERT INTO t_organization (t_organization_name, t_organization_parent)
+VALUES ('회사A', -1),
+       ('부서A', 1),
+       ('부서B', 1),
+       ('회사B', -1),
+       ('부서C', 4);
+
+-- t_user 테이블의 더미 데이터 생성
+INSERT INTO t_user (t_user_id, t_user_password, t_user_name, t_user_phone, t_user_email)
+VALUES ('user1', '1111', '김혜성', '010-1234-5678', 'user1@example.com'),
+       ('user2', '1111', '김혜쏭', '010-9876-5432', 'user2@example.com');
+
+-- t_employee 테이블의 더미 데이터 생성
+INSERT INTO t_employee (t_user_no, t_company_no, t_employee_auth, t_employee_duty, t_employee_position)
+VALUES (1, 1, '관리자', '사장', 'CEO'),
+       (2, 1, '일반직원', '사원', 'Staff');
+
+-- t_package 테이블의 더미 데이터 생성
+INSERT INTO t_package (t_package_name, t_package_price)
+VALUES ('패키지A', 10000),
+       ('패키지B', 15000);
+
+-- t_company 테이블의 더미 데이터 생성
+INSERT INTO t_company (t_company_name, t_package_no, t_company_clasification, t_company_business, t_company_sectors, t_company_representative, t_company_call_num, t_company_adress, t_company_industry_num, t_company_document_name, t_company_document_path)
+VALUES ('회사A', 1, '소기업', '제조업', '금속가공', '김대표', 12345678, '서울시 강남구', 1, 'aa.png', './');
+
+-- t_service 테이블의 더미 데이터 생성
+INSERT INTO t_service (t_service_name, t_service_price, t_service_path, t_service_description, t_service_main_icon_name, t_service_main_icon_path, t_service_menu_icon_name, t_service_menu_icon_path, t_service_free)
+VALUES ('서비스A', 5000, '/serviceA', '서비스 A 소개', 'icon_A', '/icons/A.png', 'menu_icon_A', '/menu_icons/A.png', 1),
+       ('서비스B', 8000, '/serviceB', '서비스 B 소개', 'icon_B', '/icons/B.png', 'menu_icon_B', '/menu_icons/B.png', 0);
+
+-- t_components 테이블의 더미 데이터 생성
+INSERT INTO t_components (t_package_no, t_service_no, t_components_num)
+VALUES (1, 1, 1),
+       (1, 2, 2);
+
+-- t_service_published 테이블의 더미 데이터 생성
+INSERT INTO t_service_published (t_user_no, t_service_no, t_service_published_order)
+VALUES (1, 1, 1),
+       (1, 2, 2);
+
+commit;
+
 
 
 
