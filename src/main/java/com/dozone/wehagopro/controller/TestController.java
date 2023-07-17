@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.Map;
 
+@CrossOrigin(origins = "http://localhost:3000")
 @RestController
 public class TestController {
     @Autowired
@@ -55,13 +56,19 @@ public class TestController {
     @PostMapping("/login")
     public Item2 test7(@RequestBody LoginForm loginForm) {
         System.out.println("하이");
-        String username = loginForm.getUsername();
-        System.out.println("username = " + username);
+        String userid = loginForm.getUserid();
+        System.out.println("userid = " + userid);
         String password = loginForm.getPassword();
         System.out.println("password = " + password);
 
-        Item2 qqq = repository.findidpw(username, password);
-        System.out.println(qqq.getId() + qqq.getPw());
+//                String userid = loginForm.get("userid");
+//        System.out.println("userid = " + userid);
+//        String password = loginForm.get("password");
+//        System.out.println("password = " + password);
+
+
+        Item2 qqq = repository.findidpw(userid, password);
+        System.out.println(qqq.getT_user_id() + qqq.getT_user_password());
         return qqq;
     }
 

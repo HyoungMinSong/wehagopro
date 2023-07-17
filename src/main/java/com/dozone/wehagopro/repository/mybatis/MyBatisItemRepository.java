@@ -39,16 +39,18 @@ public class MyBatisItemRepository{
 
 
 
-    public Item2 find(String id) {
-        return itemMapper.find(id);
-    }
-    public Item2 findidpw(String id, String pw) {
-        return itemMapper.findidpw(id,pw);
-    }
-    public void update1(Item2 ttt) {
-        itemMapper.update1(ttt);
-    }
+//    public Item2 find(String id) {
+//        return itemMapper.find(id);
+//    }
+//
 
-    public void delete(String ccc) {itemMapper.delete(ccc);}
+    public Item2 findidpw(String userid, String password) {
+        return itemMapper.findidpw(userid,password);
+    }
+//    public void update1(Item2 ttt) {
+//        itemMapper.update1(ttt);
+//    }
+//
+//    public void delete(String ccc) {itemMapper.delete(ccc);}
 
 }
