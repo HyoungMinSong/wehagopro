@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.dozone.wehagopro.repository.mybatis.OrganizationMapper">
+    <select id="showMyCompany">
+        select t_company_name from t_company where t_company_no= (select t_company_no from t_employee where t_user_no=#{t_user_no});
+    </select> <!--조직도 회사 이름-->
+    <select id="showMyOrganization">
+        select t_organization_name from t_organization where t_organization_parent= (select t_company_no from t_company where t_company_no= (select t_company_no from t_employee where t_user_no=#{t_user_no}));
+    </select>  <!--조직도 부서 목록-->
+
+</mapper>
