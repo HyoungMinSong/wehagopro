@@ -7,6 +7,7 @@ public class Item {
     private String itemName;
     private Integer price;
     private Integer quantity;
+    private String idd;
     public Item() {
     }
     public Item(String itemName, Integer price, Integer quantity) {
@@ -14,4 +15,5 @@ public class Item {
         this.price = price;
         this.quantity = quantity;
     }
+
 }
