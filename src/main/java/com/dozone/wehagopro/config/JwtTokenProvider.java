@@ -1,6 +1,10 @@
 package com.dozone.wehagopro.config;
 
 import com.dozone.wehagopro.service.CustomUserDetailsService;
+import io.jsonwebtoken.Claims;
+import io.jsonwebtoken.Jws;
+import io.jsonwebtoken.Jwts;
+import io.jsonwebtoken.SignatureAlgorithm;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpHeaders;
@@ -11,18 +15,24 @@ import org.springframework.stereotype.Component;
 
 import javax.annotation.PostConstruct;
 import javax.servlet.http.HttpServletRequest;
+import java.time.Duration;
 import java.util.Base64;
 import java.util.Date;
 
 @RequiredArgsConstructor
 @Component
 public class JwtTokenProvider {
+
+    private final RedisDao redisDao; // radis 저장
     @Value("${jwt.secret}")
     private String secretKey;
 
     // 토큰 유효시간
-    private long tokenValidTime = 1000L * 60; // 1분
+    private long accessTokenValidTime = 1000L * 60; // 1분
+    private long refreshTokenValidTime = 1000L * 60 * 5; // 5분
+
     private final CustomUserDetailsService customUserDetailsService;
+
 
     // 객체 초기화, secretKey 를 Base64로 인코딩합니다.
     @PostConstruct
@@ -30,18 +40,37 @@ public class JwtTokenProvider {
         secretKey = Base64.getEncoder().encodeToString(secretKey.getBytes());
     }
 
-    // JWT 토큰 생성
-    public String createToken(String userId, String role) {
+    // JWT Access 토큰 생성
+    public String createAccessToken(String userId, String role) {
         Claims claims = Jwts.claims().setSubject(userId); // JWT payload 에 저장되는 정보단위
         claims.put("role", role); // 정보는 key/value 쌍으로 저장됩니다.
         Date now = new Date();
         return Jwts.builder()
                 .setClaims(claims) // 정보 저장
                 .setIssuedAt(now) // 토큰 발행 시간 정보
-                .setExpiration(new Date(now.getTime() + tokenValidTime)) // set Expire Time
+                .setExpiration(new Date(now.getTime() + accessTokenValidTime)) // set Expire Time
                 .signWith(SignatureAlgorithm.HS256, secretKey)  // 사용할 암호화 알고리즘
                 // signature 에 들어갈 secret 값 세팅
                 .compact();
+    }
+
+    // JWT Refresh 토큰 생성
+    public String createRefreshToken(String userId, String role){
+        Claims claims = Jwts.claims().setSubject(userId);
+        claims.put("role", role); // 정보는 key/value 쌍으로 저장됩니다.
+        Date now = new Date();
+
+        String refreshToken = Jwts.builder()
+                .setClaims(claims)
+                .setIssuedAt(now)
+                .setExpiration(new Date(now.getTime() + refreshTokenValidTime))
+                .signWith(SignatureAlgorithm.HS256, secretKey)
+                .compact();
+
+        // redis에 저장
+        redisDao.setValues(userId, refreshToken, Duration.ofMillis(refreshTokenValidTime));
+
+        return refreshToken;
     }
 
     // JWT 토큰에서 인증 정보 조회
@@ -55,15 +84,30 @@ public class JwtTokenProvider {
         return Jwts.parser().setSigningKey(secretKey).parseClaimsJws(token).getBody().getSubject();
     }
 
+    // 토큰에서 만료시간 추출
+    public Long getExpiration(String accessToken) {
+        // accessToken 남은 유효시간
+        Date expiration = Jwts.parser().setSigningKey(secretKey).parseClaimsJws(accessToken).getBody().getExpiration();
+        // 현재 시간
+        Long now = new Date().getTime();
+        return (expiration.getTime() - now);
+    }
+
     // Request의 Header에서 token 값을 가져옴
     public String resolveToken(HttpServletRequest request) {
-        return request.getHeader(HttpHeaders.AUTHORIZATION);
+        if(request.getHeader(HttpHeaders.AUTHORIZATION) != null ) {
+            return request.getHeader(HttpHeaders.AUTHORIZATION).substring(7);
+        }
+        return null;
     }
 
     // 토큰의 유효성 + 만료일자 확인
     public boolean validateToken(String jwtToken) {
         try {
             Jws<Claims> claims = Jwts.parser().setSigningKey(secretKey).parseClaimsJws(jwtToken);
+            if(redisDao.hasKeyBlackList(jwtToken)) {
+                return false;
+            }
             return !claims.getBody().getExpiration().before(new Date());
         } catch (Exception e) {
             return false;
