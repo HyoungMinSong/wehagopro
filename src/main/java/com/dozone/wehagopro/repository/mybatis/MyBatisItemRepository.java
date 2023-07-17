@@ -29,4 +29,8 @@ public class MyBatisItemRepository{
     public List<Item> findAll(ItemSearchCond cond) {
         return itemMapper.findAll(cond);
     }
+
+    public void delete(Long id){
+        itemMapper.delete(id);
+    }
 }

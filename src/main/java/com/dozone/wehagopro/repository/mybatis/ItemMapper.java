@@ -14,4 +14,5 @@ public interface ItemMapper {
     void update(@Param("id") Long id, @Param("updateParam") ItemUpdateDto updateParam);
     Item findById(Long id);
     List<Item> findAll(ItemSearchCond itemSearch);
+    void delete(Long id);
 }

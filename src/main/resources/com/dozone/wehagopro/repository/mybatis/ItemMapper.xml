@@ -30,4 +30,7 @@
             </if>
         </where>
     </select>
+    <delete id="delete">
+        delete from item where id = #{id}
+    </delete>
 </mapper>
