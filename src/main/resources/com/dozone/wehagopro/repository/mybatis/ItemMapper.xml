@@ -28,9 +28,9 @@
     </select>
 
     <select id="findidpw" parameterType="String" resultType="Item2">
-        SELECT * FROM users
-        WHERE id = #{param1}
-        AND pw = #{param2}
+        SELECT * FROM t_user
+        WHERE t_user_id = #{param1}
+        AND t_user_password = #{param2}
     </select>
 
 
