@@ -8,5 +8,48 @@
     <select id="showMyOrganization">
         select t_organization_name from t_organization where t_organization_parent= (select t_company_no from t_company where t_company_no= (select t_company_no from t_employee where t_user_no=#{t_user_no}));
     </select>  <!--조직도 부서 목록-->
-
+    <select id="showMyEmployeeFromCompany" resultType="User">
+        select * from t_user where t_user_no IN
+        (select t_user_no from t_employee where t_company_no=
+        (select t_company_no from t_company where t_company_name=#{t_company_name})
+        and
+        <choose>
+            <when test="t_employee_state == 1">
+                t_employee_state = 1
+            </when>
+            <when test="t_employee_state == 2">
+                t_employee_state = 2
+            </when>
+            <when test="t_employee_state == 3">
+                t_employee_state = 3
+            </when>
+            <otherwise>
+                t_employee_state >= 0
+            </otherwise>
+        </choose>
+        )
+        and t_user_state>=0;
+    </select>
+    <select id="showMyEmployeeFromOrganization" resultType="User">
+        select * from t_user where t_user_no IN
+        (select t_user_no from t_employee where t_organization_no=
+        (select t_organization_no from t_organization where t_organization_name=#{t_organization_name})
+        and
+        <choose>
+            <when test="t_employee_state == 1">
+                t_employee_state = 1
+            </when>
+            <when test="t_employee_state == 2">
+                t_employee_state = 2
+            </when>
+            <when test="t_employee_state == 3">
+                t_employee_state = 3
+            </when>
+            <otherwise>
+                t_employee_state >= 0
+            </otherwise>
+        </choose>
+        )
+        and t_user_state>=0;
+    </select>
 </mapper>
