@@ -23,7 +23,7 @@ CREATE TABLE t_user (
   t_user_photo_path VARCHAR(100) NOT NULL DEFAULT '기본경로',
   t_user_sign_date DATE NOT NULL DEFAULT CURRENT_DATE,
   t_user_delete_date DATE,
-  t_user_delete INTEGER NOT NULL DEFAULT 0,
+  t_user_state INTEGER NOT NULL DEFAULT 0,
   t_user_update_date DATE
 );
 
@@ -46,7 +46,7 @@ CREATE TABLE t_company (
   t_company_document_path VARCHAR(100) NOT NULL,
   t_company_founding_date DATE NOT NULL DEFAULT CURRENT_DATE,
   t_company_delete_date DATE,
-  t_company_delete INTEGER NOT NULL DEFAULT 0
+  t_company_state INTEGER NOT NULL DEFAULT 0
 );
 
 CREATE TABLE t_employee (
@@ -55,7 +55,7 @@ CREATE TABLE t_employee (
   t_company_no INTEGER NOT NULL,
   t_employee_auth VARCHAR(100) NOT NULL,
   t_employee_date DATE NOT NULL DEFAULT CURRENT_DATE,
-  t_employee_delete INTEGER NOT NULL DEFAULT 0,
+  t_employee_state INTEGER NOT NULL DEFAULT 0,
   t_employee_delete_date DATE,
   t_employee_duty VARCHAR(100) NOT NULL,
   t_employee_position VARCHAR(100) NOT NULL,
@@ -76,7 +76,7 @@ CREATE TABLE t_service (
   t_service_free INTEGER NOT NULL,
   t_service_create_date DATE NOT NULL DEFAULT CURRENT_DATE,
   t_service_delete_date DATE,
-  t_service_delete INTEGER NOT NULL DEFAULT 0
+  t_service_state INTEGER NOT NULL DEFAULT 0
 );
 
 CREATE TABLE t_service_published (
@@ -125,9 +125,9 @@ VALUES ('user1', '1111', '김혜성', '010-1234-5678', 'user1@example.com'),
        ('user2', '1111', '김혜쏭', '010-9876-5432', 'user2@example.com');
 
 -- t_employee 테이블의 더미 데이터 생성
-INSERT INTO t_employee (t_user_no, t_company_no, t_employee_auth, t_employee_duty, t_employee_position)
-VALUES (1, 1, '관리자', '사장', 'CEO'),
-       (2, 1, '일반직원', '사원', 'Staff');
+INSERT INTO t_employee (t_user_no, t_company_no, t_employee_auth, t_employee_duty, t_employee_position, t_organization_no)
+VALUES (1, 1, '관리자', '사장', 'CEO', 1),
+       (2, 1, '일반직원', '사원', 'Staff', 2);
 
 -- t_package 테이블의 더미 데이터 생성
 INSERT INTO t_package (t_package_name, t_package_price)
