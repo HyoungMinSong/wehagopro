@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.dozone.wehagopro.repository.signUp.SignUpMapper">
+
+    <select id="idCheck" resultType="java.lang.String">
+        select t_user_id from t_user where t_user_id = #{id}
+    </select>
+
+</mapper>
