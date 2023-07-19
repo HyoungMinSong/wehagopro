@@ -2,18 +2,30 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.dozone.wehagopro.repository.mybatis.OrganizationMapper">
-    <select id="showMyCompany">
-        select t_company_name from t_company where t_company_no= (select t_company_no from t_employee where t_user_no=#{t_user_no});
-    </select> <!--조직도 회사 이름-->
-    <select id="showMyOrganization">
-        select t_organization_name from t_organization where t_organization_parent= (select t_company_no from t_company where t_company_no= (select t_company_no from t_employee where t_user_no=#{t_user_no}));
-    </select>  <!--조직도 부서 목록-->
+    <select id="showMyWorkPlace">
+        SELECT
+        t_company.t_company_no,
+        t_company.t_company_name,
+        t_organization.t_organization_no,
+        t_organization.t_organization_name
+        FROM
+        t_organization
+        JOIN
+        t_employee ON t_organization.t_organization_parent = t_employee.t_company_no
+        JOIN
+        t_company ON t_employee.t_company_no = t_company.t_company_no
+        WHERE
+        t_employee.t_user_no = #{t_user_no};
+    </select>
     <select id="showMyEmployeeFromCompany" resultType="User">
         select * from t_user where t_user_no IN
         (select t_user_no from t_employee where t_company_no=
-        (select t_company_no from t_company where t_company_name=#{t_company_name})
+        (select t_company_no from t_company where t_company_name=#{t_company_name} and t_company_no=#{t_company_no})
         and
         <choose>
+            <when test="t_employee_state == 0">
+                t_employee_state = 0
+            </when>
             <when test="t_employee_state == 1">
                 t_employee_state = 1
             </when>
@@ -33,9 +45,12 @@
     <select id="showMyEmployeeFromOrganization" resultType="User">
         select * from t_user where t_user_no IN
         (select t_user_no from t_employee where t_organization_no=
-        (select t_organization_no from t_organization where t_organization_name=#{t_organization_name})
+        (select t_organization_no from t_organization where t_organization_name=#{t_organization_name} and t_organization_no=#{t_organization_no})
         and
         <choose>
+            <when test="t_employee_state == 0">
+                t_employee_state = 0
+            </when>
             <when test="t_employee_state == 1">
                 t_employee_state = 1
             </when>
