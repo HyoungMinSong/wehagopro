@@ -1,5 +1,6 @@
 package com.dozone.wehagopro.repository;
 
+import com.dozone.wehagopro.domain.CountEmployee;
 import com.dozone.wehagopro.domain.User;
 import com.dozone.wehagopro.domain.WorkPlace;
 import com.dozone.wehagopro.repository.mybatis.OrganizationMapper;
@@ -17,6 +18,11 @@ public class OrganizationRepository {
     // 조직도 목록
     public List<WorkPlace> showMyWorkPlace(Integer t_user_no){
         return organizationMapper.showMyWorkPlace(t_user_no);
+    }
+
+    // 조직도 직원 상태
+    public CountEmployee showMyEmployeeState(Integer t_company_no){
+        return organizationMapper.showMyEmployeeState(t_company_no);
     }
 
     // 조직도 직원 목록 (회사 선택)
