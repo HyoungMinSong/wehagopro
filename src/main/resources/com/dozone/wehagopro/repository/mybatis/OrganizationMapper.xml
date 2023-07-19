@@ -7,7 +7,13 @@
         t_company.t_company_no,
         t_company.t_company_name,
         t_organization.t_organization_no,
-        t_organization.t_organization_name
+        t_organization.t_organization_name,
+        (
+        SELECT COUNT(t_employee_no) FROM t_employee WHERE t_company_no = t_company.t_company_no AND t_employee_state >= 0
+        ) AS company_employee_count,
+        (
+        SELECT COUNT(t_employee_no) FROM t_employee WHERE t_organization_no = t_organization.t_organization_no AND t_employee_state >= 0
+        ) AS organization_employee_count
         FROM
         t_organization
         JOIN
@@ -16,6 +22,34 @@
         t_company ON t_employee.t_company_no = t_company.t_company_no
         WHERE
         t_employee.t_user_no = #{t_user_no};
+    </select>
+    <select id="showMyEmployeeState" resultType="CountEmployee">
+        SELECT
+        (
+        SELECT COUNT(t_employee_no)
+        FROM t_employee
+        WHERE t_company_no = #{t_company_no} AND t_employee_state >= 0
+        ) AS count_state_all,
+        (
+        SELECT COUNT(t_employee_no)
+        FROM t_employee
+        WHERE t_company_no = #{t_company_no} AND t_employee_state = 0
+        ) AS count_state_0,
+        (
+        SELECT COUNT(t_employee_no)
+        FROM t_employee
+        WHERE t_company_no = #{t_company_no} AND t_employee_state = 1
+        ) AS count_state_1,
+        (
+        SELECT COUNT(t_employee_no)
+        FROM t_employee
+        WHERE t_company_no = #{t_company_no} AND t_employee_state = 2
+        ) AS count_state_2,
+        (
+        SELECT COUNT(t_employee_no)
+        FROM t_employee
+        WHERE t_company_no = #{t_company_no} AND t_employee_state = 3
+        ) AS count_state_3;
     </select>
     <select id="showMyEmployeeFromCompany" resultType="User">
         select * from t_user where t_user_no IN
