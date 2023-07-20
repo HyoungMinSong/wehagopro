@@ -120,14 +120,32 @@ VALUES ('회사A', -1),
        ('부서C', 4);
 
 -- t_user 테이블의 더미 데이터 생성
-INSERT INTO t_user (t_user_id, t_user_password, t_user_name, t_user_phone, t_user_email)
-VALUES ('user1', '1111', '김혜성', '010-1234-5678', 'user1@example.com'),
-       ('user2', '1111', '김혜쏭', '010-9876-5432', 'user2@example.com');
+INSERT INTO t_user (t_user_id,t_user_password,t_user_name,t_user_call,t_user_phone,t_user_email,t_user_photo_name,t_user_photo_path,t_user_sign_date,t_user_delete_date,t_user_state,t_user_update_date) VALUES
+	 ('user1','1111','김혜성',NULL,'010-1234-5678','user1@example.com','기본사진','기본경로','2023-07-17',NULL,0,NULL),
+	 ('user2','1111','김혜쏭',NULL,'010-9876-5432','user2@example.com','기본사진','기본경로','2023-07-17',NULL,0,NULL),
+	 ('user3','1111','김혜송',NULL,'010-1234-5678','user1@example.com','기본사진','기본경로','2023-07-17',NULL,0,NULL),
+	 ('user4','1111','김해송',NULL,'010-1234-5678','user1@example.com','기본사진','기본경로','2023-07-17',NULL,0,NULL),
+	 ('user5','1111','김해쏭',NULL,'010-1234-5678','user1@example.com','기본사진','기본경로','2023-07-17',NULL,0,NULL),
+	 ('user6','1111','김해성',NULL,'010-1234-5678','user1@example.com','기본사진','기본경로','2023-07-17',NULL,0,NULL),
+	 ('user7','1111','김혜썽',NULL,'010-9876-5432','user2@ex/ample.com','기본사진','기본경로','2023-07-17',NULL,-1,NULL),
+	 ('user8','1111','신혜송',NULL,'010-1234-5678','user1@example.com','기본사진','기본경로','2023-07-18',NULL,0,NULL),
+	 ('user10','1111','송형민',NULL,'010-1234-5678','user10@example.com','기본사진','기본경로','2023-07-18',NULL,0,NULL),
+	 ('user11','1111','이주용',NULL,'010-1234-5678','user10@example.com','기본사진','기본경로','2023-07-18',NULL,0,NULL);
 
 -- t_employee 테이블의 더미 데이터 생성
-INSERT INTO t_employee (t_user_no, t_company_no, t_employee_auth, t_employee_duty, t_employee_position, t_organization_no)
-VALUES (1, 1, '관리자', '사장', 'CEO', 1),
-       (2, 1, '일반직원', '사원', 'Staff', 2);
+INSERT INTO t_employee (t_user_no,t_company_no,t_employee_auth,t_employee_date,t_employee_state,t_employee_delete_date,t_employee_duty,t_employee_position,t_organization_no,t_employee_update_date) VALUES
+	 (1,1,'관리자','2023-07-17',0,NULL,'사장','CEO',1,NULL),
+	 (2,1,'일반직원','2023-07-17',0,NULL,'사원','Staff',2,NULL),
+	 (3,1,'일반직원','2023-07-17',1,NULL,'대리','Intern',2,NULL),
+	 (4,1,'일반직원','2023-07-17',2,NULL,'사원','Staff',3,NULL),
+	 (5,1,'일반직원','2023-07-17',2,NULL,'대리','Intern',2,NULL),
+	 (6,1,'일반직원','2023-07-17',-1,NULL,'사원','Staff',3,NULL),
+	 (8,1,'일반직원','2023-07-18',3,NULL,'대리','Intern',3,NULL),
+	 (1,4,'일반사원','2023-07-18',0,NULL,'직원','O',4,NULL),
+	 (7,1,'일반직원','2023-07-17',-2,NULL,'사원','Staff',2,NULL),
+	 (9,4,'관리자','2023-07-18',0,NULL,'사장','CEO',4,NULL);
+INSERT INTO t_employee (t_user_no,t_company_no,t_employee_auth,t_employee_date,t_employee_state,t_employee_delete_date,t_employee_duty,t_employee_position,t_organization_no,t_employee_update_date) VALUES
+	 (10,4,'일반사원','2023-07-18',0,NULL,'직원','O',4,NULL);
 
 -- t_package 테이블의 더미 데이터 생성
 INSERT INTO t_package (t_package_name, t_package_price)
@@ -135,8 +153,11 @@ VALUES ('패키지A', 10000),
        ('패키지B', 15000);
 
 -- t_company 테이블의 더미 데이터 생성
-INSERT INTO t_company (t_company_name, t_package_no, t_company_clasification, t_company_business, t_company_sectors, t_company_representative, t_company_call_num, t_company_adress, t_company_industry_num, t_company_document_name, t_company_document_path)
-VALUES ('회사A', 1, '소기업', '제조업', '금속가공', '김대표', 12345678, '서울시 강남구', 1, 'aa.png', './');
+INSERT INTO t_company (t_company_name,t_package_no,t_company_com_reg_num,t_company_clasification,t_company_cor_reg_num,t_company_business_num,t_company_industry_num,t_company_business,t_company_sectors,t_company_representative,t_company_call_num,t_company_adress,t_company_adress_sub,t_company_document_name,t_company_document_path,t_company_founding_date,t_company_delete_date,t_company_state) VALUES
+	 ('회사A',1,NULL,'소기업',NULL,NULL,1,'제조업','금속가공','김대표',12345678,'서울시 강남구',NULL,'aa.png','./','2023-07-17',NULL,0),
+	 ('회사B',1,NULL,'대기업',NULL,NULL,2,'룩업','템가공','송대표',32345674,'서울시 송파구',NULL,'bb.png','./','2023-07-18',NULL,0),
+	 ('회사B',1,NULL,'대기업',NULL,NULL,2,'룩업','템가공','송대표',32345674,'서울시 송파구',NULL,'bb.png','./','2023-07-18',NULL,0),
+	 ('회사B',1,NULL,'대기업',NULL,NULL,2,'룩업','템가공','송대표',32345674,'서울시 송파구',NULL,'bb.png','./','2023-07-18',NULL,0);
 
 -- t_service 테이블의 더미 데이터 생성
 INSERT INTO t_service (t_service_name, t_service_price, t_service_path, t_service_description, t_service_main_icon_name, t_service_main_icon_path, t_service_menu_icon_name, t_service_menu_icon_path, t_service_free)
