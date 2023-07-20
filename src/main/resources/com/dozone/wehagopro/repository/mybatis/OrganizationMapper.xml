@@ -23,7 +23,7 @@
         WHERE
         t_employee.t_user_no = #{t_user_no};
     </select>
-    <select id="showMyEmployeeState" resultType="CountEmployee">
+    <select id="showMyEmployeeState" resultType="OrganizationInitEmplDTO">
         SELECT
         (
         SELECT COUNT(t_employee_no)
@@ -51,11 +51,11 @@
         WHERE t_company_no = #{t_company_no} AND t_employee_state = 3
         ) AS count_state_3;
     </select>
-    <select id="showMyEmployeeFromCompany" resultType="User">
-        select * from t_user where t_user_no IN
-        (select t_user_no from t_employee where t_company_no=
-        (select t_company_no from t_company where t_company_name=#{t_company_name} and t_company_no=#{t_company_no})
-        and
+    <select id="showMyEmployeeFromCompany" resultType="UserDTO">
+        SELECT * FROM t_user WHERE t_user_no IN
+        (SELECT t_user_no FROM t_employee WHERE t_company_no=
+        (SELECT t_company_no FROM t_company WHERE t_company_name=#{t_company_name} AND t_company_no=#{t_company_no})
+        AND
         <choose>
             <when test="t_employee_state == 0">
                 t_employee_state = 0
@@ -74,13 +74,13 @@
             </otherwise>
         </choose>
         )
-        and t_user_state>=0;
+        AND t_user_state>=0;
     </select>
-    <select id="showMyEmployeeFromOrganization" resultType="User">
-        select * from t_user where t_user_no IN
-        (select t_user_no from t_employee where t_organization_no=
-        (select t_organization_no from t_organization where t_organization_name=#{t_organization_name} and t_organization_no=#{t_organization_no})
-        and
+    <select id="showMyEmployeeFromOrganization" resultType="UserDTO">
+        SELECT * FROM t_user WHERE t_user_no IN
+        (SELECT t_user_no FROM t_employee WHERE t_organization_no=
+        (SELECT t_organization_no FROM t_organization WHERE t_organization_name=#{t_organization_name} AND t_organization_no=#{t_organization_no})
+        AND
         <choose>
             <when test="t_employee_state == 0">
                 t_employee_state = 0
@@ -99,6 +99,16 @@
             </otherwise>
         </choose>
         )
-        and t_user_state>=0;
+        AND t_user_state>=0;
     </select>
+    <insert id="createOrganization">
+        INSERT INTO t_organization (t_organization_name, t_organization_parent)
+        VALUES (#{t_organization_name}, #{t_company_no});
+    </insert>
+    <update id="updateOrganization">
+        UPDATE t_organization SET t_organization_name = #{t_organization_name} WHERE t_organization_no = #{t_organization_no};
+    </update>
+    <delete id="deleteOrganization">
+        DELETE FROM t_organization WHERE t_organization_no = #{t_organization_no};
+    </delete>
 </mapper>
