@@ -3,7 +3,7 @@ package com.dozone.wehagopro.domain;
 import lombok.Data;
 
 @Data
-public class WorkPlace {
+public class OrganizationInitCompDTO {
 
     private Integer t_company_no;
 
@@ -17,10 +17,10 @@ public class WorkPlace {
 
     private Integer organization_employee_count;
 
-    public WorkPlace() {
+    public OrganizationInitCompDTO() {
     }
 
-    public WorkPlace(Integer t_company_no, String t_company_name, Integer t_organization_no, String t_organization_name, Integer company_employee_count, Integer organization_employee_count) {
+    public OrganizationInitCompDTO(Integer t_company_no, String t_company_name, Integer t_organization_no, String t_organization_name, Integer company_employee_count, Integer organization_employee_count) {
         this.t_company_no = t_company_no;
         this.t_company_name = t_company_name;
         this.t_organization_no = t_organization_no;
