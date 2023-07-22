@@ -1,5 +1,6 @@
 package com.dozone.wehagopro.repository.mybatis;
 
+import com.dozone.wehagopro.domain.OrganizationCompInfoDTO;
 import com.dozone.wehagopro.domain.OrganizationInitEmplDTO;
 import com.dozone.wehagopro.domain.UserDTO;
 import com.dozone.wehagopro.domain.OrganizationInitCompDTO;
@@ -13,6 +14,8 @@ public interface OrganizationMapper {
 
     // 조직도 목록
     List<OrganizationInitCompDTO> showMyWorkPlace(Integer t_user_no);
+    // 조직도 회사 목록
+    List<OrganizationCompInfoDTO> showMyCompanyInfo(Integer t_user_no);
     // 조직도 직원 상태
     OrganizationInitEmplDTO showMyEmployeeState(Integer t_company_no);
     // 조직도 직원 목록 (회사 선택)

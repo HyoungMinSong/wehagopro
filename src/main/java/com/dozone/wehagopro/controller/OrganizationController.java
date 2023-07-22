@@ -1,13 +1,11 @@
 package com.dozone.wehagopro.controller;
 
-import com.dozone.wehagopro.domain.OrganizationEditDTO;
-import com.dozone.wehagopro.domain.OrganizationInitEmplDTO;
-import com.dozone.wehagopro.domain.UserDTO;
-import com.dozone.wehagopro.domain.OrganizationInitCompDTO;
+import com.dozone.wehagopro.domain.*;
 import com.dozone.wehagopro.service.OrganizationService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @CrossOrigin(origins = "http://localhost:3000")
@@ -21,6 +19,12 @@ public class OrganizationController {
     @GetMapping("/showMyWorkPlace")
     public List<OrganizationInitCompDTO> showMyWorkPlace(Integer t_user_no){
         return organizationService.showMyWorkPlace(t_user_no);
+    }
+
+    // 조직도 회사 정보
+    @GetMapping("/showMyCompanyInfo")
+    public List<OrganizationCompInfoDTO> showMyCompanyInfo(Integer t_user_no){
+        return organizationService.showMyCompanyInfo(t_user_no);
     }
 
     // 조직도 직원 상태
@@ -38,10 +42,22 @@ public class OrganizationController {
     // 조직도 부서 수정
     @PostMapping("/editingOrganization")
     public void editingOrganization(@RequestBody List<OrganizationEditDTO> dto){
-        System.out.println(dto.get(0));
-        System.out.println(dto.get(0).getT_organization_name());
-        System.out.println(dto.get(0).getT_company_no());
-        System.out.println(dto.get(0).getT_organization_no());
+        List<OrganizationEditDTO> insertDto = new ArrayList<>();
+        List<OrganizationEditDTO> updateDto = new ArrayList<>();
+        List<OrganizationEditDTO> deleteDto = new ArrayList<>();
+
+        for(OrganizationEditDTO dt : dto) {
+            System.out.println(dt);
+            if(dt.getT_organization_name() ==null && dt.getT_company_no() ==null){
+                deleteDto.add(dt);
+            }else if(dt.getT_organization_no()<0){
+                insertDto.add(dt);
+            }else if(dt.getT_company_no()!=null && dt.getT_organization_no()>=0){
+                updateDto.add(dt);
+            }
+        }
+
+        organizationService.editingOrganization(insertDto, updateDto, deleteDto);
     }
 
 }
