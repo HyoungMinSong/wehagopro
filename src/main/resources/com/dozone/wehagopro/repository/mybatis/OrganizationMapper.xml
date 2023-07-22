@@ -4,6 +4,11 @@
 <mapper namespace="com.dozone.wehagopro.repository.mybatis.OrganizationMapper">
     <select id="showMyWorkPlace">
         SELECT
+        t.*,
+        ROW_NUMBER() OVER () AS row_index
+        FROM
+        (
+        SELECT
         t_company.t_company_no,
         t_company.t_company_name,
         t_organization.t_organization_no,
@@ -21,7 +26,10 @@
         JOIN
         t_company ON t_employee.t_company_no = t_company.t_company_no
         WHERE
-        t_employee.t_user_no = #{t_user_no};
+        t_employee.t_user_no = #{t_user_no}
+        ORDER BY
+        t_company.t_company_no, t_organization.t_organization_no
+        ) t;
     </select>
     <select id="showMyEmployeeState" resultType="OrganizationInitEmplDTO">
         SELECT
