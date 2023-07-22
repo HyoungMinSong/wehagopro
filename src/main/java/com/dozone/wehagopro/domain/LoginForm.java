@@ -7,8 +7,6 @@ public class LoginForm {
     private String userid;
     private String password;
 
-    // Getter와 Setter 메서드
-    // ...
 
 
 }
