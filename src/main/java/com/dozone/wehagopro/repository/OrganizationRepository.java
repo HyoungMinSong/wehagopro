@@ -1,5 +1,6 @@
 package com.dozone.wehagopro.repository;
 
+import com.dozone.wehagopro.domain.OrganizationCompInfoDTO;
 import com.dozone.wehagopro.domain.OrganizationInitEmplDTO;
 import com.dozone.wehagopro.domain.UserDTO;
 import com.dozone.wehagopro.domain.OrganizationInitCompDTO;
@@ -18,6 +19,11 @@ public class OrganizationRepository {
     // 조직도 목록
     public List<OrganizationInitCompDTO> showMyWorkPlace(Integer t_user_no){
         return organizationMapper.showMyWorkPlace(t_user_no);
+    }
+
+    // 조직도 회사 정보
+    public List<OrganizationCompInfoDTO> showMyCompanyInfo(Integer t_user_no){
+        return organizationMapper.showMyCompanyInfo(t_user_no);
     }
 
     // 조직도 직원 상태

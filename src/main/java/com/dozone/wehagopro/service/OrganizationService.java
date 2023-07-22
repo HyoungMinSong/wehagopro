@@ -1,9 +1,6 @@
 package com.dozone.wehagopro.service;
 
-import com.dozone.wehagopro.domain.OrganizationEditDTO;
-import com.dozone.wehagopro.domain.OrganizationInitEmplDTO;
-import com.dozone.wehagopro.domain.UserDTO;
-import com.dozone.wehagopro.domain.OrganizationInitCompDTO;
+import com.dozone.wehagopro.domain.*;
 import com.dozone.wehagopro.repository.OrganizationRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -20,6 +17,11 @@ public class OrganizationService {
     // 조직도 목록
     public List<OrganizationInitCompDTO> showMyWorkPlace(Integer t_user_no) {
         return organizationRepository.showMyWorkPlace(t_user_no);
+    }
+
+    // 조직도 회사 정보
+    public List<OrganizationCompInfoDTO> showMyCompanyInfo(Integer t_user_no){
+        return organizationRepository.showMyCompanyInfo(t_user_no);
     }
 
     // 조직도 직원 상태
