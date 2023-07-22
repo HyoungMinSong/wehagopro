@@ -2,30 +2,7 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.dozone.wehagopro.repository.mybatis.ItemMapper">
-<!--    <insert id="save" useGeneratedKeys="true" keyProperty="id">-->
-<!--        insert into item (item_name, price, quantity)-->
-<!--        values (#{itemName}, #{price}, #{quantity})-->
-<!--    </insert>-->
-<!--    <update id="update">-->
-<!--        update item-->
-<!--        set item_name=#{updateParam.itemName},-->
-<!--        price=#{updateParam.price},-->
-<!--        quantity=#{updateParam.quantity}-->
-<!--        where id = #{id}-->
-<!--    </update>-->
 
-
-<!--&lt;!&ndash;    <insert id="save1" useGeneratedKeys="true" keyProperty="index">&ndash;&gt;-->
-<!--    <insert id="save1" useGeneratedKeys="true" keyProperty="index">-->
-<!--        insert into users ( name, idd, pw)-->
-<!--        values (#{name}, #{idd}, #{pw})-->
-<!--    </insert>-->
-
-    <select id="find" resultType="Item2">
-        select num, id, pw
-        from users
-        where id = #{kkk}
-    </select>
 
     <select id="findidpw" parameterType="String" resultType="Item2">
         SELECT * FROM t_user
@@ -33,37 +10,28 @@
         AND t_user_password = #{param2}
     </select>
 
+    <select id="findidemail" parameterType="String" resultType="Login">
+        SELECT t_user_id FROM t_user
+        WHERE t_user_email = #{param2}
+        AND t_user_name = #{param3}
+    </select>
 
-<!--    <update id="update1">-->
-<!--        update users-->
-<!--        set name=#{name},-->
-<!--        idd=#{idd},-->
-<!--        pw=#{pw}-->
-<!--        where idd = #{idd}-->
-<!--    </update>-->
+    <select id="findidphone" parameterType="String" resultType="Login">
+        SELECT t_user_id FROM t_user
+        WHERE t_user_phone = #{param2}
+        AND t_user_name = #{param3}
+    </select>
 
-<!--    <delete id="delete" >-->
-<!--        delete from users-->
-<!--        where idd = #{idd}-->
-<!--    </delete>-->
+    <select id="findpwemail" parameterType="String" resultType="Login">
+        SELECT t_user_password FROM t_user
+        WHERE t_user_email = #{param2}
+        AND t_user_name = #{param3}
+    </select>
 
+    <select id="findpwphone" parameterType="String" resultType="Login">
+        SELECT t_user_password FROM t_user
+        WHERE t_user_phone = #{param2}
+        AND t_user_name = #{param3}
+    </select>
 
-<!--    <select id="findById" resultType="Item">-->
-<!--        select id, item_name, price, quantity-->
-<!--        from item-->
-<!--        where id = #{id}-->
-<!--    </select>-->
-
-<!--    <select id="findAll" resultType="Item">-->
-<!--        select id, item_name, price, quantity-->
-<!--        from item-->
-<!--        <where>-->
-<!--            <if test="itemName != null and itemName != ''">-->
-<!--                and item_name like concat('%',#{itemName},'%')-->
-<!--            </if>-->
-<!--            <if test="maxPrice != null">-->
-<!--                and price &lt;= #{maxPrice}-->
-<!--            </if>-->
-<!--        </where>-->
-<!--    </select>-->
 </mapper>
