@@ -1,5 +1,6 @@
 package com.dozone.wehagopro.config;
 
+import com.dozone.wehagopro.repository.mybatis.BlackListMapper;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -19,6 +20,12 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
         String token = jwtTokenProvider.resolveToken(request);
+
+//        // 로그아웃한 Access Token은 권한 부여 X
+//        if(jwtTokenProvider.isLogout(token)) {
+//            filterChain.doFilter(request, response);
+//            return;
+//        }
 
         if (token != null && jwtTokenProvider.validateToken(token)) {
             Authentication authentication = jwtTokenProvider.getAuthentication(token);
