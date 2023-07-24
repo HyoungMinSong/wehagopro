@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.dozone.wehagopro.repository.mybatis.SignUpMapper">
+
+    <select id="idCheck" resultType="java.lang.String">
+        select t_user_id from t_user where t_user_id = #{id}
+    </select>
+
+    <insert id="userSave" useGeneratedKeys="true" keyProperty="no">
+        INSERT INTO t_user (t_user_id,t_user_password,t_user_name,t_user_phone,t_user_email) VALUES
+        (#{id},#{password},#{name},#{phoneNumber},#{email})
+        RETURNING t_user_no AS no;
+    </insert>
+
+    <insert id="companySave" useGeneratedKeys="true" keyProperty="no">
+        INSERT INTO t_company (t_company_name,t_package_no,t_company_com_reg_num,t_company_clasification,
+        t_company_business,t_company_sectors, t_company_representative,t_company_call_num) VALUES
+        (#{companyName},#{packageNo},#{businessRegistrationNumber},#{businessType},#{businessStatus},#{businessCategory},
+        #{representativeName},#{companyPhoneNumber})
+        RETURNING t_company_no AS no;
+    </insert>
+
+    <insert id="organizationSave" useGeneratedKeys="true" keyProperty="no">
+        INSERT INTO t_organization (t_organization_name) VALUES
+        (#{companyName})
+        RETURNING t_organization_no AS no;
+    </insert>
+
+    <insert id="employeeSave" useGeneratedKeys="true" keyProperty="no">
+        INSERT INTO t_employee (t_user_no,t_company_no,t_employee_auth,
+        t_organization_no) VALUES
+        (#{userNo},#{companyNo},#{employeeAuth},#{organizationNo})
+        RETURNING t_employee_no AS no;
+    </insert>
+
+    <select id="findServiceNoByPackageNo" resultType="java.lang.Integer">
+        select t_service_no from t_components where t_package_no = #{no}
+    </select>
+
+    <select id="findServiceNoByServiceFree" resultType="java.lang.Integer">
+        select t_service_no from t_service where t_service_free = 0;
+    </select>
+
+    <insert id="servicePublishedSave">
+        INSERT INTO t_service_published (t_employee_no,t_service_no) VALUES
+        (#{param1},#{param2})
+    </insert>
+
+</mapper>
