@@ -20,7 +20,7 @@ public class SignUpService {
     }
 
     @Transactional
-    public String signUpInsert(SignUpDto dto) {
+    public void signUpInsert(SignUpDto dto) {
         System.out.println("서비스");
         System.out.println("dto = " + dto);
         String name = dto.getName();
@@ -61,8 +61,6 @@ public class SignUpService {
             System.out.println("num = " + num);
             repository.signUpServicePublished(employeeSignUpDtoNo, num);
         }
-        
-        
-        return "성공";
+
     }
 }
