@@ -25,12 +25,16 @@ public class OrganizationService {
     }
 
     // 조직도 직원 상태
-    public OrganizationInitEmplDTO showMyEmployeeState(Integer t_company_no) {
-        return organizationRepository.showMyEmployeeState(t_company_no);
+    public OrganizationInitEmplDTO showMyEmployeeState(Integer pk, Integer index) {
+        if(index == -1) {
+            return organizationRepository.showMyEmployeeStateFromCompany(pk);
+        }else{
+            return organizationRepository.showMyEmployeeStateFromOrganization(pk);
+        }
     }
 
     // 조직도 직원 목록 (회사 or 부서 선택)
-    public List<UserDTO> showMyEmployees(String nodeName, Integer pk, Integer index, Integer t_employee_state) {
+    public List<OrganizationEmplInfoDTO> showMyEmployees(String nodeName, Integer pk, Integer index, Integer t_employee_state) {
         if (index == -1) {
             System.out.println("회사야");
             return organizationRepository.showMyEmployeeFromCompany(nodeName, pk, t_employee_state);

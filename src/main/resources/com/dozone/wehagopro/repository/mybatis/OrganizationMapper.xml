@@ -51,7 +51,7 @@
         t_employee.t_company_no,
         t_company.t_company_name;
     </select>
-    <select id="showMyEmployeeState" resultType="OrganizationInitEmplDTO">
+    <select id="showMyEmployeeStateFromCompany" resultType="OrganizationInitEmplDTO">
         SELECT
         (
         SELECT COUNT(t_employee_no)
@@ -79,10 +79,48 @@
         WHERE t_company_no = #{t_company_no} AND t_employee_state = 3
         ) AS count_state_3;
     </select>
-    <select id="showMyEmployeeFromCompany" resultType="UserDTO">
-        SELECT * FROM t_user WHERE t_user_no IN
-        (SELECT t_user_no FROM t_employee WHERE t_company_no=
-        (SELECT t_company_no FROM t_company WHERE t_company_name=#{t_company_name} AND t_company_no=#{t_company_no})
+    <select id="showMyEmployeeStateFromOrganization" resultType="OrganizationInitEmplDTO">
+    SELECT
+    (
+    SELECT COUNT(t_employee_no)
+    FROM t_employee
+    WHERE t_organization_no = #{t_organization_no} AND t_employee_state >= 0
+    ) AS count_state_all,
+    (
+    SELECT COUNT(t_employee_no)
+    FROM t_employee
+    WHERE t_organization_no = #{t_organization_no} AND t_employee_state = 0
+    ) AS count_state_0,
+    (
+    SELECT COUNT(t_employee_no)
+    FROM t_employee
+    WHERE t_organization_no = #{t_organization_no} AND t_employee_state = 1
+    ) AS count_state_1,
+    (
+    SELECT COUNT(t_employee_no)
+    FROM t_employee
+    WHERE t_organization_no = #{t_organization_no} AND t_employee_state = 2
+    ) AS count_state_2,
+    (
+    SELECT COUNT(t_employee_no)
+    FROM t_employee
+    WHERE t_organization_no = #{t_organization_no} AND t_employee_state = 3
+    ) AS count_state_3;
+</select>
+    <select id="showMyEmployeeFromCompany" resultType="OrganizationEmplInfoDTO">
+        SELECT t_user.*, t_employee.*, t_organization.t_organization_name
+        FROM t_user
+        JOIN t_employee ON t_user.t_user_no = t_employee.t_user_no
+        JOIN t_organization ON t_employee.t_organization_no = t_organization.t_organization_no
+        WHERE t_user.t_user_no IN (
+        SELECT t_user_no
+        FROM t_employee
+        WHERE t_company_no = (
+        SELECT t_company_no
+        FROM t_company
+        WHERE t_company_name = #{t_company_name}
+        AND t_company_no = #{t_company_no}
+        )
         AND
         <choose>
             <when test="t_employee_state == 0">
@@ -102,12 +140,23 @@
             </otherwise>
         </choose>
         )
-        AND t_user_state>=0;
+        AND t_employee.t_company_no = #{t_company_no}
+        AND t_user.t_user_state >= 0 order by t_user.t_user_name;
     </select>
-    <select id="showMyEmployeeFromOrganization" resultType="UserDTO">
-        SELECT * FROM t_user WHERE t_user_no IN
-        (SELECT t_user_no FROM t_employee WHERE t_organization_no=
-        (SELECT t_organization_no FROM t_organization WHERE t_organization_name=#{t_organization_name} AND t_organization_no=#{t_organization_no})
+    <select id="showMyEmployeeFromOrganization" resultType="OrganizationEmplInfoDTO">
+        SELECT t_user.*, t_employee.*, t_organization.t_organization_name
+        FROM t_user
+        JOIN t_employee ON t_user.t_user_no = t_employee.t_user_no
+        JOIN t_organization ON t_employee.t_organization_no = t_organization.t_organization_no
+        WHERE t_user.t_user_no IN (
+        SELECT t_user_no
+        FROM t_employee
+        WHERE t_organization_no = (
+        SELECT t_organization_no
+        FROM t_organization
+        WHERE t_organization_name = #{t_organization_name}
+        AND t_organization_no = #{t_organization_no}
+        )
         AND
         <choose>
             <when test="t_employee_state == 0">
@@ -127,7 +176,8 @@
             </otherwise>
         </choose>
         )
-        AND t_user_state>=0;
+        AND t_employee.t_organization_no = #{t_organization_no}
+        AND t_user.t_user_state >= 0 order by t_user.t_user_name;
     </select>
     <insert id="createOrganization">
         INSERT INTO t_organization (t_organization_name, t_organization_parent)

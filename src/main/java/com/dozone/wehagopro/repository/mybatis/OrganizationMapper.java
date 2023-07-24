@@ -1,9 +1,6 @@
 package com.dozone.wehagopro.repository.mybatis;
 
-import com.dozone.wehagopro.domain.OrganizationCompInfoDTO;
-import com.dozone.wehagopro.domain.OrganizationInitEmplDTO;
-import com.dozone.wehagopro.domain.UserDTO;
-import com.dozone.wehagopro.domain.OrganizationInitCompDTO;
+import com.dozone.wehagopro.domain.*;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 
@@ -17,11 +14,13 @@ public interface OrganizationMapper {
     // 조직도 회사 목록
     List<OrganizationCompInfoDTO> showMyCompanyInfo(Integer t_user_no);
     // 조직도 직원 상태
-    OrganizationInitEmplDTO showMyEmployeeState(Integer t_company_no);
+    OrganizationInitEmplDTO showMyEmployeeStateFromCompany(Integer t_company_no);
+    // 조직도 직원 상태
+    OrganizationInitEmplDTO showMyEmployeeStateFromOrganization(Integer t_organization_no);
     // 조직도 직원 목록 (회사 선택)
-    List<UserDTO> showMyEmployeeFromCompany(@Param("t_company_name") String t_company_name, @Param("t_company_no") Integer pk, @Param("t_employee_state") Integer t_employee_state);
+    List<OrganizationEmplInfoDTO> showMyEmployeeFromCompany(@Param("t_company_name") String t_company_name, @Param("t_company_no") Integer pk, @Param("t_employee_state") Integer t_employee_state);
     // 조직도 직원 목록 (부서 선택)
-    List<UserDTO> showMyEmployeeFromOrganization(@Param("t_organization_name") String t_organization_name, @Param("t_organization_no") Integer pk, @Param("t_employee_state") Integer t_employee_state);
+    List<OrganizationEmplInfoDTO> showMyEmployeeFromOrganization(@Param("t_organization_name") String t_organization_name, @Param("t_organization_no") Integer pk, @Param("t_employee_state") Integer t_employee_state);
     // 조직도 부서 생성
     void createOrganization(@Param("t_organization_name") String t_organization_name, @Param("t_company_no") Integer t_company_no);
     // 조직도 부서 수정

@@ -29,13 +29,13 @@ public class OrganizationController {
 
     // 조직도 직원 상태
     @GetMapping("/showMyEmployeeState")
-    public OrganizationInitEmplDTO showMyEmployeeState(Integer t_company_no){
-        return organizationService.showMyEmployeeState(t_company_no);
+    public OrganizationInitEmplDTO showMyEmployeeState(Integer pk, Integer index){
+        return organizationService.showMyEmployeeState(pk, index);
     }
 
     // 조직도 직원 목록
     @GetMapping("/showMyEmployees")
-    public List<UserDTO> showMyEmployees(@RequestParam("nodeName") String nodeName, @RequestParam("pk") Integer pk, @RequestParam("index") Integer index, @RequestParam("t_employee_state") Integer t_employee_state){
+    public List<OrganizationEmplInfoDTO> showMyEmployees(@RequestParam("nodeName") String nodeName, @RequestParam("pk") Integer pk, @RequestParam("index") Integer index, @RequestParam("t_employee_state") Integer t_employee_state){
         return organizationService.showMyEmployees(nodeName, pk, index, t_employee_state);
     }
 
