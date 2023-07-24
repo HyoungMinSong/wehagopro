@@ -8,6 +8,8 @@ import org.springframework.boot.autoconfigure.security.servlet.SecurityAutoConfi
 @SpringBootApplication
 public class WehagoproApplication {
 
+
+
 	public static void main(String[] args) {
 		SpringApplication.run(WehagoproApplication.class, args);
 	}
