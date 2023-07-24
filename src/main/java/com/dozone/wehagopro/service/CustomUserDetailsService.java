@@ -1,8 +1,8 @@
 package com.dozone.wehagopro.service;
 
 import com.dozone.wehagopro.config.SecurityUser;
-import com.dozone.wehagopro.domain.Member;
-import com.dozone.wehagopro.repository.MemberMapper;
+import com.dozone.wehagopro.domain.UserDto;
+import com.dozone.wehagopro.repository.mybatis.UserMapper;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
@@ -15,16 +15,16 @@ import java.util.Optional;
 @Service
 public class CustomUserDetailsService implements UserDetailsService {
 
-    private final MemberMapper memberMapper;
+    private final UserMapper userMapper;
 
     @Override
-    public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-        Optional<Member> optional = memberMapper.findByMembername(username);
+    public UserDetails loadUserByUsername(String userId) throws UsernameNotFoundException {
+        Optional<UserDto> optional = userMapper.findByUserId(userId);
         if(!optional.isPresent()) {
             throw new UsernameNotFoundException("사용자가 없습니다.");
         } else {
-            Member member = optional.get();
-            return new SecurityUser(member);
+            UserDto userDto = optional.get();
+            return new SecurityUser(userDto);
         }
     }
 
