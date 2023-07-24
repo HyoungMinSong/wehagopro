@@ -1,29 +1,54 @@
 package com.dozone.wehagopro.domain;
 
-import lombok.*;
-import org.springframework.security.crypto.password.PasswordEncoder;
+import lombok.Data;
 
-import java.util.Date;
+import java.sql.Date;
 
 @Data
-@NoArgsConstructor(access = AccessLevel.PROTECTED)
-@AllArgsConstructor
-public class UserDto {
-    private int t_user_no;
+public class UserDTO {
+
+    private Integer t_user_no;
     private String t_user_id;
     private String t_user_password;
     private String t_user_name;
-    private String t_user_call;
     private String t_user_phone;
     private String t_user_email;
     private String t_user_photo_name;
     private String t_user_photo_path;
     private Date t_user_sign_date;
     private Date t_user_delete_date;
-    private int t_user_state;
+    private Integer t_user_state;
     private Date t_user_update_date;
 
-    public void encodePassword(PasswordEncoder passwordEncoder) {
-        this.t_user_password = passwordEncoder.encode(t_user_password);
+    public UserDTO() {
+    }
+
+    public UserDTO(String t_user_id, String t_user_password, String t_user_name, String t_user_phone, String t_user_email, String t_user_photo_name, String t_user_photo_path, Date t_user_sign_date, Date t_user_delete_date, Integer t_user_state, Date t_user_update_date) {
+        this.t_user_id = t_user_id;
+        this.t_user_password = t_user_password;
+        this.t_user_name = t_user_name;
+        this.t_user_phone = t_user_phone;
+        this.t_user_email = t_user_email;
+        this.t_user_photo_name = t_user_photo_name;
+        this.t_user_photo_path = t_user_photo_path;
+        this.t_user_sign_date = t_user_sign_date;
+        this.t_user_delete_date = t_user_delete_date;
+        this.t_user_state = t_user_state;
+        this.t_user_update_date = t_user_update_date;
+    }
+
+    public UserDTO(Integer t_user_no, String t_user_id, String t_user_password, String t_user_name, String t_user_phone, String t_user_email, String t_user_photo_name, String t_user_photo_path, Date t_user_sign_date, Date t_user_delete_date, Integer t_user_state, Date t_user_update_date) {
+        this.t_user_no = t_user_no;
+        this.t_user_id = t_user_id;
+        this.t_user_password = t_user_password;
+        this.t_user_name = t_user_name;
+        this.t_user_phone = t_user_phone;
+        this.t_user_email = t_user_email;
+        this.t_user_photo_name = t_user_photo_name;
+        this.t_user_photo_path = t_user_photo_path;
+        this.t_user_sign_date = t_user_sign_date;
+        this.t_user_delete_date = t_user_delete_date;
+        this.t_user_state = t_user_state;
+        this.t_user_update_date = t_user_update_date;
     }
 }

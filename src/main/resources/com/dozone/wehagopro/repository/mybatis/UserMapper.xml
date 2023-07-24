@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.dozone.wehagopro.repository.mybatis.UserMapper">
+    <select id="findByUserId" parameterType="String" resultType="com.dozone.wehagopro.domain.UserDto">
+        select * from t_user where t_user_id = #{userId};
+    </select>
+    <select id="getUserCompanyList" parameterType="String" resultType="com.dozone.wehagopro.domain.UserCompanyDto">
+        SELECT
+        c.t_company_name,
+        e.t_employee_auth,
+        e.t_employee_duty
+        FROM
+        t_user u
+        JOIN
+        t_employee e ON u.t_user_no = e.t_user_no
+        JOIN
+        t_company c ON e.t_company_no = c.t_company_no
+        WHERE
+        u.t_user_id = #{userId};
+    </select>
+    <select id="getUserServiceList" parameterType="String" resultType="com.dozone.wehagopro.domain.UserServiceDto">
+        SELECT
+        s.t_service_name,
+        s.t_service_menu_icon_path
+        FROM
+        t_user u
+        JOIN
+        t_service_published sp ON u.t_user_no = sp.t_user_no
+        JOIN
+        t_service s ON sp.t_service_no = s.t_service_no
+        WHERE
+        u.t_user_id = #{userId};
+    </select>
+</mapper>
