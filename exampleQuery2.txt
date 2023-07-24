@@ -1,0 +1,156 @@
+--테이블 삭제
+
+DROP TABLE IF EXISTS t_user;
+DROP TABLE IF EXISTS t_company;
+DROP TABLE IF EXISTS t_employee;
+DROP TABLE IF EXISTS t_service;
+DROP TABLE IF EXISTS t_service_published;
+DROP TABLE IF EXISTS t_package;
+DROP TABLE IF EXISTS t_components;
+DROP TABLE IF EXISTS t_organization;
+
+
+
+
+
+CREATE TABLE t_user (
+  t_user_no SERIAL PRIMARY KEY,
+  t_user_id VARCHAR(100) NOT NULL,
+  t_user_password VARCHAR(100) NOT NULL,
+  t_user_name VARCHAR(100) NOT NULL,
+  t_user_phone VARCHAR(100) NOT NULL,
+  t_user_email VARCHAR(100) NOT NULL,
+  t_user_photo_name VARCHAR(100) NOT NULL DEFAULT '기본사진',
+  t_user_photo_path VARCHAR(100) NOT NULL DEFAULT 'https://static.wehago.com/imgs/dummy/@dummy_02.jpg',
+  t_user_sign_date DATE NOT NULL DEFAULT CURRENT_DATE,
+  t_user_delete_date DATE,
+  t_user_state INTEGER NOT NULL DEFAULT -1,
+  t_user_update_date DATE
+);
+
+
+
+CREATE TABLE t_company (
+  t_company_no SERIAL PRIMARY KEY,
+  t_company_name VARCHAR(100) NOT NULL,
+  t_package_no INTEGER NOT NULL,
+  t_company_com_reg_num VARCHAR(100) NOT NULL,
+  t_company_clasification VARCHAR(100) NOT NULL,
+  t_company_business VARCHAR(100) NOT NULL,
+  t_company_sectors VARCHAR(100) NOT NULL,
+  t_company_representative VARCHAR(100) NOT NULL,
+  t_company_call_num VARCHAR(100) NOT NULL,
+  t_company_founding_date DATE NOT NULL DEFAULT CURRENT_DATE,
+  t_company_delete_date DATE,
+  t_company_state INTEGER NOT NULL DEFAULT -1
+);
+
+CREATE TABLE t_employee (
+  t_employee_no SERIAL PRIMARY KEY,
+  t_user_no INTEGER,
+  t_company_no INTEGER NOT NULL,
+  t_employee_auth VARCHAR(100) NOT NULL,
+  t_employee_date DATE NOT NULL DEFAULT CURRENT_DATE,
+  t_employee_state INTEGER NOT NULL DEFAULT 0,
+  t_employee_delete_date DATE,
+  t_employee_duty VARCHAR(100) NOT NULL DEFAULT '직책없음',
+  t_employee_position VARCHAR(100) NOT NULL DEFAULT '직급없음',
+  t_organization_no INTEGER NOT NULL,
+  t_employee_update_date DATE
+);
+
+
+
+CREATE TABLE t_service (
+  t_service_no SERIAL PRIMARY KEY,
+  t_service_name VARCHAR(100) NOT NULL,
+  t_service_price INTEGER NOT NULL,
+  t_service_path VARCHAR(100) NOT NULL DEFAULT '/',
+  t_service_description VARCHAR(500) NOT NULL,
+  t_service_main_icon_path VARCHAR(100) NOT NULL DEFAULT '/',
+  t_service_menu_icon_path VARCHAR(100) NOT NULL DEFAULT '/',
+  t_service_free INTEGER NOT NULL DEFAULT -1,
+  t_service_create_date DATE NOT NULL DEFAULT CURRENT_DATE,
+  t_service_delete_date DATE,
+  t_service_state INTEGER NOT NULL DEFAULT -1
+);
+
+
+
+CREATE TABLE t_service_published (
+  t_service_published_no SERIAL PRIMARY KEY,
+  t_employee_no INTEGER NOT NULL,
+  t_service_no INTEGER NOT NULL,
+  t_service_published_order SERIAL NOT NULL,
+  t_service_published_date DATE NOT NULL DEFAULT CURRENT_DATE,
+  t_service_recall INTEGER NOT NULL DEFAULT -1,
+  t_service_recall_date DATE
+);
+
+
+CREATE TABLE t_package (
+  t_package_no SERIAL PRIMARY KEY,
+  t_package_name VARCHAR(100) NOT NULL,
+  t_package_price INTEGER NOT NULL
+);
+
+
+
+CREATE TABLE t_components (
+  t_components_no SERIAL PRIMARY KEY,
+  t_package_no INTEGER NOT NULL,
+  t_service_no INTEGER NOT NULL
+);
+
+
+CREATE TABLE t_organization (
+  t_organization_no SERIAL PRIMARY KEY,
+  t_organization_name VARCHAR(100) NOT NULL,
+  t_organization_parent INTEGER NOT NULL DEFAULT -1
+);
+
+
+INSERT INTO t_package (t_package_name, t_package_price)
+VALUES ('CLUB', 23000),
+       ('PRO', 36000);
+
+
+INSERT INTO t_service (t_service_name, t_service_price, t_service_description, t_service_free)
+VALUES ('팩스', 3000, '팩스 기기 없이도 팩스를 수신하여 확인하고 발신할 수 있습니다.', DEFAULT),
+       ('화상회의', 3000, '메신저 사용이 가능하며, PC와 모바일 어디서나 원거리 협업기능을 지원합니다.', DEFAULT),
+       ('웹스토리지', 3000, '랜섬웨어를 비롯하여 다양한 보안 위협을 근본적으로 차단하는 더존의 클라우드 서비스를 기반으로 하여 기업의 소중한 정보 자산을 안전하게 지킬 수 있습니다. 시간과 공간의 제약 없이 실시간 업무처리와 데이터 공유가 가능하며, 공유된 파일을 간편하게 확인하고 수정할 수 있습니다. 웹스토리지는 클라우드를 기반으로 기업의 전산관리와 보안 이슈까지 한 번에 해결 가능한 안전한 저장공간입니다.', DEFAULT),
+       ('내 PC 원격접속', 3000, 'PC와 모바일 어디서나 원거리 협업기능을 지원합니다.', DEFAULT),
+       ('노트', 3000, '아이디어나 보관이 필요한 지식을 손쉽게 기록하여 자유롭게 공유합니다.', DEFAULT),
+       ('회사저장공간', 3000, '회사 내 파일과 문서를 안전하게 저장하여 공유할 수 있습니다.', DEFAULT),
+       ('메신저', 3000, '기업전용 메신저 서비스로서 단체/ 개인간대화, 쪽지 등 제공합니다.', DEFAULT),
+       ('메일', 3000, '기업용 메일 서비스로서 도메인연결 및 타 서비스와 계정연동기능을 지원합니다.', DEFAULT),
+       ('회사게시판', 3000, '회사게시판은 사내 공지사항 및 정보공유는 물론 직원들을 위한 커뮤니티 공간으로 활용할 수 있습니다.', DEFAULT),
+       ('웹오피스팩', 3000, '한글, 엑셀, 파워포인트, 워드 등 다양한 포맷의 문서를 지원합니다.', DEFAULT),
+       ('문자', 0, 'WEHAGO 문자는 업무에 있어서 필요한 각종 공지나 안내등을 문자로 편리하게 보낼 수 있습니다. 다수의 거래처에 동일한 문자를 보내거나 거래처별로 각각 다른 문자를 한번에 보낼 수 있어 편리합니다. WEHAGO 문자를 통하여 편리하게 거래처와의 관계를 관리할 수 있습니다.', 0),
+       ('연락처', 0, '명함촬영으로 연락처를 자동저장하고, 직원간 공유 및 통합관리가 가능합니다.', 0),
+       ('거래처관리', 0, '사업자 상태조회 및 기업 신용정보를 통해 거래처 최신정보를 관리합니다.', 0),
+       ('조직도', 0, '소통이 필요한 직원을 검색하고 자주 찾는 조직원을 설정할 수 있습니다.', 0),
+       ('전자세금계산서', 0, '가장 많은 기업이 사용하고, 기업의 회계실무를 가장 잘 아는, 전자신고 경험이 풍부한 세무회계 전문기업이 만든 실무형 전자세금계산서! 더존 프로그램 및 기업 내부 시스템 연동은 물론, 모바일로도 사용가능한 스마트한 더존 전자세금계산서 서비스를 WEHAGO에서 편리하게 이용해보세요. 기업과 기업, 기업과 개인간 상거래에서 발생하는 세금계산서/거래명세서/입금표/영수증 등을 인터넷을 통해 발행(청구)에서 대금결제(수금)까지 원스톱 처리가 가능한 국내 유일의 더존 전자세금계산서를 WEHAGO에서 이용해보세요.', 0);
+
+
+
+INSERT INTO t_components (t_package_no, t_service_no)
+VALUES (1, 1),
+       (1, 2),
+       (1, 3),
+       (1, 4),
+       (1, 6),
+       (1, 7),
+       (1, 8),
+       (2, 1),
+       (2, 2),
+       (2, 3),
+       (2, 4),
+       (2, 5),
+       (2, 6),
+       (2, 7),
+       (2, 8),
+       (2, 9),
+       (2, 10);
+
+commit;

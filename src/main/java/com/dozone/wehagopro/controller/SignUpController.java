@@ -1,5 +1,6 @@
 package com.dozone.wehagopro.controller;
 
+import com.dozone.wehagopro.domain.signUp.SignUpDto;
 import com.dozone.wehagopro.domain.signUp.User;
 import com.dozone.wehagopro.service.signUp.SignUpService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,5 +23,13 @@ public class SignUpController {
         System.out.println("id = " + user.getId());
         String result = service.checkId(user.getId());
         return result;
+    }
+
+    @ResponseBody
+    @PostMapping("/signupinsert")
+    public String signUpInsert(@RequestBody SignUpDto dto) {
+        System.out.println("dto = " + dto);
+        service.signUpInsert(dto);
+        return "컨트롤라성공";
     }
 }
