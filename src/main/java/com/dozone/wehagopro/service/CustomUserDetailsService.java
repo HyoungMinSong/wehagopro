@@ -1,7 +1,7 @@
 package com.dozone.wehagopro.service;
 
 import com.dozone.wehagopro.config.SecurityUser;
-import com.dozone.wehagopro.domain.UserDto;
+import com.dozone.wehagopro.domain.UserDTO;
 import com.dozone.wehagopro.repository.mybatis.UserMapper;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -19,11 +19,11 @@ public class CustomUserDetailsService implements UserDetailsService {
 
     @Override
     public UserDetails loadUserByUsername(String userId) throws UsernameNotFoundException {
-        Optional<UserDto> optional = userMapper.findByUserId(userId);
+        Optional<UserDTO> optional = userMapper.findByUserId(userId);
         if(!optional.isPresent()) {
             throw new UsernameNotFoundException("사용자가 없습니다.");
         } else {
-            UserDto userDto = optional.get();
+            UserDTO userDto = optional.get();
             return new SecurityUser(userDto);
         }
     }

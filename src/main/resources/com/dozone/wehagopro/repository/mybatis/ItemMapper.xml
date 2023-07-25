@@ -12,8 +12,8 @@
 
     <select id="findidemail" parameterType="String" resultType="Login">
         SELECT t_user_id FROM t_user
-        WHERE t_user_email = #{param2}
-        AND t_user_name = #{param3}
+        WHERE t_user_email = #{email}
+        AND t_user_name = #{name}
     </select>
 
     <select id="findidphone" parameterType="String" resultType="Login">
@@ -33,5 +33,10 @@
         WHERE t_user_phone = #{param2}
         AND t_user_name = #{param3}
     </select>
+
+    <update id="updatepw" parameterType="String">
+        UPDATE t_user SET t_user_password = #{param1}
+        WHERE t_user_id = #{param2} AND t_user_password = #{param3}
+    </update>
 
 </mapper>

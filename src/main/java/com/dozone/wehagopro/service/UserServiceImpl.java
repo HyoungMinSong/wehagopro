@@ -12,9 +12,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.time.Duration;
 import java.util.List;
-import java.util.Optional;
 
 @RequiredArgsConstructor
 @Transactional(readOnly = true)
@@ -50,7 +48,7 @@ public class UserServiceImpl implements UserService {
     @Transactional
     @Override
     public TokenDto login(String id, String password) {
-        UserDto userDto = userMapper.findByUserId(id)
+        UserDTO userDto = userMapper.findByUserId(id)
                 .orElseThrow(() -> new IllegalArgumentException("가입되지 않은 아이디 입니다."));
 
         // passwordEncoder.matches(로그인 할 때 비밀번호, DB에 저장된 비밀번호)
@@ -100,7 +98,7 @@ public class UserServiceImpl implements UserService {
             Authentication authentication = jwtTokenProvider.getAuthentication(refreshToken.substring(7));
 
             // userId로 유저 검색
-            UserDto userDto = userMapper.findByUserId(authentication.getName())
+            UserDTO userDto = userMapper.findByUserId(authentication.getName())
                     .orElseThrow(() -> new UsernameNotFoundException("해당하는 사용자가 없습니다."));
 //                String refreshToken = redisDao.getValues(member.getId());
 //            String refreshToken = refreshTokenMapper.getToken(userDto.getT_user_id());
@@ -128,7 +126,7 @@ public class UserServiceImpl implements UserService {
     @Override
     public UserInfoDto getUserInfo(String accessToken) {
         String userId = jwtTokenProvider.getUserId(accessToken.substring(7));
-        UserDto userDto = userMapper.findByUserId(userId).get();
+        UserDTO userDto = userMapper.findByUserId(userId).get();
         List<UserCompanyDto> userCompanyDtoList = userMapper.getUserCompanyList(userId);
         List<UserServiceDto> userServiceDtoList = userMapper.getUserServiceList(userId);
 

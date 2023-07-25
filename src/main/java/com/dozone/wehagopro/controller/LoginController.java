@@ -42,7 +42,7 @@ public class LoginController {
         String name = login.getT_user_name();
         System.out.println("name = " + name);
 
-        Login findidemail = repository.findidemail(id, email, name);
+        Login findidemail = repository.findidemail(email, name);
         System.out.println(findidemail.getT_user_id() + findidemail.getT_user_email() + findidemail.getT_user_name());
         return findidemail;
     }
@@ -91,9 +91,24 @@ public class LoginController {
         Login findpwphone = repository.findpwphone(pw, phone, name);
         System.out.println(findpwphone.getT_user_password() + findpwphone.getT_user_phone() + findpwphone.getT_user_name());
         return findpwphone;
-
     }
 
+    @PostMapping("updatepw")
+    public int test6(@RequestBody Login login){
+        System.out.println("비밀번호재설정");
+        String id = login.getT_user_id();
+        System.out.println("id = " + id);
+        String pw = login.getT_user_password();
+        System.out.println("pw = " + pw);
+        String npw = login.getT_user_new_password();
+        System.out.println("newpw = " + npw);
+        String npwcheck = login.getT_user_new_password_check();
+        System.out.println("newpwcheck = " + npwcheck);
+
+        int updatepw = repository.updatepw(npw, id, pw);
+//        System.out.println("새비밀번호 = " + updatepw.getT_user_new_password() + "유저 id = " +  updatepw.getT_user_id());
+        return updatepw;
+    }
 
 
 }

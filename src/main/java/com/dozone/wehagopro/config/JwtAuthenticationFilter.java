@@ -1,6 +1,5 @@
 package com.dozone.wehagopro.config;
 
-import com.dozone.wehagopro.repository.mybatis.BlackListMapper;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
