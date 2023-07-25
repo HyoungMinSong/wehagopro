@@ -1,6 +1,7 @@
 package com.dozone.wehagopro.config;
 
 import com.dozone.wehagopro.domain.UserDTO;
+import org.springframework.security.core.authority.AuthorityUtils;
 import org.springframework.security.core.userdetails.User;
 
 import java.util.Collections;
