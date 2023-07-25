@@ -28,33 +28,21 @@ public class UserController {
 //    }
 
     @PostMapping("/login")
-    public ResponseEntity<?> login(@RequestBody UserLoginRequestDto request) {
-        try {
-            TokenDto tokens = userService.login(request.getUserid(), request.getPassword());
-            return new ResponseEntity<>(tokens, HttpStatus.OK);
-        } catch (Exception e) {
-            return new ResponseEntity<>(e.getMessage(), HttpStatus.UNAUTHORIZED);
-        }
+    public TokenDto login(@RequestBody UserLoginRequestDto request) {
+        TokenDto tokens = userService.login(request.getUserid(), request.getPassword());
+        return tokens;
     }
 
     @GetMapping("/data")
-    public ResponseEntity<?> loginUserData(@RequestHeader("Authorization") String accessToken) {
-        try {
-            UserInfoDto userInfoDto = userService.getUserInfo(accessToken);
-            return new ResponseEntity<>(userInfoDto, HttpStatus.OK);
-        } catch (Exception e) {
-            return new ResponseEntity<>(e.getMessage(), HttpStatus.UNAUTHORIZED);
-        }
+    public UserInfoDto loginUserData(@RequestHeader("Authorization") String accessToken) {
+        UserInfoDto userInfoDto = userService.getUserInfo(accessToken);
+        return userInfoDto;
     }
 
     @PostMapping("/reissue")
-    public ResponseEntity<?> reissue(@RequestHeader("Authorization") String refreshToken) {
-        try {
-            TokenDto tokens = userService.reissueAccessToken(refreshToken);
-            return new ResponseEntity<>(tokens, HttpStatus.OK);
-        } catch (Exception e) {
-            return new ResponseEntity<>(e.getMessage(), HttpStatus.UNAUTHORIZED);
-        }
+    public TokenDto reissue(@RequestHeader("Authorization") String refreshToken) {
+        TokenDto tokens = userService.reissueAccessToken(refreshToken);
+        return tokens;
     }
 
     @PostMapping("/logout")
