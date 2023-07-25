@@ -20,9 +20,9 @@
         SELECT COUNT(t_employee_no) FROM t_employee WHERE t_organization_no = t_organization.t_organization_no AND t_employee_state >= 0
         ) AS organization_employee_count
         FROM
-        t_organization
-        JOIN
-        t_employee ON t_organization.t_organization_parent = t_employee.t_company_no
+        t_employee
+        left JOIN
+        t_organization ON t_organization.t_organization_parent = t_employee.t_company_no
         JOIN
         t_company ON t_employee.t_company_no = t_company.t_company_no
         WHERE
@@ -141,7 +141,7 @@
         </choose>
         )
         AND t_employee.t_company_no = #{t_company_no}
-        AND t_user.t_user_state >= 0 order by t_user.t_user_name;
+        AND t_user.t_user_state = -1 order by t_user.t_user_name;
     </select>
     <select id="showMyEmployeeFromOrganization" resultType="OrganizationEmplInfoDTO">
         SELECT t_user.*, t_employee.*, t_organization.t_organization_name
@@ -177,7 +177,7 @@
         </choose>
         )
         AND t_employee.t_organization_no = #{t_organization_no}
-        AND t_user.t_user_state >= 0 order by t_user.t_user_name;
+        AND t_user.t_user_state = -1 order by t_user.t_user_name;
     </select>
     <insert id="createOrganization">
         INSERT INTO t_organization (t_organization_name, t_organization_parent)

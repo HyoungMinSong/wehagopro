@@ -31,4 +31,5 @@ public class OrganizationInitCompDTO {
         this.organization_employee_count = organization_employee_count;
         this.row_index = row_index;
     }
+
 }
