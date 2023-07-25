@@ -14,13 +14,15 @@ import java.util.List;
 public interface ItemMapper {
     Item2 findidpw(String param1, String param2);
 
-    Login findidemail(String param1, String param2, String param3);
+    Login findidemail(@Param("email") String email, @Param("name") String name);
 
     Login findidphone(String param1, String param2, String param3);
 
     Login findpwemail(String param1, String param2, String param3);
 
     Login findpwphone(String param1, String param2, String param3);
+
+    int updatepw(String param1, String param2, String param3);
 
 
 }

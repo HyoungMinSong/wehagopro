@@ -21,8 +21,8 @@ public class MyBatisItemRepository{
         return itemMapper.findidpw(userid,password);
     }
 
-    public Login findidemail(String username, String email, String id){
-        return itemMapper.findidemail(username, email, id);
+    public Login findidemail(String email, String name){
+        return itemMapper.findidemail( email, name);
     }
 
     public Login findidphone(String username, String phone, String id){
@@ -35,5 +35,9 @@ public class MyBatisItemRepository{
 
     public Login findpwphone(String username, String phone, String pw){
         return itemMapper.findpwphone(username, phone, pw);
+    }
+
+    public int updatepw(String npw, String id, String pw){
+        return itemMapper.updatepw(npw, id, pw);
     }
 }

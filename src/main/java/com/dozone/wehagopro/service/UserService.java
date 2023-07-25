@@ -2,7 +2,6 @@ package com.dozone.wehagopro.service;
 
 import com.dozone.wehagopro.domain.TokenDto;
 import com.dozone.wehagopro.domain.UserInfoDto;
-import com.dozone.wehagopro.domain.UserSignUpRequestDto;
 
 public interface UserService {
 //    public UserDto signUp(UserSignUpRequestDto userSignUpRequestDto) throws Exception;
