@@ -29,8 +29,8 @@
 
     <insert id="employeeSave" useGeneratedKeys="true" keyProperty="no">
         INSERT INTO t_employee (t_user_no,t_company_no,t_employee_auth,
-        t_organization_no) VALUES
-        (#{userNo},#{companyNo},#{employeeAuth},#{organizationNo})
+        t_organization_no,t_employee_state) VALUES
+        (#{userNo},#{companyNo},#{employeeAuth},#{organizationNo},2)
         RETURNING t_employee_no AS no;
     </insert>
 
