@@ -1,8 +1,6 @@
 package com.dozone.wehagopro.config;
 
 import com.dozone.wehagopro.domain.UserDto;
-import com.dozone.wehagopro.repository.mybatis.BlackListMapper;
-import com.dozone.wehagopro.repository.mybatis.RefreshTokenMapper;
 import com.dozone.wehagopro.service.CustomUserDetailsService;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jws;
