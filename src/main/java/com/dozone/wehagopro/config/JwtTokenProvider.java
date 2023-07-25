@@ -1,6 +1,6 @@
 package com.dozone.wehagopro.config;
 
-import com.dozone.wehagopro.domain.UserDTO;
+import com.dozone.wehagopro.domain.UserDto;
 import com.dozone.wehagopro.repository.mybatis.BlackListMapper;
 import com.dozone.wehagopro.repository.mybatis.RefreshTokenMapper;
 import com.dozone.wehagopro.service.CustomUserDetailsService;
@@ -43,7 +43,7 @@ public class JwtTokenProvider {
     }
 
     // JWT Access 토큰 생성
-    public String createAccessToken(UserDTO userDto) {
+    public String createAccessToken(UserDto userDto) {
         Claims claims = Jwts.claims().setSubject(userDto.getT_user_id()); // JWT payload 에 저장되는 정보단위
         Date now = new Date();
         return Jwts.builder()
@@ -56,7 +56,7 @@ public class JwtTokenProvider {
     }
 
     // JWT Refresh 토큰 생성
-    public String createRefreshToken(UserDTO userDto){
+    public String createRefreshToken(UserDto userDto){
         Claims claims = Jwts.claims().setSubject(userDto.getT_user_id());
         Date now = new Date();
         long expiration = now.getTime() + refreshTokenValidTime;
