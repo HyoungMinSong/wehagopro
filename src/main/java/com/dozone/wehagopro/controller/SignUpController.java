@@ -32,4 +32,12 @@ public class SignUpController {
         service.signUpInsert(dto);
         return "컨트롤라성공";
     }
+
+    @ResponseBody
+    @PostMapping("/companycheck")
+    public String companyCheck(@RequestBody User user) {
+        System.out.println("id = " + user.getCompanyName());
+        String result = service.checkCompanyName(user.getCompanyName());
+        return result;
+    }
 }

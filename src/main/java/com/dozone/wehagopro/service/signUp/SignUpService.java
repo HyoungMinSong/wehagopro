@@ -63,4 +63,9 @@ public class SignUpService {
         }
 
     }
+
+    public String checkCompanyName(String companyName) {
+        System.out.println("servicecompanyName = " + companyName);
+        return repository.companyCheck(companyName);
+    }
 }

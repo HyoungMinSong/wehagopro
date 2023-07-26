@@ -16,4 +16,5 @@ public interface SignUpMapper {
     List<Integer> findServiceNoByPackageNo(int no);
     List<Integer> findServiceNoByServiceFree();
     void servicePublishedSave(int param1, int param2);
+    String companyCheck(String companyName);
 }
