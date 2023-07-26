@@ -7,6 +7,6 @@ public interface UserService {
 //    public UserDto signUp(UserSignUpRequestDto userSignUpRequestDto) throws Exception;
     public TokenDto login(String id, String password);
     public boolean logout(TokenDto tokenDto);
-    public TokenDto reissueAccessToken(String refreshToken);
+//    public TokenDto reissueAccessToken(String refreshToken);
     public UserInfoDto getUserInfo(String accessToken);
 }

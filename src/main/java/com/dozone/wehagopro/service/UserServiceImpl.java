@@ -3,16 +3,15 @@ package com.dozone.wehagopro.service;
 import com.dozone.wehagopro.config.JwtTokenProvider;
 import com.dozone.wehagopro.domain.*;
 import com.dozone.wehagopro.repository.mybatis.UserMapper;
-import com.dozone.wehagopro.repository.mybatis.BlackListMapper;
-import com.dozone.wehagopro.repository.mybatis.RefreshTokenMapper;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.Authentication;
-import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 @RequiredArgsConstructor
 @Transactional(readOnly = true)
@@ -22,28 +21,6 @@ public class UserServiceImpl implements UserService {
     private final UserMapper userMapper;
     private final PasswordEncoder passwordEncoder;
     private final JwtTokenProvider jwtTokenProvider;
-//    private final RedisDao redisDao;
-//    private final RefreshTokenMapper refreshTokenMapper;
-//    private final BlackListMapper blackListMapper;
-
-//    @Transactional
-//    @Override
-//    public UserDto signUp(UserSignUpRequestDto userSignUpRequestDto) throws Exception {
-//        Optional<UserDto> userDto = userMapper.findByUserId(userSignUpRequestDto.getId());
-//        if (userDto.isPresent()) {
-//            throw new Exception("이미 존재하는 회원 입니다.");
-//        }
-//
-//        if (!requestDto.getPassword().equals(requestDto.getPassword())) {
-//            throw new Exception("비밀번호가 일치하지 않습니다.");
-//        } // 나중에 checkedPassword로 수정
-//
-//        UserDto userDto = requestDto.toEntity();
-//        userDto.encodePassword(passwordEncoder);
-//        userMapper.insertMember(userDto.getId(), userDto.getPassword(), userDto.getName(), userDto.getRole().toString(), userDto.getEnabled());
-//
-//        return userDto;
-//    }
 
     @Transactional
     @Override
@@ -52,13 +29,25 @@ public class UserServiceImpl implements UserService {
                 .orElseThrow(() -> new IllegalArgumentException("가입되지 않은 아이디 입니다."));
 
         // passwordEncoder.matches(로그인 할 때 비밀번호, DB에 저장된 비밀번호)
-//        if (!passwordEncoder.matches(password, userDto.getT_user_password())) {
-//            throw new IllegalArgumentException("잘못된 비밀번호 입니다.");
-//        }
+        if (!passwordEncoder.matches(password, userDto.getT_user_password())) {
+            throw new IllegalArgumentException("잘못된 비밀번호 입니다.");
+        }
+
+        List<UserCompanyDto> userCompanyDto = userMapper.getUserCompanyList(id);
+        Map<String, String> userRole = new HashMap<>();
+        // 사용자 회사가 있을 때
+        if(!userCompanyDto.isEmpty()) {
+            for(UserCompanyDto company : userCompanyDto) {
+                userRole.put(company.getT_company_name(), company.getT_employee_auth());
+            }
+        } else {
+            // 사용자의 회사가 없다면 권한 없다고 저장
+            userRole.put("회사 없음", "권한 없음");
+        }
 
         TokenDto tokenDto = new TokenDto(
-                jwtTokenProvider.createAccessToken(userDto),
-                jwtTokenProvider.createRefreshToken(userDto)
+                jwtTokenProvider.createAccessToken(userDto, userRole),
+                jwtTokenProvider.createRefreshToken(userDto, userRole)
         );
 
         return tokenDto;
@@ -91,37 +80,37 @@ public class UserServiceImpl implements UserService {
         }
     }
 
-    @Transactional
-    @Override
-    public TokenDto reissueAccessToken(String refreshToken) {
-            // Refresh Token 에서 Username (pk) 가져오기
-            Authentication authentication = jwtTokenProvider.getAuthentication(refreshToken.substring(7));
-
-            // userId로 유저 검색
-        UserDto userDto = userMapper.findByUserId(authentication.getName())
-                    .orElseThrow(() -> new UsernameNotFoundException("해당하는 사용자가 없습니다."));
-//                String refreshToken = redisDao.getValues(member.getId());
-//            String refreshToken = refreshTokenMapper.getToken(userDto.getT_user_id());
-
-            // 리프레시 토큰 불일치 에러
-//            if (!refreshToken.equals(tokenDto.getRefreshToken())) {
-//                throw new IllegalArgumentException("Refresh Token이 불일치 합니다. 다시 로그인 하세요.");
-//            }
-
-            // Access Token, Refresh Token 재발급
-            // 단순히 Access Token만 재발급 받는 것보다는 더 좋은 방법이라 함
-            String newAccessToken = jwtTokenProvider.createAccessToken(userDto);
-            String newRefreshToken = jwtTokenProvider.createRefreshToken(userDto);
-
-            // Redis에 Refresh Token 업데이트
-//                long expiration = jwtTokenProvider.getExpiration(newRefreshToken);
-//                redisDao.setValues(member.getId(), newRefreshToken, Duration.ofMillis(expiration));
-//                refreshTokenMapper.updateToken(userDto.getT_user_id(), newRefreshToken, expiration);
-
-            // TokenDto에 담아서 리턴
-            TokenDto newTokens = new TokenDto(newAccessToken, newRefreshToken);
-            return newTokens;
-    }
+//    @Transactional
+//    @Override
+//    public TokenDto reissueAccessToken(String refreshToken) {
+//            // Refresh Token 에서 Username (pk) 가져오기
+//            Authentication authentication = jwtTokenProvider.getAuthentication(refreshToken.substring(7));
+//
+//            // userId로 유저 검색
+//        UserDto userDto = userMapper.findByUserId(authentication.getName())
+//                    .orElseThrow(() -> new UsernameNotFoundException("해당하는 사용자가 없습니다."));
+////                String refreshToken = redisDao.getValues(member.getId());
+////            String refreshToken = refreshTokenMapper.getToken(userDto.getT_user_id());
+//
+//            // 리프레시 토큰 불일치 에러
+////            if (!refreshToken.equals(tokenDto.getRefreshToken())) {
+////                throw new IllegalArgumentException("Refresh Token이 불일치 합니다. 다시 로그인 하세요.");
+////            }
+//
+//            // Access Token, Refresh Token 재발급
+//            // 단순히 Access Token만 재발급 받는 것보다는 더 좋은 방법이라 함
+//            String newAccessToken = jwtTokenProvider.createAccessToken(userDto);
+//            String newRefreshToken = jwtTokenProvider.createRefreshToken(userDto);
+//
+//            // Redis에 Refresh Token 업데이트
+////                long expiration = jwtTokenProvider.getExpiration(newRefreshToken);
+////                redisDao.setValues(member.getId(), newRefreshToken, Duration.ofMillis(expiration));
+////                refreshTokenMapper.updateToken(userDto.getT_user_id(), newRefreshToken, expiration);
+//
+//            // TokenDto에 담아서 리턴
+//            TokenDto newTokens = new TokenDto(newAccessToken, newRefreshToken);
+//            return newTokens;
+//    }
 
     @Override
     public UserInfoDto getUserInfo(String accessToken) {
