@@ -39,11 +39,11 @@ public class UserController {
         return userInfoDto;
     }
 
-    @PostMapping("/reissue")
-    public TokenDto reissue(@RequestHeader("Authorization") String refreshToken) {
-        TokenDto tokens = userService.reissueAccessToken(refreshToken);
-        return tokens;
-    }
+//    @PostMapping("/reissue")
+//    public TokenDto reissue(@RequestHeader("Authorization") String refreshToken) {
+//        TokenDto tokens = userService.reissueAccessToken(refreshToken);
+//        return tokens;
+//    }
 
     @PostMapping("/logout")
     public ResponseEntity<String> logout(@RequestBody TokenDto request) {
