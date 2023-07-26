@@ -2,17 +2,21 @@ package com.dozone.wehagopro.service.signUp;
 
 import com.dozone.wehagopro.domain.signUp.*;
 import com.dozone.wehagopro.repository.signUp.SignUpRepository;
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
+@RequiredArgsConstructor
 @Service
 public class SignUpService {
 
     @Autowired
     SignUpRepository repository;
+    private final PasswordEncoder passwordEncoder;
 
     public String checkId(String id) {
         System.out.println("serviceid = " + id);
@@ -26,7 +30,7 @@ public class SignUpService {
         String name = dto.getName();
         String phoneNumber = dto.getPhoneNumber();
         String id = dto.getId();
-        String password = dto.getPassword();
+        String password = passwordEncoder.encode(dto.getPassword()); // 비밀번호 암호화
         String email = dto.getEmail();
         String companyName = dto.getCompanyName();
         String businessRegistrationNumber = dto.getBusinessRegistrationNumber();
