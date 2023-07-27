@@ -29,12 +29,12 @@ public class MyBatisItemRepository{
         return itemMapper.findidphone(username, phone, id);
     }
 
-    public Login findpwemail(String username, String email, String pw){
-        return itemMapper.findpwemail(username, email, pw);
+    public Login findpwemail(String pw, String email, String id){
+        return itemMapper.findpwemail(pw, email, id);
     }
 
-    public Login findpwphone(String username, String phone, String pw){
-        return itemMapper.findpwphone(username, phone, pw);
+    public Login findpwphone(String pw, String phone, String id){
+        return itemMapper.findpwphone(pw, phone, id);
     }
 
     public int updatepw(String npw, String id, String pw){

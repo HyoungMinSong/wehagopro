@@ -25,13 +25,13 @@
     <select id="findpwemail" parameterType="String" resultType="Login">
         SELECT t_user_password FROM t_user
         WHERE t_user_email = #{param2}
-        AND t_user_name = #{param3}
+        AND t_user_id = #{param3}
     </select>
 
     <select id="findpwphone" parameterType="String" resultType="Login">
         SELECT t_user_password FROM t_user
         WHERE t_user_phone = #{param2}
-        AND t_user_name = #{param3}
+        AND t_user_id = #{param3}
     </select>
 
     <update id="updatepw" parameterType="String">
