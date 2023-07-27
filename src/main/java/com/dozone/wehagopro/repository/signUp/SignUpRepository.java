@@ -69,4 +69,9 @@ public class SignUpRepository {
 
         return "리포지토리성공?";
     }
+
+    public String companyCheck(String companyName) {
+        System.out.println("repsitorycompanyName = " + companyName);
+        return mapper.companyCheck(companyName);
+    }
 }

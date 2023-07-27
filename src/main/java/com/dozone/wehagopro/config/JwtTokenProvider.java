@@ -18,21 +18,19 @@ import javax.annotation.PostConstruct;
 import javax.servlet.http.HttpServletRequest;
 import java.util.Base64;
 import java.util.Date;
+import java.util.Map;
 
 @RequiredArgsConstructor
 @Component
 public class JwtTokenProvider {
 
-//    private final RedisDao redisDao; // radis 저장
-//    private final RefreshTokenMapper refreshTokenMapper;
-//    private final BlackListMapper blackListMapper;
     private final CustomUserDetailsService customUserDetailsService;
     @Value("${jwt.secret}")
     private String secretKey;
 
     // 토큰 유효시간
-    private long accessTokenValidTime = 1000L * 60; // 1분
-    private long refreshTokenValidTime = 1000L * 60 * 5; // 5분
+    private long accessTokenValidTime = 1000L * 60 * 3; // 3분
+    private long refreshTokenValidTime = 1000L * 60 * 10; // 10분
 
     // 객체 초기화, secretKey 를 Base64로 인코딩합니다.
     @PostConstruct
@@ -41,11 +39,12 @@ public class JwtTokenProvider {
     }
 
     // JWT Access 토큰 생성
-    public String createAccessToken(UserDto userDto) {
+    public String createAccessToken(UserDto userDto, Map<String, String> userRole) {
         Claims claims = Jwts.claims().setSubject(userDto.getT_user_id()); // JWT payload 에 저장되는 정보단위
         Date now = new Date();
         return Jwts.builder()
                 .setClaims(claims) // 정보 저장
+                .claim("role", userRole) // 권한 정보 저장
                 .setIssuedAt(now) // 토큰 발행 시간 정보
                 .setExpiration(new Date(now.getTime() + accessTokenValidTime)) // set Expire Time
                 .signWith(SignatureAlgorithm.HS256, secretKey)  // 사용할 암호화 알고리즘
@@ -54,12 +53,13 @@ public class JwtTokenProvider {
     }
 
     // JWT Refresh 토큰 생성
-    public String createRefreshToken(UserDto userDto){
+    public String createRefreshToken(UserDto userDto, Map<String, String> userRole){
         Claims claims = Jwts.claims().setSubject(userDto.getT_user_id());
         Date now = new Date();
         long expiration = now.getTime() + refreshTokenValidTime;
         String refreshToken = Jwts.builder()
                 .setClaims(claims)
+                .claim("role", userRole)
                 .setIssuedAt(now)
                 .setExpiration(new Date(expiration))
                 .signWith(SignatureAlgorithm.HS256, secretKey)

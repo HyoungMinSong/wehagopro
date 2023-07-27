@@ -46,5 +46,8 @@
         INSERT INTO t_service_published (t_employee_no,t_service_no) VALUES
         (#{param1},#{param2})
     </insert>
+    <select id="companyCheck" resultType="java.lang.String">
+        select t_company_name from t_company where t_company_name = #{companyName}
+    </select>
 
 </mapper>
