@@ -72,4 +72,9 @@ public class SignUpService {
         System.out.println("servicecompanyName = " + companyName);
         return repository.companyCheck(companyName);
     }
+
+    public ShortLinkSignUpDto findRedirectLink(int empNo){
+        System.out.println("serviceEmpNo = " + empNo);
+        return repository.findShortLinkByEmpNo(empNo);
+    }
 }
