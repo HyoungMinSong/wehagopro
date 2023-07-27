@@ -52,7 +52,7 @@ public class SignUpController {
         String mail = "shmin11@naver.com";
         String title = "테스트";
         String main = "테스트 메인";
-        mailService.sendEmail(mail,title,main);
+        mailService.sendEmail(mail, title, main);
     }
 
     @ResponseBody
@@ -64,6 +64,7 @@ public class SignUpController {
         System.out.println("인증 코드 : " + code);
         return code;
     }
+
     @GetMapping("/s/{slink}")
     public String greetUser(@PathVariable String slink) { // 앞 랜덤 두글자 + 직원번호 (나는 유저를 만들고 유저 no를 넣어나야함.
         String emNo = slink.substring(2);
@@ -71,9 +72,9 @@ public class SignUpController {
         ShortLinkSignUpDto shortLinkDto = service.findRedirectLink(num);
         Date findSqlDate = shortLinkDto.getShortLinkDeadLine();
         LocalDate localDate = shortLinkDto.getShortLinkDeadLine().toLocalDate();
-        if (findSqlDate == null){
+        if (findSqlDate == null) {
             System.out.println("SQL 값이 없음");
-        } else if (findSqlDate.toLocalDate().compareTo(LocalDate.now()) <0) {
+        } else if (findSqlDate.toLocalDate().compareTo(LocalDate.now()) < 0) {
             System.out.println("시간 만료");
         } else {
 //            유저 인서트 하면됨와 나온 유저 인서트를 임플로이 인서트를 하면 된다.
@@ -81,7 +82,8 @@ public class SignUpController {
             // 이메일 버튼을 누르면 바로 백엔드로 올껀지 아니면 리액트로 올껀지 내일 정하기.
         }
 
-        return "Hello, "  + "!";
+        return "Hello, " + "!";
 
 
+    }
 }
