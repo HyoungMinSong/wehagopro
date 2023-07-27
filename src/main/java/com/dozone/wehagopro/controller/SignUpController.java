@@ -9,6 +9,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
 import javax.mail.MessagingException;
+import java.util.Map;
 
 @CrossOrigin(origins = "http://localhost:3000")
 @Controller
@@ -49,5 +50,15 @@ public class SignUpController {
         String title = "테스트";
         String main = "테스트 메인";
         mailService.sendEmail(mail,title,main);
+    }
+
+    @ResponseBody
+    @PostMapping("/mailConfirm")
+    String mailConfirm(@RequestBody Map<String, String> body) throws Exception {
+        String email = body.get("email");
+        System.out.println("입력한 이메일 : " + email);
+        String code = mailService.sendSimpleMessage(email);
+        System.out.println("인증 코드 : " + code);
+        return code;
     }
 }
