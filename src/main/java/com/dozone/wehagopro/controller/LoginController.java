@@ -63,33 +63,29 @@ public class LoginController {
         return findidphone;
     }
 
-    @PostMapping("findpw1")
+    @PostMapping("/findpw")
     public Login test4(@RequestBody Login login){
         System.out.println("비밀번호찾기1");
-        String pw = login.getT_user_password();
-        System.out.println("pw = " + pw);
+        String id = login.getT_user_id();
+        System.out.println("id = " + id);
         String email = login.getT_user_email();
         System.out.println("email = " + email);
-        String name = login.getT_user_name();
-        System.out.println("name = " + name);
 
-        Login findpwemail = repository.findpwemail(pw, email, name);
-        System.out.println(findpwemail.getT_user_password() + findpwemail.getT_user_email() + findpwemail.getT_user_name());
+        Login findpwemail = repository.findpwemail(id, email);
+        System.out.println(findpwemail.getT_user_password() + findpwemail.getT_user_email() + findpwemail.getT_user_id());
         return findpwemail;
     }
 
     @PostMapping("findpw2")
     public Login test5(@RequestBody Login login){
         System.out.println("비밀번호찾기2");
-        String pw = login.getT_user_password();
-        System.out.println("pw = " + pw);
+        String id = login.getT_user_id();
+        System.out.println("id = " + id);
         String phone = login.getT_user_phone();
         System.out.println("phone = " + phone);
-        String name = login.getT_user_name();
-        System.out.println("name = " + name);
 
-        Login findpwphone = repository.findpwphone(pw, phone, name);
-        System.out.println(findpwphone.getT_user_password() + findpwphone.getT_user_phone() + findpwphone.getT_user_name());
+        Login findpwphone = repository.findpwphone(id, phone);
+        System.out.println(findpwphone.getT_user_password() + findpwphone.getT_user_phone() + findpwphone.getT_user_id());
         return findpwphone;
     }
 
@@ -98,14 +94,10 @@ public class LoginController {
         System.out.println("비밀번호재설정");
         String id = login.getT_user_id();
         System.out.println("id = " + id);
-        String pw = login.getT_user_password();
-        System.out.println("pw = " + pw);
         String npw = login.getT_user_new_password();
         System.out.println("newpw = " + npw);
-        String npwcheck = login.getT_user_new_password_check();
-        System.out.println("newpwcheck = " + npwcheck);
 
-        int updatepw = repository.updatepw(npw, id, pw);
+        int updatepw = repository.updatepw(id, npw);
 //        System.out.println("새비밀번호 = " + updatepw.getT_user_new_password() + "유저 id = " +  updatepw.getT_user_id());
         return updatepw;
     }

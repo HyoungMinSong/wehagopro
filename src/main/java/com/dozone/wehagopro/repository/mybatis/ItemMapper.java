@@ -18,11 +18,9 @@ public interface ItemMapper {
 
     Login findidphone(String param1, String param2, String param3);
 
-    Login findpwemail(String param1, String param2, String param3);
+    Login findpwemail(String param1, String param2);
 
-    Login findpwphone(String param1, String param2, String param3);
+    Login findpwphone(String param1, String param2);
 
-    int updatepw(String param1, String param2, String param3);
-
-
+    int updatepw(String param1, String param2);
 }
