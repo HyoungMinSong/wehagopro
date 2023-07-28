@@ -74,4 +74,9 @@ public class SignUpRepository {
         System.out.println("repsitorycompanyName = " + companyName);
         return mapper.companyCheck(companyName);
     }
+
+    public ShortLinkSignUpDto findShortLinkByEmpNo(int empNo){
+        System.out.println("repsitoryempNo = " + empNo);
+        return mapper.findShortLinkByEmpNo(empNo);
+    }
 }

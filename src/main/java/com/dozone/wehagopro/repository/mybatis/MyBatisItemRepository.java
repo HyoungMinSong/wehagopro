@@ -6,6 +6,7 @@ import com.dozone.wehagopro.repository.ItemSearchCond;
 import com.dozone.wehagopro.repository.ItemUpdateDto;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.java.Log;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
@@ -15,7 +16,7 @@ import java.util.List;
 public class MyBatisItemRepository{
 
     private final ItemMapper itemMapper;
-
+    private final PasswordEncoder passwordEncoder;
 
     public Item2 findidpw(String userid, String password) {
         return itemMapper.findidpw(userid,password);
@@ -29,15 +30,15 @@ public class MyBatisItemRepository{
         return itemMapper.findidphone(username, phone, id);
     }
 
-    public Login findpwemail(String pw, String email, String id){
-        return itemMapper.findpwemail(pw, email, id);
+    public Login findpwemail(String id, String email){
+        return itemMapper.findpwemail(id, email);
     }
 
-    public Login findpwphone(String pw, String phone, String id){
-        return itemMapper.findpwphone(pw, phone, id);
+    public Login findpwphone(String id, String phone){
+        return itemMapper.findpwphone(id, phone);
     }
 
-    public int updatepw(String npw, String id, String pw){
-        return itemMapper.updatepw(npw, id, pw);
+    public int updatepw(String id, String npw){
+        return itemMapper.updatepw(id, passwordEncoder.encode(npw));
     }
 }
