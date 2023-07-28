@@ -79,4 +79,9 @@ public class SignUpRepository {
         System.out.println("repsitoryempNo = " + empNo);
         return mapper.findShortLinkByEmpNo(empNo);
     }
+
+    public Integer employeeStateCheck(int empNo){
+        System.out.println("repsitoryempNo = " + empNo);
+        return mapper.employeeStateCheck(empNo);
+    }
 }
