@@ -54,4 +54,17 @@ public class OrganizationRepository {
     public void deleteOrganization(Integer t_organization_no){
         organizationMapper.deleteOrganization(t_organization_no);
     };
+    // 임시 회원 등록
+    public Integer registerUser(OrganizationEmplRegiDTO dto){
+        return organizationMapper.registerUser(dto);
+    }
+    // 직원 등록
+    public Integer registerEmployee(OrganizationEmplRegiDTO dto){
+        return organizationMapper.registerEmployee(dto);
+    };
+    // 메일 등록
+    public void createShortLink(OrganizationEmplRegiDTO dto){
+        organizationMapper.createShortLink(dto);
+    }
+
 }

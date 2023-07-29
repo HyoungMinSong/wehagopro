@@ -141,7 +141,7 @@
         </choose>
         )
         AND t_employee.t_company_no = #{t_company_no}
-        AND t_user.t_user_state = -1 order by t_user.t_user_name;
+        AND t_user.t_user_state != 0 order by t_user.t_user_name;
     </select>
     <select id="showMyEmployeeFromOrganization" resultType="OrganizationEmplInfoDTO">
         SELECT t_user.*, t_employee.*, t_organization.t_organization_name
@@ -177,7 +177,7 @@
         </choose>
         )
         AND t_employee.t_organization_no = #{t_organization_no}
-        AND t_user.t_user_state = -1 order by t_user.t_user_name;
+        AND t_user.t_user_state != 0 order by t_user.t_user_name;
     </select>
     <insert id="createOrganization">
         INSERT INTO t_organization (t_organization_name, t_organization_parent)
@@ -189,4 +189,24 @@
     <delete id="deleteOrganization">
         DELETE FROM t_organization WHERE t_organization_no = #{t_organization_no};
     </delete>
+    <select id="registerUser">
+        INSERT INTO t_user
+        (t_user_name, t_user_phone, t_user_email, t_user_photo_name, t_user_photo_path, t_user_state)
+        VALUES
+        (#{t_user_name}, #{t_user_phone}, #{t_user_email}, #{t_user_photo_name}, #{t_user_photo_path}, 1)
+        RETURNING t_user_no;
+    </select>
+    <select id="registerEmployee">
+        INSERT INTO t_employee
+        (t_user_no, t_company_no, t_employee_auth, t_employee_duty, t_employee_position, t_organization_no)
+        VALUES
+        (#{t_user_no}, #{t_company_no}, #{t_employee_auth}, #{t_employee_duty}, #{t_employee_position}, #{t_organization_no})
+        RETURNING t_employee_no;
+    </select>
+    <insert id="createShortLink">
+        INSERT INTO t_shortlink
+        (t_employee_no, t_shortlink_link)
+        VALUES
+        (#{t_employee_no}, #{t_shortlink_link});
+    </insert>
 </mapper>
