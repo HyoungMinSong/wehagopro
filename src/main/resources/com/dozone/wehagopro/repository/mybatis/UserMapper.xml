@@ -8,7 +8,13 @@
     <select id="getUserCompanyList" parameterType="String" resultType="com.dozone.wehagopro.domain.UserCompanyDto">
         SELECT
         c.t_company_name,
+        c.t_company_business,
+        c.t_company_sectors,
+        c.t_company_representative,
+        c.t_company_call_num,
+        e.t_employee_date,
         e.t_employee_auth,
+        e.t_employee_position,
         e.t_employee_duty
         FROM
         t_user u

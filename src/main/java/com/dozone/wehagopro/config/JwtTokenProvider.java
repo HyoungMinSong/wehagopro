@@ -29,8 +29,8 @@ public class JwtTokenProvider {
     private String secretKey;
 
     // 토큰 유효시간
-    private long accessTokenValidTime = 1000L * 60 * 3; // 3분
-    private long refreshTokenValidTime = 1000L * 60 * 10; // 10분
+    private long accessTokenValidTime = 1000L * 60 * 10; // 10분
+    private long refreshTokenValidTime = 1000L * 60 * 30; // 30분
 
     // 객체 초기화, secretKey 를 Base64로 인코딩합니다.
     @PostConstruct
