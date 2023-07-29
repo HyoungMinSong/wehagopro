@@ -49,7 +49,7 @@ CREATE TABLE t_employee (
   t_employee_no SERIAL PRIMARY KEY,
   t_user_no INTEGER,
   t_company_no INTEGER NOT NULL,
-  t_employee_auth VARCHAR(100) NOT NULL,
+  t_employee_auth INTEGER NOT NULL,
   t_employee_date DATE NOT NULL DEFAULT CURRENT_DATE,
   t_employee_state INTEGER NOT NULL DEFAULT 0,
   t_employee_delete_date DATE,
@@ -107,6 +107,15 @@ CREATE TABLE t_organization (
   t_organization_no SERIAL PRIMARY KEY,
   t_organization_name VARCHAR(100) NOT NULL,
   t_organization_parent INTEGER NOT NULL DEFAULT -1
+);
+
+create TABLE t_shortlink (
+	t_shortlink_no SERIAL primary key,
+	t_employee_no INTEGER not null,
+	t_shortlink_link VARCHAR(500) not null,
+	t_shortlink_deadline DATE not null default current_date,
+	t_user_email VARCHAR(100) not null,
+	t_user_name VARCHAR(100) not null
 );
 
 
