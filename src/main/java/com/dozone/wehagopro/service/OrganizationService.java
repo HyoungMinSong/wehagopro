@@ -2,6 +2,7 @@ package com.dozone.wehagopro.service;
 
 import com.dozone.wehagopro.domain.*;
 import com.dozone.wehagopro.repository.OrganizationRepository;
+import com.dozone.wehagopro.service.common.ImageCache;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.Resource;
 import org.springframework.core.io.ResourceLoader;
@@ -10,12 +11,12 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
+import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.List;
 
 @Service
-//@RequiredArgsConstructor
 public class OrganizationService {
 
     @Autowired
@@ -83,7 +84,7 @@ public class OrganizationService {
             // 이미지가 존재하지 않을 경우 에러 처리
             // 예: return resourceLoader.getResource("classpath:static/images/not_found.jpg");
             System.out.println("아직 모른다");
-            return null;
+            return ImageCache.getImageResource(imageName);
         }
     }
 
@@ -120,6 +121,12 @@ public class OrganizationService {
             System.out.println("filePath @@@@@@@@@@@@@@@@@ : " + filePath);
             // 이미지 파일을 저장합니다.
             file.transferTo(filePath.toFile());
+
+            // 저장한 이미지 파일의 바이트 배열을 가져옵니다.
+            byte[] imageBytes = Files.readAllBytes(filePath);
+            // ImageCache에 이미지를 추가합니다.
+            ImageCache.addImage(fileName, imageBytes);
+
             PhotoDto dto = new PhotoDto(fileName, fileName);
             // 이미지 파일이 저장된 경로를 클라이언트에게 응답합니다.
             return dto;
