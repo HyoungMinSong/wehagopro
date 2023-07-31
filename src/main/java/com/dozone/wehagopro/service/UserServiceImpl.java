@@ -120,9 +120,7 @@ public class UserServiceImpl implements UserService {
         List<UserServiceDto> userServiceDtoList = userMapper.getUserServiceList(userId);
 
         UserInfoDto userInfoDto = new UserInfoDto();
-        userInfoDto.setT_user_name(userDto.getT_user_name());
-        userInfoDto.setT_user_email(userDto.getT_user_email());
-        userInfoDto.setT_user_photo_path(userDto.getT_user_photo_path());
+        userInfoDto.setUserDto(userDto);
         userInfoDto.setUserCompanyDtoList(userCompanyDtoList);
         userInfoDto.setUserServiceDtoList(userServiceDtoList);
 

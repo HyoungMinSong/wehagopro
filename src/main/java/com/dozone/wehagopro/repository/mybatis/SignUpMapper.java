@@ -18,4 +18,5 @@ public interface SignUpMapper {
     void servicePublishedSave(int param1, int param2);
     String companyCheck(String companyName);
     ShortLinkSignUpDto findShortLinkByEmpNo(int empNo);
+    Integer employeeStateCheck(int empNo);
 }

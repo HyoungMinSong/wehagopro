@@ -77,4 +77,9 @@ public class SignUpService {
         System.out.println("serviceEmpNo = " + empNo);
         return repository.findShortLinkByEmpNo(empNo);
     }
+
+    public Integer employeeStateCheck(int empNo){
+        System.out.println("serviceEmpNo = " + empNo);
+        return repository.employeeStateCheck(empNo);
+    }
 }

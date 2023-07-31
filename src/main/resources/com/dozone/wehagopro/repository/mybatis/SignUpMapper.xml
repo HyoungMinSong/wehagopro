@@ -54,4 +54,8 @@
         select t_shortlink_link, t_shortlink_deadline from t_short_link where t_company_name = #{empNo}
     </select>
 
+    <select id="employeeStateCheck" resultType="java.lang.Integer">
+        select t_employee_state from t_employee where t_employee_no = #{empNo}
+    </select>
+
 </mapper>

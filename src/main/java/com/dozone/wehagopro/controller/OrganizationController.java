@@ -3,8 +3,12 @@ package com.dozone.wehagopro.controller;
 import com.dozone.wehagopro.domain.*;
 import com.dozone.wehagopro.service.OrganizationService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.io.Resource;
+import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -14,6 +18,7 @@ public class OrganizationController {
 
     @Autowired
     OrganizationService organizationService;
+
 
     // 조직도 목록
     @GetMapping("/showMyWorkPlace")
@@ -37,6 +42,26 @@ public class OrganizationController {
     @GetMapping("/showMyEmployees")
     public List<OrganizationEmplInfoDTO> showMyEmployees(@RequestParam("nodeName") String nodeName, @RequestParam("pk") Integer pk, @RequestParam("index") Integer index, @RequestParam("t_employee_state") Integer t_employee_state){
         return organizationService.showMyEmployees(nodeName, pk, index, t_employee_state);
+    }
+
+    @GetMapping(value = "/images/{imageName:.+}", produces = MediaType.IMAGE_JPEG_VALUE)
+    @ResponseBody
+    public Resource getImage(@PathVariable String imageName) throws IOException {
+        System.out.println("요청왔다" + imageName);
+        return organizationService.getImage(imageName);
+    }
+
+    // 이미지 저장
+    @PostMapping("/uploadEmployeePhoto")
+    public PhotoDto uploadEmployeePhoto(@RequestParam("file")MultipartFile file){
+        return organizationService.uploadEmployeePhoto(file);
+    }
+
+    // 직원 등록
+    @PostMapping("/makeRoomForANewEmployee")
+    public void makeRoomForANewEmployee(@RequestBody OrganizationEmplRegiDTO dto){
+        System.out.println("dto : "+dto);
+        organizationService.makeRoomForANewEmployee(dto);
     }
 
     // 조직도 부서 수정

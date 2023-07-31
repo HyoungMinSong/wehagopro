@@ -65,25 +65,36 @@ public class SignUpController {
         return code;
     }
 
+    @ResponseBody
     @GetMapping("/s/{slink}")
     public String greetUser(@PathVariable String slink) { // 앞 랜덤 두글자 + 직원번호 (나는 유저를 만들고 유저 no를 넣어나야함.
         String emNo = slink.substring(2);
         int num = Integer.parseInt(emNo);
-        ShortLinkSignUpDto shortLinkDto = service.findRedirectLink(num);
-        Date findSqlDate = shortLinkDto.getShortLinkDeadLine();
-        LocalDate localDate = shortLinkDto.getShortLinkDeadLine().toLocalDate();
-        if (findSqlDate == null) {
-            System.out.println("SQL 값이 없음");
-        } else if (findSqlDate.toLocalDate().compareTo(LocalDate.now()) < 0) {
-            System.out.println("시간 만료");
-        } else {
+        Integer integerState = service.employeeStateCheck(num);
+        if (integerState != null) {
+            System.out.println("empno널아님");
+            if (integerState.intValue() == 1){
+                System.out.println("회원 대기상태임");
+                ShortLinkSignUpDto shortLinkDto = service.findRedirectLink(num);
+                Date findSqlDate = shortLinkDto.getShortLinkDeadLine();
+                LocalDate localDate = shortLinkDto.getShortLinkDeadLine().toLocalDate();
+                if (findSqlDate == null) {
+                    System.out.println("SQL 값이 없음");
+                } else if (findSqlDate.toLocalDate().compareTo(LocalDate.now()) < 0) {
+                    System.out.println("시간 만료");
+                } else {
 //            유저 인서트 하면됨와 나온 유저 인서트를 임플로이 인서트를 하면 된다.
-
-            // 이메일 버튼을 누르면 바로 백엔드로 올껀지 아니면 리액트로 올껀지 내일 정하기.
+return shortLinkDto.getShortLink();
+                    // 이메일 버튼을 누르면 바로 백엔드로 올껀지 아니면 리액트로 올껀지 내일 정하기.
+                }
+            }
+            System.out.println("회원 대기 상태 아님.");
         }
 
-        return "Hello, " + "!";
 
-
+        return "오류";
     }
+
+
+
 }

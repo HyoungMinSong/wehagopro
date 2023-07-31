@@ -27,4 +27,10 @@ public interface OrganizationMapper {
     void updateOrganization(@Param("t_organization_name") String t_organization_name, @Param("t_organization_no") Integer t_organization_no);
     // 조직도 부서 삭제
     void deleteOrganization(@Param("t_organization_no") Integer t_organization_no);
+    // 임시 회원 등록
+    int registerUser(OrganizationEmplRegiDTO dto);
+    // 직원 등록
+    int registerEmployee(OrganizationEmplRegiDTO dto);
+    // 메일 등록
+    void createShortLink(OrganizationEmplRegiDTO dto);
 }
