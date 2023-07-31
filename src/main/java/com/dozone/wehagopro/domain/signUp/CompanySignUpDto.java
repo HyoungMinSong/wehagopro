@@ -13,8 +13,9 @@ public class CompanySignUpDto {
     private String businessCategory;
     private String representativeName;
     private String companyPhoneNumber;
+    private int packageCount;
 
-    public CompanySignUpDto(String companyName, int packageNo, String businessRegistrationNumber, String businessType, String businessStatus, String businessCategory, String representativeName, String companyPhoneNumber) {
+    public CompanySignUpDto(String companyName, int packageNo, String businessRegistrationNumber, String businessType, String businessStatus, String businessCategory, String representativeName, String companyPhoneNumber, int packageCount) {
         this.companyName = companyName;
         this.packageNo = packageNo;
         this.businessRegistrationNumber = businessRegistrationNumber;
@@ -23,5 +24,6 @@ public class CompanySignUpDto {
         this.businessCategory = businessCategory;
         this.representativeName = representativeName;
         this.companyPhoneNumber = companyPhoneNumber;
+        this.packageCount = packageCount;
     }
 }

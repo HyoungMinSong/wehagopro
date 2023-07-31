@@ -15,9 +15,9 @@
 
     <insert id="companySave" useGeneratedKeys="true" keyProperty="no">
         INSERT INTO t_company (t_company_name,t_package_no,t_company_com_reg_num,t_company_clasification,
-        t_company_business,t_company_sectors, t_company_representative,t_company_call_num) VALUES
+        t_company_business,t_company_sectors, t_company_representative,t_company_call_num, t_package_count) VALUES
         (#{companyName},#{packageNo},#{businessRegistrationNumber},#{businessType},#{businessStatus},#{businessCategory},
-        #{representativeName},#{companyPhoneNumber})
+        #{representativeName},#{companyPhoneNumber}, #{packageCount})
         RETURNING t_company_no AS no;
     </insert>
 
