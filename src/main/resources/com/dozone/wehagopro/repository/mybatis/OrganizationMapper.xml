@@ -5,7 +5,8 @@
     <select id="showMyWorkPlace">
         SELECT
         t.*,
-        ROW_NUMBER() OVER () AS row_index
+        ROW_NUMBER() OVER () AS row_index,
+        additional_organization.t_organization_no AS company_organization_no
         FROM
         (
         SELECT
@@ -21,15 +22,17 @@
         ) AS organization_employee_count
         FROM
         t_employee
-        left JOIN
+        LEFT JOIN
         t_organization ON t_organization.t_organization_parent = t_employee.t_company_no
         JOIN
         t_company ON t_employee.t_company_no = t_company.t_company_no
         WHERE
         t_employee.t_user_no = #{t_user_no}
+        ) t
+        LEFT JOIN
+        t_organization AS additional_organization ON additional_organization.t_organization_name = t.t_company_name AND additional_organization.t_organization_parent = -1
         ORDER BY
-        t_company.t_company_no, t_organization.t_organization_no
-        ) t;
+        t.t_company_no, t.t_organization_no;
     </select>
     <select id="showMyCompanyInfo">
         SELECT
