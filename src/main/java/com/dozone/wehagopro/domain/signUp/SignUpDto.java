@@ -18,6 +18,7 @@ public class SignUpDto {
     private String representativeName;
     private String companyPhoneNumber;
     private int packageNo;
+    private int packageCount;
 
 
 }
