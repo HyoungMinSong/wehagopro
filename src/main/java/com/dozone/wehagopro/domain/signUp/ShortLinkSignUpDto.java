@@ -8,4 +8,5 @@ import java.sql.Date;
 public class ShortLinkSignUpDto {
     private String shortLink;
     private Date shortLinkDeadLine;
+    private int empNo;
 }

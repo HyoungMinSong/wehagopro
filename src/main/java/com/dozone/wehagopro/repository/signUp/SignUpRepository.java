@@ -84,4 +84,19 @@ public class SignUpRepository {
         System.out.println("repsitoryempNo = " + empNo);
         return mapper.employeeStateCheck(empNo);
     }
+
+    public Integer findUserNoByEmployeeNo(SignUpInviteUpdateDto dto){
+        System.out.println("dto = " + dto);
+        return mapper.findUserNoByEmployeeNo(dto);
+    }
+
+    public void updateEmployeeStateTo2(SignUpInviteUpdateDto dto){
+        System.out.println("dto = " + dto);
+        mapper.updateEmployeeStateTo2(dto);
+    }
+
+    public void updateInvitedUser(SignUpInviteUpdateDto dto){
+        System.out.println("dto = " + dto);
+        mapper.updateInvitedUser(dto);
+    }
 }

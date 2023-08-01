@@ -83,4 +83,18 @@ public class SignUpService {
         System.out.println("serviceEmpNo = " + empNo);
         return repository.employeeStateCheck(empNo);
     }
+
+    @Transactional
+    public void signUpInviteUpdate(SignUpInviteUpdateDto dto){
+        System.out.println("dto = " + dto);
+        int empNo = dto.getEmpNo();
+        Integer integerUserNo = repository.findUserNoByEmployeeNo(dto);
+        int userNo = integerUserNo.intValue();
+        dto.setUserNo(userNo);
+        repository.updateEmployeeStateTo2(dto);
+        repository.updateInvitedUser(dto);
+
+
+
+    }
 }
