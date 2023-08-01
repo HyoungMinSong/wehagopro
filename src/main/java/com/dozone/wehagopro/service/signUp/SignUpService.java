@@ -40,9 +40,10 @@ public class SignUpService {
         String representativeName = dto.getRepresentativeName();
         String companyPhoneNumber = dto.getCompanyPhoneNumber();
         int packageNo = dto.getPackageNo();
+        int packageCount = dto.getPackageCount();
         UserSignUpDto userSignUpDto = new UserSignUpDto(id, password, name, phoneNumber, email);
         repository.signUpUser(userSignUpDto);
-        CompanySignUpDto companySignUpDto = new CompanySignUpDto(companyName, packageNo, businessRegistrationNumber, businessType, businessStatus, businessCategory, representativeName, companyPhoneNumber);
+        CompanySignUpDto companySignUpDto = new CompanySignUpDto(companyName, packageNo, businessRegistrationNumber, businessType, businessStatus, businessCategory, representativeName, companyPhoneNumber, packageCount);
         repository.signUpCompany(companySignUpDto);
         OrganizationSignUpDto organizationSignUpDto = new OrganizationSignUpDto(companyName);
         repository.signUpOrganization(organizationSignUpDto);

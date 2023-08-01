@@ -42,7 +42,8 @@ CREATE TABLE t_company (
   t_company_call_num VARCHAR(100) NOT NULL,
   t_company_founding_date DATE NOT NULL DEFAULT CURRENT_DATE,
   t_company_delete_date DATE,
-  t_company_state INTEGER NOT NULL DEFAULT -1
+  t_company_state INTEGER NOT NULL DEFAULT -1,
+  t_package_count INTEGER NOT NULL DEFAULT 0
 );
 
 CREATE TABLE t_employee (
