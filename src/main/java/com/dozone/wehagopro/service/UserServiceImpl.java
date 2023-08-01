@@ -3,12 +3,18 @@ package com.dozone.wehagopro.service;
 import com.dozone.wehagopro.config.JwtTokenProvider;
 import com.dozone.wehagopro.domain.*;
 import com.dozone.wehagopro.repository.mybatis.UserMapper;
+import com.dozone.wehagopro.service.common.ImageCache;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -21,6 +27,7 @@ public class UserServiceImpl implements UserService {
     private final UserMapper userMapper;
     private final PasswordEncoder passwordEncoder;
     private final JwtTokenProvider jwtTokenProvider;
+    private static final String UPLOAD_DIR = "src/main/resources/static/images/";
 
     @Transactional
     @Override
@@ -112,6 +119,7 @@ public class UserServiceImpl implements UserService {
 //            return newTokens;
 //    }
 
+    @Transactional
     @Override
     public UserInfoDto getUserInfo(String accessToken) {
         String userId = jwtTokenProvider.getUserId(accessToken.substring(7));
@@ -125,5 +133,52 @@ public class UserServiceImpl implements UserService {
         userInfoDto.setUserServiceDtoList(userServiceDtoList);
 
         return userInfoDto;
+    }
+
+    @Transactional
+    @Override
+    public PhotoDto updateUserInfo(MultipartFile file, String name, String id, String email, String phone) {
+        if (file.isEmpty()) {
+            System.out.println("왜 없지?");
+            return null;
+        }
+
+        try {
+            // 파일이름은 현재 시간과 원래 파일 이름을 조합하여 고유한 이름으로 저장합니다.
+            String fileName = System.currentTimeMillis() + "_" + file.getOriginalFilename();
+            // 상대 경로를 절대 경로로 변환합니다.
+            Path uploadDir = Paths.get(UPLOAD_DIR).toAbsolutePath();
+            Path filePath = uploadDir.resolve(fileName);
+            System.out.println("filename @@@@@@@@@@@@@@@@@ : " + fileName);
+            // 이미지 파일을 저장합니다.
+            file.transferTo(filePath.toFile());
+
+            // 바뀐 유저 정보 DB에 저장
+            if(userMapper.findByUserId(id).isPresent()) {
+                userMapper.updateUser(fileName, name, id, email, phone);
+            }
+
+            // 저장한 이미지 파일의 바이트 배열을 가져옵니다.
+            byte[] imageBytes = Files.readAllBytes(filePath);
+            // ImageCache에 이미지를 추가합니다.
+            ImageCache.addImage(fileName, imageBytes);
+
+            PhotoDto dto = new PhotoDto(fileName, fileName);
+            // 이미지 파일이 저장된 경로를 클라이언트에게 응답합니다.
+            return dto;
+        } catch (
+                IOException e) {
+            System.out.println("뭐가문제 " + e);
+            return null;
+        }
+    }
+
+    @Override
+    public boolean updateUserInfoKeepImage(String name, String id, String email, String phone) {
+        // 바뀐 유저 정보 DB에 저장
+        if(userMapper.findByUserId(id).isPresent()) {
+            return userMapper.updateUserKeepImage(name, id, email, phone);
+        }
+        return false;
     }
 }

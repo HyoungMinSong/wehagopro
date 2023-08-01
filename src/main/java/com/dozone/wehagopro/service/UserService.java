@@ -1,7 +1,9 @@
 package com.dozone.wehagopro.service;
 
+import com.dozone.wehagopro.domain.PhotoDto;
 import com.dozone.wehagopro.domain.TokenDto;
 import com.dozone.wehagopro.domain.UserInfoDto;
+import org.springframework.web.multipart.MultipartFile;
 
 public interface UserService {
 //    public UserDto signUp(UserSignUpRequestDto userSignUpRequestDto) throws Exception;
@@ -9,4 +11,6 @@ public interface UserService {
     public boolean logout(TokenDto tokenDto);
 //    public TokenDto reissueAccessToken(String refreshToken);
     public UserInfoDto getUserInfo(String accessToken);
+    public PhotoDto updateUserInfo(MultipartFile file, String name, String id, String email, String phone);
+    public boolean updateUserInfoKeepImage(String name, String id, String email, String phone);
 }

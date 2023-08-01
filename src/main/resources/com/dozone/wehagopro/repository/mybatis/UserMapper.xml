@@ -40,4 +40,14 @@
         WHERE
         t_user.t_user_id = #{userId};
     </select>
+    <update id="updateUser" parameterType="String">
+        UPDATE t_user
+        SET t_user_photo_path = #{userPhoto}, t_user_name = #{userName}, t_user_email = #{userEmail}, t_user_phone = #{userPhone}
+        WHERE t_user_id = #{userId};
+    </update>
+    <update id="updateUserKeepImage" parameterType="String">
+        UPDATE t_user
+        SET t_user_name = #{userName}, t_user_email = #{userEmail}, t_user_phone = #{userPhone}
+        WHERE t_user_id = #{userId};
+    </update>
 </mapper>
