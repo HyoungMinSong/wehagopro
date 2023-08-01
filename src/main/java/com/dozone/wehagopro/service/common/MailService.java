@@ -1,25 +1,31 @@
 package com.dozone.wehagopro.service.common;
 
+import com.dozone.wehagopro.domain.OrganizationSelectedDto;
+import com.dozone.wehagopro.repository.OrganizationRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.mail.MailException;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import javax.mail.MessagingException;
 import javax.mail.internet.InternetAddress;
 import javax.mail.internet.MimeMessage;
 import java.io.UnsupportedEncodingException;
+import java.util.List;
 import java.util.Random;
 
 @Service
 public class MailService {
 
+    private final OrganizationRepository organizationRepository;
     private final JavaMailSender javaMailSender;
 
     @Autowired
-    public MailService(JavaMailSender javaMailSender) {
+    public MailService(JavaMailSender javaMailSender, OrganizationRepository organizationRepository) {
         this.javaMailSender = javaMailSender;
+        this.organizationRepository = organizationRepository;
     }
 
     public void sendEmail(String to, String subject, String text) throws MessagingException {
@@ -113,7 +119,25 @@ public class MailService {
         return ePw; // 메일로 보냈던 인증 코드를 서버로 반환
     }
 
+    // 직원 초대 이메일
+    @Transactional
+    public void sendMailToEmployee(String employer, List<OrganizationSelectedDto> dto) throws MessagingException {
+        MimeMessage mimeMessage = javaMailSender.createMimeMessage();
+        MimeMessageHelper helper = new MimeMessageHelper(mimeMessage, true);
+        RegisterMail registerMail = new RegisterMail();
+        String compName;
 
+        for(OrganizationSelectedDto empl : dto){
+            compName = organizationRepository.findCompanyNameFromCompanyNo(empl.getT_company_no());
+            empl.setT_company_name(compName);
+            helper.setTo(empl.getT_user_email());
+            helper.setSubject(empl.getT_user_name()+"님을 WEHAGO(으)로 초대합니다.");
+            helper.setText(registerMail.mailToEmployee(employer, empl.getT_user_name(), empl.getT_company_name(), empl.getT_organization_name(), empl.getT_employee_duty(), empl.getT_employee_position(), empl.getT_employee_no().toString()), true);
+            javaMailSender.send(mimeMessage);
+            organizationRepository.updateReceivedMailEmployee(empl.getT_employee_no());
+            organizationRepository.updateReceivedMailShortlink(empl.getT_employee_no());
+        }
+    }
 
     }
 
