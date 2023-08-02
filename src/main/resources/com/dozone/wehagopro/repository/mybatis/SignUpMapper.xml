@@ -51,11 +51,23 @@
     </select>
 
     <select id="findShortLinkByEmpNo" resultType="ShortLinkSignUpDto">
-        select t_shortlink_link, t_shortlink_deadline from t_short_link where t_company_name = #{empNo}
+        select t_shortlink_link AS shortLink, t_shortlink_deadline AS shortLinkDeadLine  from t_shortlink where t_employee_no = #{empNo}
     </select>
 
     <select id="employeeStateCheck" resultType="java.lang.Integer">
         select t_employee_state from t_employee where t_employee_no = #{empNo}
     </select>
+
+    <select id="findUserNoByEmployeeNo" resultType="java.lang.Integer">
+        select t_user_no from t_employee where t_employee_no = #{empNo}
+    </select>
+
+    <update id="updateEmployeeStateTo2">
+        UPDATE t_employee SET t_employee_state = 2 WHERE t_employee_no = #{empNo};
+    </update>
+
+    <update id="updateInvitedUser">
+        UPDATE t_user SET t_user_id = #{userId}, t_user_password = #{userPw} WHERE t_user_no = #{userNo};
+    </update>
 
 </mapper>

@@ -2,6 +2,7 @@ package com.dozone.wehagopro.controller;
 
 import com.dozone.wehagopro.domain.signUp.ShortLinkSignUpDto;
 import com.dozone.wehagopro.domain.signUp.SignUpDto;
+import com.dozone.wehagopro.domain.signUp.SignUpInviteUpdateDto;
 import com.dozone.wehagopro.domain.signUp.User;
 import com.dozone.wehagopro.service.common.MailService;
 import com.dozone.wehagopro.service.signUp.SignUpService;
@@ -67,7 +68,7 @@ public class SignUpController {
 
     @ResponseBody
     @GetMapping("/s/{slink}")
-    public String greetUser(@PathVariable String slink) { // 앞 랜덤 두글자 + 직원번호 (나는 유저를 만들고 유저 no를 넣어나야함.
+    public ShortLinkSignUpDto greetUser(@PathVariable String slink) { // 앞 랜덤 두글자 + 직원번호 (나는 유저를 만들고 유저 no를 넣어나야함.
         String emNo = slink.substring(2);
         int num = Integer.parseInt(emNo);
         Integer integerState = service.employeeStateCheck(num);
@@ -84,17 +85,30 @@ public class SignUpController {
                     System.out.println("시간 만료");
                 } else {
 //            유저 인서트 하면됨와 나온 유저 인서트를 임플로이 인서트를 하면 된다.
-return shortLinkDto.getShortLink();
+//return shortLinkDto.getShortLink();
+
                     // 이메일 버튼을 누르면 바로 백엔드로 올껀지 아니면 리액트로 올껀지 내일 정하기.
+
+                    shortLinkDto.setEmpNo(num);
+                    return shortLinkDto;
+
                 }
             }
             System.out.println("회원 대기 상태 아님.");
         }
 
 
-        return "오류";
+        return null;
     }
 
+
+    @ResponseBody
+    @PostMapping("/signupinviteupdate")
+    public String signUpInviteUpdate(@RequestBody SignUpInviteUpdateDto dto) {
+        System.out.println("dto = " + dto);
+        service.signUpInviteUpdate(dto);
+        return "초대성공";
+    }
 
 
 }

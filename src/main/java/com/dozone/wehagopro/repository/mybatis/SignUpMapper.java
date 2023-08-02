@@ -19,4 +19,8 @@ public interface SignUpMapper {
     String companyCheck(String companyName);
     ShortLinkSignUpDto findShortLinkByEmpNo(int empNo);
     Integer employeeStateCheck(int empNo);
+    Integer findUserNoByEmployeeNo(SignUpInviteUpdateDto dto);
+    void updateEmployeeStateTo2(SignUpInviteUpdateDto dto);
+
+    void updateInvitedUser(SignUpInviteUpdateDto dto);
 }
