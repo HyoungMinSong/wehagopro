@@ -78,4 +78,13 @@ public class OrganizationRepository {
     public void updateReceivedMailShortlink(Integer t_employee_no){
         organizationMapper.updateReceivedMailShortlink(t_employee_no);
     }
+    // 유저 사진 수정
+    public void updateDetailUser(OrganizationEmplRegiDTO dto){
+        organizationMapper.updateDetailUser(dto);
+    };
+    // 직원 수정
+    public void updateDetailEmployee(OrganizationEmplRegiDTO dto){
+        organizationMapper.updateDetailEmployee(dto);
+    };
+
 }
