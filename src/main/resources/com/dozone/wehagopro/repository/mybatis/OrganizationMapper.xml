@@ -212,4 +212,19 @@
         VALUES
         (#{t_employee_no}, #{t_shortlink_link});
     </insert>
+    <select id="findCompanyNameFromCompanyNo">
+        SELECT t_company_name
+        FROM t_company
+        WHERE t_company_no=#{t_company_no};
+    </select>
+    <update id="updateReceivedMailEmployee">
+        UPDATE t_employee
+        SET t_employee_state = 1
+        WHERE t_employee_no=#{t_employee_no};
+    </update>
+    <update id="updateReceivedMailShortlink">
+        UPDATE t_shortlink
+        SET t_shortlink_deadline = CURRENT_DATE + interval '1 day'
+        WHERE t_employee_no = #{t_employee_no};
+    </update>
 </mapper>

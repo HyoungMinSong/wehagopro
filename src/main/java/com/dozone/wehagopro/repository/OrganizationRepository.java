@@ -66,5 +66,16 @@ public class OrganizationRepository {
     public void createShortLink(OrganizationEmplRegiDTO dto){
         organizationMapper.createShortLink(dto);
     }
-
+    // 회사 이름 조회
+    public String findCompanyNameFromCompanyNo(Integer t_company_no){
+        return organizationMapper.findCompanyNameFromCompanyNo(t_company_no);
+    };
+    // 메일 받은 직원 상태 갱신
+    public void updateReceivedMailEmployee(Integer t_employee_no){
+        organizationMapper.updateReceivedMailEmployee(t_employee_no);
+    }
+    // 메일 기한 연장
+    public void updateReceivedMailShortlink(Integer t_employee_no){
+        organizationMapper.updateReceivedMailShortlink(t_employee_no);
+    }
 }

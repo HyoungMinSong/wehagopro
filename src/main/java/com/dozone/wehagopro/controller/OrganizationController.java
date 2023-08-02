@@ -2,12 +2,14 @@ package com.dozone.wehagopro.controller;
 
 import com.dozone.wehagopro.domain.*;
 import com.dozone.wehagopro.service.OrganizationService;
+import com.dozone.wehagopro.service.common.MailService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.Resource;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
+import javax.mail.MessagingException;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
@@ -18,7 +20,8 @@ public class OrganizationController {
 
     @Autowired
     OrganizationService organizationService;
-
+    @Autowired
+    MailService mailService;
 
     // 조직도 목록
     @GetMapping("/showMyWorkPlace")
@@ -83,6 +86,19 @@ public class OrganizationController {
         }
 
         organizationService.editingOrganization(insertDto, updateDto, deleteDto);
+    }
+
+    // 메일
+    @PostMapping("/sendMailToEmployee")
+    public void sendMailToEmployee(@RequestBody OrganizationMailDto dto) throws MessagingException {
+        System.out.println("Received request data: " + dto.toString());
+        System.out.println("Employer: " + dto.getEmployer());
+        System.out.println("Checked Employee List: " + dto.getCheckedEmployee());
+
+        for (OrganizationSelectedDto obj : dto.getCheckedEmployee()) {
+            System.out.println("Received Object: " + obj.toString());
+        }
+        mailService.sendMailToEmployee(dto.getEmployer(), dto.getCheckedEmployee());
     }
 
 }

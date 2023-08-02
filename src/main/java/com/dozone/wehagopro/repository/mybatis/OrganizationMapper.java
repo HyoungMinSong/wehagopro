@@ -33,4 +33,10 @@ public interface OrganizationMapper {
     int registerEmployee(OrganizationEmplRegiDTO dto);
     // 메일 등록
     void createShortLink(OrganizationEmplRegiDTO dto);
+    // 회사 이름 조회
+    String findCompanyNameFromCompanyNo(Integer t_company_no);
+    // 메일 받은 직원 상태 변경
+    void updateReceivedMailEmployee(Integer t_employee_no);
+    // 메일 기한 연장
+    void updateReceivedMailShortlink(Integer t_employee_no);
 }
