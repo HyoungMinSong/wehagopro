@@ -143,8 +143,6 @@ public class OrganizationService {
         String longLink =  "/signup/invite?"
             +"t_user_name="+dto.getT_user_name()
             +"&t_user_phone="+dto.getT_user_phone()
-            +"&t_user_photo_path="+dto.getT_user_photo_path()
-            +"&t_user_photo_name="+dto.getT_user_photo_name()
             +"&t_user_email="+dto.getT_user_email();
         System.out.println("longlink"+longLink);
         dto.setT_shortlink_link(longLink);
