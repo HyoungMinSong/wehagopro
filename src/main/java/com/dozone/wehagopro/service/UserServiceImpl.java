@@ -138,9 +138,19 @@ public class UserServiceImpl implements UserService {
     @Transactional
     @Override
     public PhotoDto updateUserInfo(MultipartFile file, String name, String id, String email, String phone) {
-        if (file.isEmpty()) {
+        if (file == null) {
             System.out.println("왜 없지?");
-            return null;
+
+            UserDto userDto = userMapper.findByUserId(id).get();
+            // 바뀐 유저 정보 DB에 저장
+            if(userMapper.findByUserId(id).isPresent()) {
+                userMapper.updateUser(null, name, id, email, phone);
+
+                PhotoDto photoDto = new PhotoDto();
+                photoDto.setPhoto_name(userDto.getT_user_photo_name());
+                photoDto.setPhoto_path(userDto.getT_user_photo_path());
+                return photoDto;
+            }
         }
 
         try {
