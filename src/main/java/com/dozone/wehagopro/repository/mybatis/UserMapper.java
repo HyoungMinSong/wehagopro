@@ -5,6 +5,7 @@ import com.dozone.wehagopro.domain.UserCompanyDto;
 import com.dozone.wehagopro.domain.UserServiceDto;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
+import org.springframework.security.core.parameters.P;
 
 import java.util.List;
 import java.util.Optional;
@@ -14,4 +15,8 @@ public interface UserMapper {
     Optional<UserDto> findByUserId(@Param("userId") String userId);
     List<UserCompanyDto> getUserCompanyList(@Param("userId") String userId);
     List<UserServiceDto> getUserServiceList(@Param("userId") String userId);
+    void updateUser(@Param("userPhoto") String userPhoto, @Param("userName") String userName,
+                   @Param("userId") String userId, @Param("userEmail") String userEmail, @Param("userPhone") String userPhone);
+    boolean updateUserKeepImage(@Param("userName") String userName, @Param("userId") String userId,
+                    @Param("userEmail") String userEmail, @Param("userPhone") String userPhone);
 }
