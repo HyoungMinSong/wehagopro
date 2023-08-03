@@ -10,6 +10,7 @@ import java.sql.Date;
 @AllArgsConstructor
 @NoArgsConstructor
 public class UserCompanyDto {
+    private Integer t_company_no;
     private String t_company_name;
     private String t_company_clasification;
     private String t_company_business;
