@@ -65,7 +65,7 @@ public class OrganizationService {
         System.out.println("uploadDir.toString()"+uploadDir.toString());
         // 각 객체의 t_user_photo_path에 String 추가
         employeeList.forEach(employee -> {
-            if(employee.getT_user_photo_path() != "https://static.wehago.com/imgs/dummy/@dummy_02.jpg") {
+            if(!employee.getT_user_photo_path().contains("https")) {
                 String originalPath = employee.getT_user_photo_path();
                 String modifiedPath = "http://localhost:8080/images/" + originalPath; // 여기서 "추가할 String"에 원하는 String 값을 넣으시면 됩니다.
                 employee.setT_user_photo_path(modifiedPath);
@@ -151,6 +151,15 @@ public class OrganizationService {
         int b = organizationRepository.registerEmployee(dto);
         dto.setT_employee_no(b);
         organizationRepository.createShortLink(dto);
+    }
+
+    // 직원 수정
+    @Transactional
+    public void modifyRoomForAOldEmployee(OrganizationEmplRegiDTO dto){
+        if(dto.getT_user_photo_path() != dto.getT_user_photo_path_prev()){
+            organizationRepository.updateDetailUser(dto);
+        }
+        organizationRepository.updateDetailEmployee(dto);
     }
 
 }

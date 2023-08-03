@@ -3,7 +3,7 @@
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.dozone.wehagopro.repository.mybatis.OrganizationMapper">
     <select id="showMyWorkPlace">
-        SELECT
+        <![CDATA[SELECT
         t.*,
         ROW_NUMBER() OVER () AS row_index,
         additional_organization.t_organization_no AS company_organization_no
@@ -27,12 +27,12 @@
         JOIN
         t_company ON t_employee.t_company_no = t_company.t_company_no
         WHERE
-        t_employee.t_user_no = #{t_user_no}
+        t_employee.t_user_no = #{t_user_no} and t_employee.t_employee_auth < 2
         ) t
         LEFT JOIN
         t_organization AS additional_organization ON additional_organization.t_organization_name = t.t_company_name AND additional_organization.t_organization_parent = -1
         ORDER BY
-        t.t_company_no, t.t_organization_no;
+        t.t_company_no, t.t_organization_no;]]>
     </select>
     <select id="showMyCompanyInfo">
         SELECT
@@ -194,16 +194,16 @@
     </delete>
     <select id="registerUser">
         INSERT INTO t_user
-        (t_user_name, t_user_phone, t_user_email, t_user_photo_name, t_user_photo_path, t_user_state)
+        (t_user_name, t_user_phone, t_user_email, t_user_photo_path, t_user_state)
         VALUES
-        (#{t_user_name}, #{t_user_phone}, #{t_user_email}, #{t_user_photo_name}, #{t_user_photo_path}, 1)
+        (#{t_user_name}, #{t_user_phone}, #{t_user_email}, #{t_user_photo_path}, 1)
         RETURNING t_user_no;
     </select>
     <select id="registerEmployee">
         INSERT INTO t_employee
-        (t_user_no, t_company_no, t_employee_auth, t_employee_duty, t_employee_position, t_organization_no)
+        (t_user_no, t_company_no, t_employee_auth, t_employee_duty, t_employee_position, t_employee_date, t_organization_no)
         VALUES
-        (#{t_user_no}, #{t_company_no}, #{t_employee_auth}, #{t_employee_duty}, #{t_employee_position}, #{t_organization_no})
+        (#{t_user_no}, #{t_company_no}, #{t_employee_auth}, #{t_employee_duty}, #{t_employee_position}, #{t_employee_date}, #{t_organization_no})
         RETURNING t_employee_no;
     </select>
     <insert id="createShortLink">
@@ -225,6 +225,21 @@
     <update id="updateReceivedMailShortlink">
         UPDATE t_shortlink
         SET t_shortlink_deadline = CURRENT_DATE + interval '1 day'
+        WHERE t_employee_no = #{t_employee_no};
+    </update>
+    <update id="updateDetailUser">
+        UPDATE t_user
+        SET t_user_photo_path = #{t_user_photo_path}
+        WHERE t_user_no = #{t_user_no};
+    </update>
+    <update id="updateDetailEmployee">
+        UPDATE t_employee
+        SET t_organization_no = #{t_organization_no},
+            t_employee_duty = #{t_employee_duty},
+            t_employee_position = #{t_employee_position},
+            t_employee_date = #{t_employee_date},
+            t_employee_auth = #{t_employee_auth},
+            t_employee_update_date = CURRENT_DATE
         WHERE t_employee_no = #{t_employee_no};
     </update>
 </mapper>
