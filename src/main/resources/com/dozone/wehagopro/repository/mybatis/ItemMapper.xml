@@ -39,4 +39,12 @@
         WHERE t_user_id = #{param1}
     </update>
 
+    <select id="findShortLinkByEmpNo" resultType="ShortLinkLoginDto">
+        select t_shortlink_link AS shortLink, t_shortlink_deadline AS shortLinkDeadLine  from t_shortlink where t_employee_no = #{empNo}
+    </select>
+
+    <select id="employeeStateCheck" resultType="java.lang.Integer">
+        select t_employee_state from t_employee where t_employee_no = #{empNo}
+    </select>
+
 </mapper>

@@ -2,6 +2,8 @@ package com.dozone.wehagopro.repository.mybatis;
 
 import com.dozone.wehagopro.domain.Item2;
 import com.dozone.wehagopro.domain.Login;
+import com.dozone.wehagopro.domain.ShortLinkLoginDto;
+import com.dozone.wehagopro.domain.signUp.ShortLinkSignUpDto;
 import com.dozone.wehagopro.repository.ItemSearchCond;
 import com.dozone.wehagopro.repository.ItemUpdateDto;
 import lombok.extern.java.Log;
@@ -23,4 +25,8 @@ public interface ItemMapper {
     Login findpwphone(String param1, String param2);
 
     int updatepw(String param1, String param2);
+
+    Integer employeeStateCheck(int empNo);
+
+    ShortLinkLoginDto findShortLinkByEmpNo(int empNo);
 }
