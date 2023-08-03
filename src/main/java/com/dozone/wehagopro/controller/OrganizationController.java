@@ -3,6 +3,7 @@ package com.dozone.wehagopro.controller;
 import com.dozone.wehagopro.domain.*;
 import com.dozone.wehagopro.service.OrganizationService;
 import com.dozone.wehagopro.service.common.MailService;
+import org.apache.ibatis.annotations.Param;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.Resource;
 import org.springframework.http.MediaType;
@@ -25,14 +26,16 @@ public class OrganizationController {
 
     // 조직도 목록
     @GetMapping("/showMyWorkPlace")
-    public List<OrganizationInitCompDTO> showMyWorkPlace(Integer t_user_no){
-        return organizationService.showMyWorkPlace(t_user_no);
+    public List<OrganizationInitCompDTO> showMyWorkPlace(Integer t_user_no, Integer t_company_no){
+        System.out.println(t_user_no+t_company_no);
+        return organizationService.showMyWorkPlace(t_user_no, t_company_no);
     }
 
     // 조직도 회사 정보
     @GetMapping("/showMyCompanyInfo")
-    public List<OrganizationCompInfoDTO> showMyCompanyInfo(Integer t_user_no){
-        return organizationService.showMyCompanyInfo(t_user_no);
+    public List<OrganizationCompInfoDTO> showMyCompanyInfo(Integer t_user_no, Integer t_company_no){
+        System.out.println(t_user_no+t_company_no);
+        return organizationService.showMyCompanyInfo(t_user_no, t_company_no);
     }
 
     // 조직도 직원 상태
