@@ -35,7 +35,7 @@ public class UserServiceImpl implements UserService {
         UserDto userDto = userMapper.findByUserId(id)
                 .orElseThrow(() -> new IllegalArgumentException("가입되지 않은 아이디 입니다."));
 
-        // passwordEncoder.matches(로그인 할 때 비밀번호, DB에 저장된 비밀번호)
+//        // passwordEncoder.matches(로그인 할 때 비밀번호, DB에 저장된 비밀번호)
         if (!passwordEncoder.matches(password, userDto.getT_user_password())) {
             throw new IllegalArgumentException("잘못된 비밀번호 입니다.");
         }
