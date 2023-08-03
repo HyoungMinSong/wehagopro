@@ -34,13 +34,13 @@ public class OrganizationService {
 
 
     // 조직도 목록
-    public List<OrganizationInitCompDTO> showMyWorkPlace(Integer t_user_no) {
-        return organizationRepository.showMyWorkPlace(t_user_no);
+    public List<OrganizationInitCompDTO> showMyWorkPlace(Integer t_user_no, Integer t_company_no) {
+        return organizationRepository.showMyWorkPlace(t_user_no, t_company_no);
     }
 
     // 조직도 회사 정보
-    public List<OrganizationCompInfoDTO> showMyCompanyInfo(Integer t_user_no){
-        return organizationRepository.showMyCompanyInfo(t_user_no);
+    public List<OrganizationCompInfoDTO> showMyCompanyInfo(Integer t_user_no, Integer t_company_no){
+        return organizationRepository.showMyCompanyInfo(t_user_no, t_company_no);
     }
 
     // 조직도 직원 상태

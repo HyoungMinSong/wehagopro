@@ -7,6 +7,7 @@
     </select>
     <select id="getUserCompanyList" parameterType="String" resultType="com.dozone.wehagopro.domain.UserCompanyDto">
         SELECT
+        c.t_company_no,
         c.t_company_name,
         c.t_company_business,
         c.t_company_sectors,
