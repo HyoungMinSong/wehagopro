@@ -99,4 +99,9 @@ public class SignUpRepository {
         System.out.println("dto = " + dto);
         mapper.updateInvitedUser(dto);
     }
+
+    public List<CompanyServiceListDto> companyServiceList(int comNo){
+        System.out.println("comNo = " + comNo);
+        return mapper.companyServiceList(comNo);
+    }
 }

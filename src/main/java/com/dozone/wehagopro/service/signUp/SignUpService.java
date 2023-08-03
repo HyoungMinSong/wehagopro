@@ -94,7 +94,10 @@ public class SignUpService {
         repository.updateEmployeeStateTo2(dto);
         repository.updateInvitedUser(dto);
 
+    }
 
-
+    public List<CompanyServiceListDto> companyServiceList(int comNo){
+        System.out.println("comNo = " + comNo);
+        return repository.companyServiceList(comNo);
     }
 }

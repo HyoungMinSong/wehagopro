@@ -1,9 +1,6 @@
 package com.dozone.wehagopro.controller;
 
-import com.dozone.wehagopro.domain.signUp.ShortLinkSignUpDto;
-import com.dozone.wehagopro.domain.signUp.SignUpDto;
-import com.dozone.wehagopro.domain.signUp.SignUpInviteUpdateDto;
-import com.dozone.wehagopro.domain.signUp.User;
+import com.dozone.wehagopro.domain.signUp.*;
 import com.dozone.wehagopro.service.common.MailService;
 import com.dozone.wehagopro.service.signUp.SignUpService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,6 +10,7 @@ import org.springframework.web.bind.annotation.*;
 import javax.mail.MessagingException;
 import java.sql.Date;
 import java.time.LocalDate;
+import java.util.List;
 import java.util.Map;
 
 @CrossOrigin(origins = "http://localhost:3000")
@@ -101,13 +99,21 @@ public class SignUpController {
         return null;
     }
 
-
     @ResponseBody
     @PostMapping("/signupinviteupdate")
     public String signUpInviteUpdate(@RequestBody SignUpInviteUpdateDto dto) {
         System.out.println("dto = " + dto);
         service.signUpInviteUpdate(dto);
         return "초대성공";
+    }
+
+    @ResponseBody
+    @PostMapping("/findservicelistbycomno")
+    public List<CompanyServiceListDto> findServiceListByComNo(@RequestBody CompanyServiceListRequestDto dto) {
+        System.out.println("dto = " + dto);
+        int comNo = dto.getComNo();
+        List<CompanyServiceListDto> companyServiceListDto = service.companyServiceList(comNo);
+        return companyServiceListDto;
     }
 
 

@@ -70,4 +70,19 @@
         UPDATE t_user SET t_user_id = #{userId}, t_user_password = #{userPw} WHERE t_user_no = #{userNo};
     </update>
 
+    <select id="companyServiceList" resultType="CompanyServiceListDto">
+        SELECT
+        t_service.t_service_name AS serviceName,
+        t_service.t_service_main_icon_path AS serviceMainIconPath
+        FROM
+        t_service
+        JOIN
+        t_components ON t_service.t_service_no = t_components.t_service_no
+        WHERE
+        t_components.t_package_no = (
+        SELECT t_package_no
+        FROM t_company
+        WHERE t_company_no =#{comNo});
+    </select>
+
 </mapper>
