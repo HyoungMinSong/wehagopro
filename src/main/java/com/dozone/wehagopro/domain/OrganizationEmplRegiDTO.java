@@ -20,7 +20,7 @@ public class OrganizationEmplRegiDTO {
     private String t_user_name;
     private String t_user_phone;
     private String t_user_photo_path;
-    private String t_user_photo_name;
+    private String t_user_photo_path_prev;
     private String t_user_email;
     private String t_shortlink_link;
 

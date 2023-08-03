@@ -39,4 +39,9 @@ public interface OrganizationMapper {
     void updateReceivedMailEmployee(Integer t_employee_no);
     // 메일 기한 연장
     void updateReceivedMailShortlink(Integer t_employee_no);
+    // 유저 사진 수정
+    void updateDetailUser(OrganizationEmplRegiDTO dto);
+    // 직원 수정
+    void updateDetailEmployee(OrganizationEmplRegiDTO dto);
+
 }

@@ -67,6 +67,13 @@ public class OrganizationController {
         organizationService.makeRoomForANewEmployee(dto);
     }
 
+    // 직원 수정
+    @PostMapping("/modifyRoomForAOldEmployee")
+    public void modifyRoomForAOldEmployee(@RequestBody OrganizationEmplRegiDTO dto){
+        System.out.println("dto : "+dto);
+        organizationService.modifyRoomForAOldEmployee(dto);
+    }
+
     // 조직도 부서 수정
     @PostMapping("/editingOrganization")
     public void editingOrganization(@RequestBody List<OrganizationEditDTO> dto){
@@ -91,13 +98,6 @@ public class OrganizationController {
     // 메일
     @PostMapping("/sendMailToEmployee")
     public void sendMailToEmployee(@RequestBody OrganizationMailDto dto) throws MessagingException {
-        System.out.println("Received request data: " + dto.toString());
-        System.out.println("Employer: " + dto.getEmployer());
-        System.out.println("Checked Employee List: " + dto.getCheckedEmployee());
-
-        for (OrganizationSelectedDto obj : dto.getCheckedEmployee()) {
-            System.out.println("Received Object: " + obj.toString());
-        }
         mailService.sendMailToEmployee(dto.getEmployer(), dto.getCheckedEmployee());
     }
 
