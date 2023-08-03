@@ -48,15 +48,6 @@ public class UserController {
 //        return tokens;
 //    }
 
-    @PostMapping("/logout")
-    public ResponseEntity<String> logout(@RequestBody TokenDto request) {
-        if(userService.logout(request)) {
-            return new ResponseEntity<>("로그아웃 되었습니다.", HttpStatus.OK);
-        } else {
-            return new ResponseEntity<>("로그아웃 실패..", HttpStatus.BAD_REQUEST);
-        }
-    }
-
     @PostMapping("/update/change_image")
     public PhotoDto updateUserInfo(@RequestParam(value = "profileImage", required = false) MultipartFile file,
                                    @RequestParam("name") String name,
@@ -66,18 +57,10 @@ public class UserController {
         return userService.updateUserInfo(file, name, id, email, phone);
     }
 
-//    @PostMapping("/update/keep_image")
-//    public ResponseEntity<?> updateUserInfoKeepImage(@RequestParam(value = "file", required = false) String file,
-//                                        @RequestParam("name") String name,
-//                                        @RequestParam("id") String id,
-//                                        @RequestParam("email") String email,
-//                                        @RequestParam("phone") String phone) {
-//        try {
-//            System.out.println("name : " + name + "id: " + id + "email: " + email + "phone: " + phone);
-//            userService.updateUserInfoKeepImage(name, id, email, phone);
-//            return ResponseEntity.ok("유저 정보 update 성공!!");
-//        } catch (Exception e) {
-//            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("유저 정보 update 실패..");
-//        }
-//    }
+    @PostMapping("/update_password")
+    public boolean updateUserPassword(@RequestParam("id") String id,
+                                        @RequestParam("currentPassword") String currentPassword,
+                                        @RequestParam("newPassword") String newPassword) {
+        return userService.updateUserPassword(id, currentPassword, newPassword);
+    }
 }

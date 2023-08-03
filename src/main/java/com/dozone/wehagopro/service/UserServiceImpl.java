@@ -183,12 +183,14 @@ public class UserServiceImpl implements UserService {
         }
     }
 
+    @Transactional
     @Override
-    public boolean updateUserInfoKeepImage(String name, String id, String email, String phone) {
-        // 바뀐 유저 정보 DB에 저장
-        if(userMapper.findByUserId(id).isPresent()) {
-            return userMapper.updateUserKeepImage(name, id, email, phone);
+    public boolean updateUserPassword(String id, String currentPassword, String newPassword) {
+        UserDto userDto = userMapper.findByUserId(id).get();
+        if (!passwordEncoder.matches(currentPassword, userDto.getT_user_password())) {
+            return false;
+        } else {
+            return userMapper.updateUserPassword(id, passwordEncoder.encode(newPassword));
         }
-        return false;
     }
 }
