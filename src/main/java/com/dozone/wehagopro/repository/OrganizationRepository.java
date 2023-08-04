@@ -14,13 +14,13 @@ public class OrganizationRepository {
     private final OrganizationMapper organizationMapper;
 
     // 조직도 목록
-    public List<OrganizationInitCompDTO> showMyWorkPlace(Integer t_user_no){
-        return organizationMapper.showMyWorkPlace(t_user_no);
+    public List<OrganizationInitCompDTO> showMyWorkPlace(Integer t_user_no, Integer t_company_no){
+        return organizationMapper.showMyWorkPlace(t_user_no, t_company_no);
     }
 
     // 조직도 회사 정보
-    public List<OrganizationCompInfoDTO> showMyCompanyInfo(Integer t_user_no){
-        return organizationMapper.showMyCompanyInfo(t_user_no);
+    public List<OrganizationCompInfoDTO> showMyCompanyInfo(Integer t_user_no, Integer t_company_no){
+        return organizationMapper.showMyCompanyInfo(t_user_no, t_company_no);
     }
 
     // 조직도 직원 상태 회사
@@ -78,4 +78,13 @@ public class OrganizationRepository {
     public void updateReceivedMailShortlink(Integer t_employee_no){
         organizationMapper.updateReceivedMailShortlink(t_employee_no);
     }
+    // 유저 사진 수정
+    public void updateDetailUser(OrganizationEmplRegiDTO dto){
+        organizationMapper.updateDetailUser(dto);
+    };
+    // 직원 수정
+    public void updateDetailEmployee(OrganizationEmplRegiDTO dto){
+        organizationMapper.updateDetailEmployee(dto);
+    };
+
 }

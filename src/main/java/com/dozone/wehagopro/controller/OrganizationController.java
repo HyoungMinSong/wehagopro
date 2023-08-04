@@ -3,6 +3,7 @@ package com.dozone.wehagopro.controller;
 import com.dozone.wehagopro.domain.*;
 import com.dozone.wehagopro.service.OrganizationService;
 import com.dozone.wehagopro.service.common.MailService;
+import org.apache.ibatis.annotations.Param;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.Resource;
 import org.springframework.http.MediaType;
@@ -25,14 +26,16 @@ public class OrganizationController {
 
     // 조직도 목록
     @GetMapping("/showMyWorkPlace")
-    public List<OrganizationInitCompDTO> showMyWorkPlace(Integer t_user_no){
-        return organizationService.showMyWorkPlace(t_user_no);
+    public List<OrganizationInitCompDTO> showMyWorkPlace(Integer t_user_no, Integer t_company_no){
+        System.out.println(t_user_no+t_company_no);
+        return organizationService.showMyWorkPlace(t_user_no, t_company_no);
     }
 
     // 조직도 회사 정보
     @GetMapping("/showMyCompanyInfo")
-    public List<OrganizationCompInfoDTO> showMyCompanyInfo(Integer t_user_no){
-        return organizationService.showMyCompanyInfo(t_user_no);
+    public List<OrganizationCompInfoDTO> showMyCompanyInfo(Integer t_user_no, Integer t_company_no){
+        System.out.println(t_user_no+t_company_no);
+        return organizationService.showMyCompanyInfo(t_user_no, t_company_no);
     }
 
     // 조직도 직원 상태
@@ -67,6 +70,13 @@ public class OrganizationController {
         organizationService.makeRoomForANewEmployee(dto);
     }
 
+    // 직원 수정
+    @PostMapping("/modifyRoomForAOldEmployee")
+    public void modifyRoomForAOldEmployee(@RequestBody OrganizationEmplRegiDTO dto){
+        System.out.println("dto : "+dto);
+        organizationService.modifyRoomForAOldEmployee(dto);
+    }
+
     // 조직도 부서 수정
     @PostMapping("/editingOrganization")
     public void editingOrganization(@RequestBody List<OrganizationEditDTO> dto){
@@ -91,13 +101,6 @@ public class OrganizationController {
     // 메일
     @PostMapping("/sendMailToEmployee")
     public void sendMailToEmployee(@RequestBody OrganizationMailDto dto) throws MessagingException {
-        System.out.println("Received request data: " + dto.toString());
-        System.out.println("Employer: " + dto.getEmployer());
-        System.out.println("Checked Employee List: " + dto.getCheckedEmployee());
-
-        for (OrganizationSelectedDto obj : dto.getCheckedEmployee()) {
-            System.out.println("Received Object: " + obj.toString());
-        }
         mailService.sendMailToEmployee(dto.getEmployer(), dto.getCheckedEmployee());
     }
 

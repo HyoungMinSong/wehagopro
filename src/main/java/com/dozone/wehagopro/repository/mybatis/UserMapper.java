@@ -17,6 +17,5 @@ public interface UserMapper {
     List<UserServiceDto> getUserServiceList(@Param("userId") String userId);
     void updateUser(@Param("userPhoto") String userPhoto, @Param("userName") String userName,
                    @Param("userId") String userId, @Param("userEmail") String userEmail, @Param("userPhone") String userPhone);
-    boolean updateUserKeepImage(@Param("userName") String userName, @Param("userId") String userId,
-                    @Param("userEmail") String userEmail, @Param("userPhone") String userPhone);
+    boolean updateUserPassword(@Param("userId") String userId, @Param("newPassword") String newPassword);
 }

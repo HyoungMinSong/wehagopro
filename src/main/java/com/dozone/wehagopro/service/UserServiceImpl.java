@@ -35,7 +35,7 @@ public class UserServiceImpl implements UserService {
         UserDto userDto = userMapper.findByUserId(id)
                 .orElseThrow(() -> new IllegalArgumentException("가입되지 않은 아이디 입니다."));
 
-        // passwordEncoder.matches(로그인 할 때 비밀번호, DB에 저장된 비밀번호)
+//        // passwordEncoder.matches(로그인 할 때 비밀번호, DB에 저장된 비밀번호)
         if (!passwordEncoder.matches(password, userDto.getT_user_password())) {
             throw new IllegalArgumentException("잘못된 비밀번호 입니다.");
         }
@@ -138,9 +138,19 @@ public class UserServiceImpl implements UserService {
     @Transactional
     @Override
     public PhotoDto updateUserInfo(MultipartFile file, String name, String id, String email, String phone) {
-        if (file.isEmpty()) {
+        if (file == null) {
             System.out.println("왜 없지?");
-            return null;
+
+            UserDto userDto = userMapper.findByUserId(id).get();
+            // 바뀐 유저 정보 DB에 저장
+            if(userMapper.findByUserId(id).isPresent()) {
+                userMapper.updateUser(null, name, id, email, phone);
+
+                PhotoDto photoDto = new PhotoDto();
+                photoDto.setPhoto_name(userDto.getT_user_photo_name());
+                photoDto.setPhoto_path(userDto.getT_user_photo_path());
+                return photoDto;
+            }
         }
 
         try {
@@ -173,12 +183,14 @@ public class UserServiceImpl implements UserService {
         }
     }
 
+    @Transactional
     @Override
-    public boolean updateUserInfoKeepImage(String name, String id, String email, String phone) {
-        // 바뀐 유저 정보 DB에 저장
-        if(userMapper.findByUserId(id).isPresent()) {
-            return userMapper.updateUserKeepImage(name, id, email, phone);
+    public boolean updateUserPassword(String id, String currentPassword, String newPassword) {
+        UserDto userDto = userMapper.findByUserId(id).get();
+        if (!passwordEncoder.matches(currentPassword, userDto.getT_user_password())) {
+            return false;
+        } else {
+            return userMapper.updateUserPassword(id, passwordEncoder.encode(newPassword));
         }
-        return false;
     }
 }

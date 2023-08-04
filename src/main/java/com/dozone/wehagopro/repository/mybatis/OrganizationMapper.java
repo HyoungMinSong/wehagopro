@@ -10,9 +10,9 @@ import java.util.List;
 public interface OrganizationMapper {
 
     // 조직도 목록
-    List<OrganizationInitCompDTO> showMyWorkPlace(Integer t_user_no);
+    List<OrganizationInitCompDTO> showMyWorkPlace(@Param("t_user_no") Integer t_user_no, @Param("t_company_no") Integer t_company_no);
     // 조직도 회사 목록
-    List<OrganizationCompInfoDTO> showMyCompanyInfo(Integer t_user_no);
+    List<OrganizationCompInfoDTO> showMyCompanyInfo(@Param("t_user_no") Integer t_user_no, @Param("t_company_no") Integer t_company_no);
     // 조직도 직원 상태
     OrganizationInitEmplDTO showMyEmployeeStateFromCompany(Integer t_company_no);
     // 조직도 직원 상태
@@ -39,4 +39,9 @@ public interface OrganizationMapper {
     void updateReceivedMailEmployee(Integer t_employee_no);
     // 메일 기한 연장
     void updateReceivedMailShortlink(Integer t_employee_no);
+    // 유저 사진 수정
+    void updateDetailUser(OrganizationEmplRegiDTO dto);
+    // 직원 수정
+    void updateDetailEmployee(OrganizationEmplRegiDTO dto);
+
 }
