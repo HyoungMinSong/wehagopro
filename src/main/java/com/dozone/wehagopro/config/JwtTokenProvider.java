@@ -44,6 +44,7 @@ public class JwtTokenProvider {
         Date now = new Date();
         return Jwts.builder()
                 .setClaims(claims) // 정보 저장
+                .claim("no", userDto.getT_user_no())
                 .claim("role", userRole) // 권한 정보 저장
                 .setIssuedAt(now) // 토큰 발행 시간 정보
                 .setExpiration(new Date(now.getTime() + accessTokenValidTime)) // set Expire Time
@@ -59,6 +60,7 @@ public class JwtTokenProvider {
         long expiration = now.getTime() + refreshTokenValidTime;
         String refreshToken = Jwts.builder()
                 .setClaims(claims)
+                .claim("no", userDto.getT_user_no())
                 .claim("role", userRole)
                 .setIssuedAt(now)
                 .setExpiration(new Date(expiration))
