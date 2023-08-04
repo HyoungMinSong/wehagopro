@@ -26,4 +26,6 @@ public interface SignUpMapper {
     Integer findPackageCountByCompanyNo(int comNo);
     CountPublishedServiceAndEmpNoDto eachCompanyPublishedCount(int param1, int param2);
     List<UnPublishedUserDto> findUnPublishedUser(int param1, int param2);
+    List<UnPublishedUserDto> findPublishedUser(int param1, int param2);
+    void updateUnPublish(int param1, int param2);
 }

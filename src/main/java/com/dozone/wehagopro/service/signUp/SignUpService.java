@@ -126,4 +126,14 @@ public class SignUpService {
         System.out.println("empNo = " + empNo + ", serviceNo = " + serviceNo);
         repository.signUpServicePublished(empNo,serviceNo);
     }
+
+    public List<UnPublishedUserDto> findPublishedUser(int comNo, int serviceNo){
+        System.out.println("comNo = " + comNo + ", serviceNo = " + serviceNo);
+        return repository.findPublishedUser(comNo, serviceNo);
+    }
+
+    public void updateUnPublish(int empNo, int serviceNo){
+        System.out.println("empNo = " + empNo + ", serviceNo = " + serviceNo);
+        repository.updateUnPublish(empNo,serviceNo);
+    }
 }

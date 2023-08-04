@@ -155,4 +155,19 @@ public class SignUpController {
         service.saveInvitedEmployeePublish(dto.getEmployeeNo(), dto.getServiceNo());
         return "배포성공";
     }
+
+    @ResponseBody
+    @PostMapping("/findpublisheduser")
+    public List<UnPublishedUserDto> findPublishedUser(@RequestBody UnPublishedUserRequestDto dto) {
+        System.out.println("dto = " + dto);
+        return service.findPublishedUser(dto.getComNo(), dto.getServiceNo());
+    }
+
+    @ResponseBody
+    @PostMapping("/updateunpublish")
+    public String updateUnPublish(@RequestBody UpdateUnPublishRequestDto dto) {
+        System.out.println("dto = " + dto);
+        service.updateUnPublish(dto.getEmpNo(), dto.getServiceNo());
+        return "배포해제업데이트";
+    }
 }

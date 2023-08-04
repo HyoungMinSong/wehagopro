@@ -119,4 +119,14 @@ public class SignUpRepository {
         System.out.println("comNo = " + comNo + ", serviceNo = " + serviceNo);
         return mapper.findUnPublishedUser(comNo, serviceNo);
     }
+
+    public List<UnPublishedUserDto> findPublishedUser(int comNo, int serviceNo){
+        System.out.println("comNo = " + comNo + ", serviceNo = " + serviceNo);
+        return mapper.findPublishedUser(comNo, serviceNo);
+    }
+
+    public void updateUnPublish(int empNo, int serviceNo){
+        System.out.println("empNo = " + empNo + ", serviceNo = " + serviceNo);
+        mapper.updateUnPublish(empNo,serviceNo);
+    }
 }

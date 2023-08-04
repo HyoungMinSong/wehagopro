@@ -120,8 +120,36 @@
         WHERE tp.t_service_no = #{param2}
         AND te.t_company_no = #{param1}
         AND te.t_employee_state = 2
+        AND tp.t_service_recall = -1
         );
     </select>
 
+    <select id="findPublishedUser" resultType="UnPublishedUserDto">
+        SELECT
+        tu.t_user_id AS userId,
+        tu.t_user_name AS userName,
+        te.t_employee_duty AS empDuty,
+        te.t_employee_position AS empPosition,
+        te.t_employee_no AS empNo
+        FROM
+        t_user tu
+        INNER JOIN
+        t_employee te ON tu.t_user_no = te.t_user_no
+        WHERE
+        te.t_company_no = #{param1}
+        AND te.t_employee_state = 2
+        AND te.t_employee_no IN (
+        SELECT tp.t_employee_no
+        FROM t_service_published tp
+        INNER JOIN t_employee te ON tp.t_employee_no = te.t_employee_no
+        WHERE tp.t_service_no = #{param2}
+        AND te.t_company_no = #{param1}
+        AND te.t_employee_state = 2
+        AND tp.t_service_recall = -1
+        );
+    </select>
 
+    <update id="updateUnPublish">
+        UPDATE t_service_published SET t_service_recall = 0, t_service_recall_date = CURRENT_DATE WHERE t_employee_no = #{param1} AND t_service_no = #{param2};
+    </update>
 </mapper>
