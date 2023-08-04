@@ -8,6 +8,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @RequiredArgsConstructor
@@ -99,5 +100,30 @@ public class SignUpService {
     public List<CompanyServiceListDto> companyServiceList(int comNo){
         System.out.println("comNo = " + comNo);
         return repository.companyServiceList(comNo);
+    }
+
+    public Integer findPackageCountByCompanyNo(int comNo){
+        System.out.println("comNo = " + comNo);
+        return repository.findPackageCountByCompanyNo(comNo);
+    }
+
+    public List<CountPublishedServiceAndEmpNoDto> eachCompanyPublishedCount(List<CompanyServiceListDto> companyServiceListDto, int comNo) {
+        List<CountPublishedServiceAndEmpNoDto> listDto = new ArrayList<CountPublishedServiceAndEmpNoDto>();
+        for (CompanyServiceListDto dto : companyServiceListDto) {
+            CountPublishedServiceAndEmpNoDto countPublishedServiceAndEmpNoDto = repository.eachCompanyPublishedCount(dto.getServiceNo(), comNo);
+            listDto.add(countPublishedServiceAndEmpNoDto);
+        }
+
+        return listDto;
+    }
+
+    public List<UnPublishedUserDto> findUnPublishedUser(int comNo, int serviceNo){
+        System.out.println("comNo = " + comNo + ", serviceNo = " + serviceNo);
+        return repository.findUnPublishedUser(comNo, serviceNo);
+    }
+
+    public void saveInvitedEmployeePublish(int empNo, int serviceNo){
+        System.out.println("empNo = " + empNo + ", serviceNo = " + serviceNo);
+        repository.signUpServicePublished(empNo,serviceNo);
     }
 }

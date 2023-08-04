@@ -104,4 +104,19 @@ public class SignUpRepository {
         System.out.println("comNo = " + comNo);
         return mapper.companyServiceList(comNo);
     }
+
+    public Integer findPackageCountByCompanyNo(int comNo){
+        System.out.println("comNo = " + comNo);
+        return mapper.findPackageCountByCompanyNo(comNo);
+    }
+
+    public CountPublishedServiceAndEmpNoDto eachCompanyPublishedCount(int serviceNo, int comNo){
+        System.out.println("serviceNo = " + serviceNo + ", comNo = " + comNo);
+        return mapper.eachCompanyPublishedCount(serviceNo,comNo);
+    }
+
+    public List<UnPublishedUserDto> findUnPublishedUser(int comNo, int serviceNo){
+        System.out.println("comNo = " + comNo + ", serviceNo = " + serviceNo);
+        return mapper.findUnPublishedUser(comNo, serviceNo);
+    }
 }

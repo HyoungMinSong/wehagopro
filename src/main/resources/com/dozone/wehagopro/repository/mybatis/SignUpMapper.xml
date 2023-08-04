@@ -72,6 +72,7 @@
 
     <select id="companyServiceList" resultType="CompanyServiceListDto">
         SELECT
+        t_service.t_service_no AS serviceNo,
         t_service.t_service_name AS serviceName,
         t_service.t_service_main_icon_path AS serviceMainIconPath
         FROM
@@ -84,5 +85,43 @@
         FROM t_company
         WHERE t_company_no =#{comNo});
     </select>
+
+    <select id="findPackageCountByCompanyNo" resultType="java.lang.Integer">
+        select t_package_count from t_company where t_company_no = #{comNo};
+    </select>
+
+    <select id="eachCompanyPublishedCount" resultType="CountPublishedServiceAndEmpNoDto">
+        select count(t_service_published_no) AS publishedCount,
+        t_service_no AS empNo
+        from t_service_published
+        where t_service_no = #{param1}
+        and t_employee_no
+        in (select t_employee_no from t_employee where t_company_no = #{param2} ) GROUP BY t_service_no;
+    </select>
+
+    <select id="findUnPublishedUser" resultType="UnPublishedUserDto">
+        SELECT
+        tu.t_user_id AS userId,
+        tu.t_user_name AS userName,
+        te.t_employee_duty AS empDuty,
+        te.t_employee_position AS empPosition,
+        te.t_employee_no AS empNo
+        FROM
+        t_user tu
+        INNER JOIN
+        t_employee te ON tu.t_user_no = te.t_user_no
+        WHERE
+        te.t_company_no = #{param1}
+        AND te.t_employee_state = 2
+        AND te.t_employee_no NOT IN (
+        SELECT tp.t_employee_no
+        FROM t_service_published tp
+        INNER JOIN t_employee te ON tp.t_employee_no = te.t_employee_no
+        WHERE tp.t_service_no = #{param2}
+        AND te.t_company_no = #{param1}
+        AND te.t_employee_state = 2
+        );
+    </select>
+
 
 </mapper>

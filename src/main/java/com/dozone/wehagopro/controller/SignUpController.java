@@ -113,8 +113,46 @@ public class SignUpController {
         System.out.println("dto = " + dto);
         int comNo = dto.getComNo();
         List<CompanyServiceListDto> companyServiceListDto = service.companyServiceList(comNo);
+        List<CountPublishedServiceAndEmpNoDto> countPublishedServiceAndEmpNoDtos = service.eachCompanyPublishedCount(companyServiceListDto, comNo);
+        for (CountPublishedServiceAndEmpNoDto countP:
+        countPublishedServiceAndEmpNoDtos) {
+            int serviceNo = countP.getEmpNo(); //서비스no임
+            int publishedCount = countP.getPublishedCount();
+            for (CompanyServiceListDto listDto:
+            companyServiceListDto) {
+                if (listDto.getServiceNo() == serviceNo) {
+                    listDto.setCount(publishedCount);
+                }
+            }
+        }
         return companyServiceListDto;
     }
 
+    @ResponseBody
+    @PostMapping("/findpackagecount")
+    public int findPackageCountByCompanyNo(@RequestBody CompanyServiceListRequestDto dto) {
+        System.out.println("dto = " + dto);
+        int comNo = dto.getComNo();
+        Integer count = service.findPackageCountByCompanyNo(comNo);
+        if (count != null) {
+            return count.intValue();
+        } else {
+            return 0;
+        }
+    }
 
+    @ResponseBody
+    @PostMapping("/findunpublisheduser")
+    public List<UnPublishedUserDto> findUnPublishedUser(@RequestBody UnPublishedUserRequestDto dto) {
+        System.out.println("dto = " + dto);
+        return service.findUnPublishedUser(dto.getComNo(), dto.getServiceNo());
+    }
+
+    @ResponseBody
+    @PostMapping("/saveinvitedemployeepublish")
+    public String saveInvitedEmployeePublish(@RequestBody SaveInvitedEmployeePublishDto dto) {
+        System.out.println("dto = " + dto);
+        service.saveInvitedEmployeePublish(dto.getEmployeeNo(), dto.getServiceNo());
+        return "배포성공";
+    }
 }
