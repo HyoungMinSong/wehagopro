@@ -70,4 +70,86 @@
         UPDATE t_user SET t_user_id = #{userId}, t_user_password = #{userPw} WHERE t_user_no = #{userNo};
     </update>
 
+    <select id="companyServiceList" resultType="CompanyServiceListDto">
+        SELECT
+        t_service.t_service_no AS serviceNo,
+        t_service.t_service_name AS serviceName,
+        t_service.t_service_main_icon_path AS serviceMainIconPath
+        FROM
+        t_service
+        JOIN
+        t_components ON t_service.t_service_no = t_components.t_service_no
+        WHERE
+        t_components.t_package_no = (
+        SELECT t_package_no
+        FROM t_company
+        WHERE t_company_no =#{comNo});
+    </select>
+
+    <select id="findPackageCountByCompanyNo" resultType="java.lang.Integer">
+        select t_package_count from t_company where t_company_no = #{comNo};
+    </select>
+
+    <select id="eachCompanyPublishedCount" resultType="CountPublishedServiceAndEmpNoDto">
+        select count(t_service_published_no) AS publishedCount,
+        t_service_no AS empNo
+        from t_service_published
+        where t_service_no = #{param1}
+        and t_employee_no
+        in (select t_employee_no from t_employee where t_company_no = #{param2} ) GROUP BY t_service_no;
+    </select>
+
+    <select id="findUnPublishedUser" resultType="UnPublishedUserDto">
+        SELECT
+        tu.t_user_id AS userId,
+        tu.t_user_name AS userName,
+        te.t_employee_duty AS empDuty,
+        te.t_employee_position AS empPosition,
+        te.t_employee_no AS empNo
+        FROM
+        t_user tu
+        INNER JOIN
+        t_employee te ON tu.t_user_no = te.t_user_no
+        WHERE
+        te.t_company_no = #{param1}
+        AND te.t_employee_state = 2
+        AND te.t_employee_no NOT IN (
+        SELECT tp.t_employee_no
+        FROM t_service_published tp
+        INNER JOIN t_employee te ON tp.t_employee_no = te.t_employee_no
+        WHERE tp.t_service_no = #{param2}
+        AND te.t_company_no = #{param1}
+        AND te.t_employee_state = 2
+        AND tp.t_service_recall = -1
+        );
+    </select>
+
+    <select id="findPublishedUser" resultType="UnPublishedUserDto">
+        SELECT
+        tu.t_user_id AS userId,
+        tu.t_user_name AS userName,
+        te.t_employee_duty AS empDuty,
+        te.t_employee_position AS empPosition,
+        te.t_employee_no AS empNo
+        FROM
+        t_user tu
+        INNER JOIN
+        t_employee te ON tu.t_user_no = te.t_user_no
+        WHERE
+        te.t_company_no = #{param1}
+        AND te.t_employee_state = 2
+        AND te.t_employee_no IN (
+        SELECT tp.t_employee_no
+        FROM t_service_published tp
+        INNER JOIN t_employee te ON tp.t_employee_no = te.t_employee_no
+        WHERE tp.t_service_no = #{param2}
+        AND te.t_company_no = #{param1}
+        AND te.t_employee_state = 2
+        AND tp.t_service_recall = -1
+        );
+    </select>
+
+    <update id="updateUnPublish">
+        UPDATE t_service_published SET t_service_recall = 0, t_service_recall_date = CURRENT_DATE WHERE t_employee_no = #{param1} AND t_service_no = #{param2};
+    </update>
 </mapper>

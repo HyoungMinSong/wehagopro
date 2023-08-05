@@ -99,4 +99,34 @@ public class SignUpRepository {
         System.out.println("dto = " + dto);
         mapper.updateInvitedUser(dto);
     }
+
+    public List<CompanyServiceListDto> companyServiceList(int comNo){
+        System.out.println("comNo = " + comNo);
+        return mapper.companyServiceList(comNo);
+    }
+
+    public Integer findPackageCountByCompanyNo(int comNo){
+        System.out.println("comNo = " + comNo);
+        return mapper.findPackageCountByCompanyNo(comNo);
+    }
+
+    public CountPublishedServiceAndEmpNoDto eachCompanyPublishedCount(int serviceNo, int comNo){
+        System.out.println("serviceNo = " + serviceNo + ", comNo = " + comNo);
+        return mapper.eachCompanyPublishedCount(serviceNo,comNo);
+    }
+
+    public List<UnPublishedUserDto> findUnPublishedUser(int comNo, int serviceNo){
+        System.out.println("comNo = " + comNo + ", serviceNo = " + serviceNo);
+        return mapper.findUnPublishedUser(comNo, serviceNo);
+    }
+
+    public List<UnPublishedUserDto> findPublishedUser(int comNo, int serviceNo){
+        System.out.println("comNo = " + comNo + ", serviceNo = " + serviceNo);
+        return mapper.findPublishedUser(comNo, serviceNo);
+    }
+
+    public void updateUnPublish(int empNo, int serviceNo){
+        System.out.println("empNo = " + empNo + ", serviceNo = " + serviceNo);
+        mapper.updateUnPublish(empNo,serviceNo);
+    }
 }

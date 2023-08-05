@@ -21,6 +21,11 @@ public interface SignUpMapper {
     Integer employeeStateCheck(int empNo);
     Integer findUserNoByEmployeeNo(SignUpInviteUpdateDto dto);
     void updateEmployeeStateTo2(SignUpInviteUpdateDto dto);
-
     void updateInvitedUser(SignUpInviteUpdateDto dto);
+    List<CompanyServiceListDto> companyServiceList(int comNo);
+    Integer findPackageCountByCompanyNo(int comNo);
+    CountPublishedServiceAndEmpNoDto eachCompanyPublishedCount(int param1, int param2);
+    List<UnPublishedUserDto> findUnPublishedUser(int param1, int param2);
+    List<UnPublishedUserDto> findPublishedUser(int param1, int param2);
+    void updateUnPublish(int param1, int param2);
 }

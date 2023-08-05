@@ -1,9 +1,6 @@
 package com.dozone.wehagopro.controller;
 
-import com.dozone.wehagopro.domain.signUp.ShortLinkSignUpDto;
-import com.dozone.wehagopro.domain.signUp.SignUpDto;
-import com.dozone.wehagopro.domain.signUp.SignUpInviteUpdateDto;
-import com.dozone.wehagopro.domain.signUp.User;
+import com.dozone.wehagopro.domain.signUp.*;
 import com.dozone.wehagopro.service.common.MailService;
 import com.dozone.wehagopro.service.signUp.SignUpService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,6 +10,7 @@ import org.springframework.web.bind.annotation.*;
 import javax.mail.MessagingException;
 import java.sql.Date;
 import java.time.LocalDate;
+import java.util.List;
 import java.util.Map;
 
 @CrossOrigin(origins = "http://localhost:3000")
@@ -101,7 +99,6 @@ public class SignUpController {
         return null;
     }
 
-
     @ResponseBody
     @PostMapping("/signupinviteupdate")
     public String signUpInviteUpdate(@RequestBody SignUpInviteUpdateDto dto) {
@@ -110,5 +107,67 @@ public class SignUpController {
         return "초대성공";
     }
 
+    @ResponseBody
+    @PostMapping("/findservicelistbycomno")
+    public List<CompanyServiceListDto> findServiceListByComNo(@RequestBody CompanyServiceListRequestDto dto) {
+        System.out.println("dto = " + dto);
+        int comNo = dto.getComNo();
+        List<CompanyServiceListDto> companyServiceListDto = service.companyServiceList(comNo);
+        List<CountPublishedServiceAndEmpNoDto> countPublishedServiceAndEmpNoDtos = service.eachCompanyPublishedCount(companyServiceListDto, comNo);
+        for (CountPublishedServiceAndEmpNoDto countP:
+        countPublishedServiceAndEmpNoDtos) {
+            int serviceNo = countP.getEmpNo(); //서비스no임
+            int publishedCount = countP.getPublishedCount();
+            for (CompanyServiceListDto listDto:
+            companyServiceListDto) {
+                if (listDto.getServiceNo() == serviceNo) {
+                    listDto.setCount(publishedCount);
+                }
+            }
+        }
+        return companyServiceListDto;
+    }
 
+    @ResponseBody
+    @PostMapping("/findpackagecount")
+    public int findPackageCountByCompanyNo(@RequestBody CompanyServiceListRequestDto dto) {
+        System.out.println("dto = " + dto);
+        int comNo = dto.getComNo();
+        Integer count = service.findPackageCountByCompanyNo(comNo);
+        if (count != null) {
+            return count.intValue();
+        } else {
+            return 0;
+        }
+    }
+
+    @ResponseBody
+    @PostMapping("/findunpublisheduser")
+    public List<UnPublishedUserDto> findUnPublishedUser(@RequestBody UnPublishedUserRequestDto dto) {
+        System.out.println("dto = " + dto);
+        return service.findUnPublishedUser(dto.getComNo(), dto.getServiceNo());
+    }
+
+    @ResponseBody
+    @PostMapping("/saveinvitedemployeepublish")
+    public String saveInvitedEmployeePublish(@RequestBody SaveInvitedEmployeePublishDto dto) {
+        System.out.println("dto = " + dto);
+        service.saveInvitedEmployeePublish(dto.getEmployeeNo(), dto.getServiceNo());
+        return "배포성공";
+    }
+
+    @ResponseBody
+    @PostMapping("/findpublisheduser")
+    public List<UnPublishedUserDto> findPublishedUser(@RequestBody UnPublishedUserRequestDto dto) {
+        System.out.println("dto = " + dto);
+        return service.findPublishedUser(dto.getComNo(), dto.getServiceNo());
+    }
+
+    @ResponseBody
+    @PostMapping("/updateunpublish")
+    public String updateUnPublish(@RequestBody UpdateUnPublishRequestDto dto) {
+        System.out.println("dto = " + dto);
+        service.updateUnPublish(dto.getEmpNo(), dto.getServiceNo());
+        return "배포해제업데이트";
+    }
 }
