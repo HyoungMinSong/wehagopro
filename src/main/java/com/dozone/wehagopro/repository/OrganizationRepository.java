@@ -13,38 +13,17 @@ public class OrganizationRepository {
 
     private final OrganizationMapper organizationMapper;
 
-    // 조직도 목록
-    public List<OrganizationInitCompDTO> showMyWorkPlace(Integer t_user_no, Integer t_company_no){
-        return organizationMapper.showMyWorkPlace(t_user_no, t_company_no);
-    }
-
-    // 조직도 회사 정보
-    public List<OrganizationCompInfoDTO> showMyCompanyInfo(Integer t_user_no, Integer t_company_no){
-        return organizationMapper.showMyCompanyInfo(t_user_no, t_company_no);
-    }
-
-    // 조직도 직원 상태 회사
-    public OrganizationInitEmplDTO showMyEmployeeStateFromCompany(Integer t_company_no){
-        return organizationMapper.showMyEmployeeStateFromCompany(t_company_no);
-    }
-    //조직도 직원 상태 부서
-    public OrganizationInitEmplDTO showMyEmployeeStateFromOrganization(Integer t_organization_no){
-        return organizationMapper.showMyEmployeeStateFromOrganization(t_organization_no);
-    }
-
-    // 조직도 직원 목록 (회사 선택)
-    public List<OrganizationEmplInfoDTO> showMyEmployeeFromCompany(String t_company_name, Integer pk, Integer t_employee_state){
-        return organizationMapper.showMyEmployeeFromCompany(t_company_name, pk, t_employee_state);
-    }
-
-    // 조직도 직원 목록 (회사 선택)
-    public List<OrganizationEmplInfoDTO> showMyEmployeeFromOrganization(String t_organization_name, Integer pk, Integer t_employee_state){
-        return organizationMapper.showMyEmployeeFromOrganization(t_organization_name, pk, t_employee_state);
-    }
-
+    // 직원 목록 유저,직원,부서이름 from 회사번호
+    public List<OrganizationUserEmplDto> findUserEmplOrgaFromCompany(Integer t_company_no){
+        return organizationMapper.findUserEmplOrgaFromCompany(t_company_no);
+    };
+    // 부서 목록 from 회사번호
+    public List<OrganizationDto> findOrganizationFromCompany(Integer t_company_no){
+        return organizationMapper.findOrganizationFromCompany(t_company_no);
+    };
     // 조직도 부서 생성
-    public void createOrganization(String t_organization_name, Integer t_company_no){
-        organizationMapper.createOrganization(t_organization_name,t_company_no);
+    public void createOrganization(String t_organization_name, Integer t_organization_parent){
+        organizationMapper.createOrganization(t_organization_name,t_organization_parent);
     };
     // 조직도 부서 수정
     public void updateOrganization(String t_organization_name, Integer t_organization_no){
@@ -58,6 +37,10 @@ public class OrganizationRepository {
     public Integer registerUser(OrganizationEmplRegiDTO dto){
         return organizationMapper.registerUser(dto);
     }
+    // 회사 이름인 부서 번호 찾기
+    public Integer findCompanyOrgaNoFromName(String t_organization_name){
+        return organizationMapper.findCompanyOrgaNoFromName(t_organization_name);
+    };
     // 직원 등록
     public Integer registerEmployee(OrganizationEmplRegiDTO dto){
         return organizationMapper.registerEmployee(dto);
@@ -86,5 +69,6 @@ public class OrganizationRepository {
     public void updateDetailEmployee(OrganizationEmplRegiDTO dto){
         organizationMapper.updateDetailEmployee(dto);
     };
+
 
 }

@@ -24,31 +24,16 @@ public class OrganizationController {
     @Autowired
     MailService mailService;
 
-    // 조직도 목록
-    @GetMapping("/showMyWorkPlace")
-    public List<OrganizationInitCompDTO> showMyWorkPlace(Integer t_user_no, Integer t_company_no){
-        System.out.println(t_user_no+t_company_no);
-        return organizationService.showMyWorkPlace(t_user_no, t_company_no);
-    }
-
-    // 조직도 회사 정보
-    @GetMapping("/showMyCompanyInfo")
-    public List<OrganizationCompInfoDTO> showMyCompanyInfo(Integer t_user_no, Integer t_company_no){
-        System.out.println(t_user_no+t_company_no);
-        return organizationService.showMyCompanyInfo(t_user_no, t_company_no);
-    }
-
-    // 조직도 직원 상태
-    @GetMapping("/showMyEmployeeState")
-    public OrganizationInitEmplDTO showMyEmployeeState(Integer pk, Integer index){
-        return organizationService.showMyEmployeeState(pk, index);
-    }
-
-    // 조직도 직원 목록
-    @GetMapping("/showMyEmployees")
-    public List<OrganizationEmplInfoDTO> showMyEmployees(@RequestParam("nodeName") String nodeName, @RequestParam("pk") Integer pk, @RequestParam("index") Integer index, @RequestParam("t_employee_state") Integer t_employee_state){
-        return organizationService.showMyEmployees(nodeName, pk, index, t_employee_state);
-    }
+    // 직원 목록 유저,직원,부서이름 from 회사번호
+    @GetMapping("/findUserEmplOrgaFromCompany")
+    public List<OrganizationUserEmplDto> findUserEmplOrgaFromCompany(Integer t_company_no){
+        return organizationService.findUserEmplOrgaFromCompany(t_company_no);
+    };
+    // 부서 목록 from 회사번호
+    @GetMapping("/findOrganizationFromCompany")
+    public List<OrganizationDto> findOrganizationFromCompany(Integer t_company_no){
+        return organizationService.findOrganizationFromCompany(t_company_no);
+    };
 
     @GetMapping(value = "/images/{imageName:.+}", produces = MediaType.IMAGE_JPEG_VALUE)
     @ResponseBody
@@ -86,11 +71,14 @@ public class OrganizationController {
 
         for(OrganizationEditDTO dt : dto) {
             System.out.println(dt);
-            if(dt.getT_organization_name() ==null && dt.getT_company_no() ==null){
+            if(dt.getT_organization_no()!=null && dt.getT_organization_name()==null){
+                System.out.println("삭제"+dt.getT_organization_no());
                 deleteDto.add(dt);
-            }else if(dt.getT_organization_no()<0){
+            }else if(dt.getT_organization_no()==null && dt.getT_organization_name()!=null){
+                System.out.println("추가"+dt.getT_organization_name());
                 insertDto.add(dt);
-            }else if(dt.getT_company_no()!=null && dt.getT_organization_no()>=0){
+            }else if(dt.getT_organization_no()!=null && dt.getT_organization_name()!=null){
+                System.out.println("수정"+dt.getT_organization_name());
                 updateDto.add(dt);
             }
         }
@@ -103,5 +91,6 @@ public class OrganizationController {
     public void sendMailToEmployee(@RequestBody OrganizationMailDto dto) throws MessagingException {
         mailService.sendMailToEmployee(dto.getEmployer(), dto.getCheckedEmployee());
     }
+
 
 }

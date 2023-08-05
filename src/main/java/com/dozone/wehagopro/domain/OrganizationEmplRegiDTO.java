@@ -13,6 +13,7 @@ public class OrganizationEmplRegiDTO {
     private String t_employee_duty;
     private String t_employee_position;
     private Integer t_organization_no;
+    private String t_organization_name;
 
     private Integer t_employee_no;
 

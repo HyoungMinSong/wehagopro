@@ -2,116 +2,8 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.dozone.wehagopro.repository.mybatis.OrganizationMapper">
-    <select id="showMyWorkPlace">
-        <![CDATA[SELECT
-        t.*,
-        ROW_NUMBER() OVER () AS row_index,
-        additional_organization.t_organization_no AS company_organization_no
-        FROM
-        (
-        SELECT
-        t_company.t_company_no,
-        t_company.t_company_name,
-        t_organization.t_organization_no,
-        t_organization.t_organization_name,
-        (
-        SELECT COUNT(t_employee_no) FROM t_employee WHERE t_company_no = t_company.t_company_no AND t_employee_state >= 0
-        ) AS company_employee_count,
-        (
-        SELECT COUNT(t_employee_no) FROM t_employee WHERE t_organization_no = t_organization.t_organization_no AND t_employee_state >= 0
-        ) AS organization_employee_count
-        FROM
-        t_employee
-        LEFT JOIN
-        t_organization ON t_organization.t_organization_parent = t_employee.t_company_no
-        JOIN
-        t_company ON t_employee.t_company_no = t_company.t_company_no
-        WHERE
-        t_employee.t_user_no = #{t_user_no} and t_employee.t_employee_auth < 2 AND t_company.t_company_no = #{t_company_no}
-        ) t
-        LEFT JOIN
-        t_organization AS additional_organization ON additional_organization.t_organization_name = t.t_company_name AND additional_organization.t_organization_parent = -1
-        ORDER BY
-        t.t_company_no, t.t_organization_no;]]>
-    </select>
-    <select id="showMyCompanyInfo">
-        SELECT
-        t_employee.t_company_no,
-        t_company.t_company_name,
-        COUNT(t_employee.t_employee_no) AS company_employee_count
-        FROM
-        t_employee
-        INNER JOIN
-        t_company ON t_employee.t_company_no = t_company.t_company_no
-        WHERE
-        t_employee.t_employee_state >= 0
-        AND t_employee.t_company_no = #{t_company_no}
-        AND t_employee.t_company_no IN (
-        SELECT t_company_no
-        FROM t_employee
-        WHERE t_user_no = #{t_user_no}
-        )
-        GROUP BY
-        t_employee.t_company_no,
-        t_company.t_company_name;
-    </select>
-    <select id="showMyEmployeeStateFromCompany" resultType="OrganizationInitEmplDTO">
-        SELECT
-        (
-        SELECT COUNT(t_employee_no)
-        FROM t_employee
-        WHERE t_company_no = #{t_company_no} AND t_employee_state >= 0
-        ) AS count_state_all,
-        (
-        SELECT COUNT(t_employee_no)
-        FROM t_employee
-        WHERE t_company_no = #{t_company_no} AND t_employee_state = 0
-        ) AS count_state_0,
-        (
-        SELECT COUNT(t_employee_no)
-        FROM t_employee
-        WHERE t_company_no = #{t_company_no} AND t_employee_state = 1
-        ) AS count_state_1,
-        (
-        SELECT COUNT(t_employee_no)
-        FROM t_employee
-        WHERE t_company_no = #{t_company_no} AND t_employee_state = 2
-        ) AS count_state_2,
-        (
-        SELECT COUNT(t_employee_no)
-        FROM t_employee
-        WHERE t_company_no = #{t_company_no} AND t_employee_state = 3
-        ) AS count_state_3;
-    </select>
-    <select id="showMyEmployeeStateFromOrganization" resultType="OrganizationInitEmplDTO">
-    SELECT
-    (
-    SELECT COUNT(t_employee_no)
-    FROM t_employee
-    WHERE t_organization_no = #{t_organization_no} AND t_employee_state >= 0
-    ) AS count_state_all,
-    (
-    SELECT COUNT(t_employee_no)
-    FROM t_employee
-    WHERE t_organization_no = #{t_organization_no} AND t_employee_state = 0
-    ) AS count_state_0,
-    (
-    SELECT COUNT(t_employee_no)
-    FROM t_employee
-    WHERE t_organization_no = #{t_organization_no} AND t_employee_state = 1
-    ) AS count_state_1,
-    (
-    SELECT COUNT(t_employee_no)
-    FROM t_employee
-    WHERE t_organization_no = #{t_organization_no} AND t_employee_state = 2
-    ) AS count_state_2,
-    (
-    SELECT COUNT(t_employee_no)
-    FROM t_employee
-    WHERE t_organization_no = #{t_organization_no} AND t_employee_state = 3
-    ) AS count_state_3;
-</select>
-    <select id="showMyEmployeeFromCompany" resultType="OrganizationEmplInfoDTO">
+
+    <select id="findUserEmplOrgaFromCompany" resultType="OrganizationUserEmplDto">
         SELECT t_user.*, t_employee.*, t_organization.t_organization_name
         FROM t_user
         JOIN t_employee ON t_user.t_user_no = t_employee.t_user_no
@@ -122,70 +14,22 @@
         WHERE t_company_no = (
         SELECT t_company_no
         FROM t_company
-        WHERE t_company_name = #{t_company_name}
-        AND t_company_no = #{t_company_no}
+        WHERE t_company_no = #{t_company_no}
         )
-        AND
-        <choose>
-            <when test="t_employee_state == 0">
-                t_employee_state = 0
-            </when>
-            <when test="t_employee_state == 1">
-                t_employee_state = 1
-            </when>
-            <when test="t_employee_state == 2">
-                t_employee_state = 2
-            </when>
-            <when test="t_employee_state == 3">
-                t_employee_state = 3
-            </when>
-            <otherwise>
-                t_employee_state >= 0
-            </otherwise>
-        </choose>
+        AND t_employee_state >= 0
         )
         AND t_employee.t_company_no = #{t_company_no}
         AND t_user.t_user_state != 0 order by t_user.t_user_name;
     </select>
-    <select id="showMyEmployeeFromOrganization" resultType="OrganizationEmplInfoDTO">
-        SELECT t_user.*, t_employee.*, t_organization.t_organization_name
-        FROM t_user
-        JOIN t_employee ON t_user.t_user_no = t_employee.t_user_no
-        JOIN t_organization ON t_employee.t_organization_no = t_organization.t_organization_no
-        WHERE t_user.t_user_no IN (
-        SELECT t_user_no
-        FROM t_employee
-        WHERE t_organization_no = (
-        SELECT t_organization_no
+    <select id="findOrganizationFromCompany" resultType="OrganizationDto">
+        SELECT ROW_NUMBER() OVER(ORDER BY t_organization_no) AS RowNum, *
         FROM t_organization
-        WHERE t_organization_name = #{t_organization_name}
-        AND t_organization_no = #{t_organization_no}
-        )
-        AND
-        <choose>
-            <when test="t_employee_state == 0">
-                t_employee_state = 0
-            </when>
-            <when test="t_employee_state == 1">
-                t_employee_state = 1
-            </when>
-            <when test="t_employee_state == 2">
-                t_employee_state = 2
-            </when>
-            <when test="t_employee_state == 3">
-                t_employee_state = 3
-            </when>
-            <otherwise>
-                t_employee_state >= 0
-            </otherwise>
-        </choose>
-        )
-        AND t_employee.t_organization_no = #{t_organization_no}
-        AND t_user.t_user_state != 0 order by t_user.t_user_name;
+        WHERE t_organization_parent = #{t_company_no}
+        ORDER BY t_organization_no;
     </select>
     <insert id="createOrganization">
         INSERT INTO t_organization (t_organization_name, t_organization_parent)
-        VALUES (#{t_organization_name}, #{t_company_no});
+        VALUES (#{t_organization_name}, #{t_organization_parent});
     </insert>
     <update id="updateOrganization">
         UPDATE t_organization SET t_organization_name = #{t_organization_name} WHERE t_organization_no = #{t_organization_no};
@@ -199,6 +43,12 @@
         VALUES
         (#{t_user_name}, #{t_user_phone}, #{t_user_email}, #{t_user_photo_path}, 1)
         RETURNING t_user_no;
+    </select>
+    <select id="findCompanyOrgaNoFromName">
+        SELECT t_organization_no
+        FROM t_organization
+        WHERE t_organization_name = #{t_organization_name}
+        AND t_organization_parent = -1;
     </select>
     <select id="registerEmployee">
         INSERT INTO t_employee
@@ -243,4 +93,5 @@
             t_employee_update_date = CURRENT_DATE
         WHERE t_employee_no = #{t_employee_no};
     </update>
+
 </mapper>
