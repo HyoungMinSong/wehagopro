@@ -33,36 +33,10 @@ public class OrganizationService {
     private static final String UPLOAD_DIR = "src/main/resources/static/images/";
 
 
-    // 조직도 목록
-    public List<OrganizationInitCompDTO> showMyWorkPlace(Integer t_user_no, Integer t_company_no) {
-        return organizationRepository.showMyWorkPlace(t_user_no, t_company_no);
-    }
-
-    // 조직도 회사 정보
-    public List<OrganizationCompInfoDTO> showMyCompanyInfo(Integer t_user_no, Integer t_company_no){
-        return organizationRepository.showMyCompanyInfo(t_user_no, t_company_no);
-    }
-
-    // 조직도 직원 상태
-    public OrganizationInitEmplDTO showMyEmployeeState(Integer pk, Integer index) {
-        if(index == -1) {
-            return organizationRepository.showMyEmployeeStateFromCompany(pk);
-        }else{
-            return organizationRepository.showMyEmployeeStateFromOrganization(pk);
-        }
-    }
-
-    // 조직도 직원 목록 (회사 or 부서 선택)
-    public List<OrganizationEmplInfoDTO> showMyEmployees(String nodeName, Integer pk, Integer index, Integer t_employee_state) {
-        List<OrganizationEmplInfoDTO> employeeList;
-        if (index == -1) {
-            employeeList = organizationRepository.showMyEmployeeFromCompany(nodeName, pk, t_employee_state);
-        } else {
-            employeeList =  organizationRepository.showMyEmployeeFromOrganization(nodeName, pk, t_employee_state);
-        }
-        Path uploadDir = Paths.get(UPLOAD_DIR).toAbsolutePath();
-        System.out.println("uploadDir : "+uploadDir);
-        System.out.println("uploadDir.toString()"+uploadDir.toString());
+    // 직원 목록 유저,직원,부서이름 from 회사번호
+    public List<OrganizationUserEmplDto> findUserEmplOrgaFromCompany(Integer t_company_no){
+        List<OrganizationUserEmplDto> employeeList;
+        employeeList = organizationRepository.findUserEmplOrgaFromCompany(t_company_no);
         // 각 객체의 t_user_photo_path에 String 추가
         employeeList.forEach(employee -> {
             if(!employee.getT_user_photo_path().contains("https")) {
@@ -71,9 +45,12 @@ public class OrganizationService {
                 employee.setT_user_photo_path(modifiedPath);
             }
         });
-
         return employeeList;
-    }
+    };
+    // 부서 목록 from 회사번호
+    public List<OrganizationDto> findOrganizationFromCompany(Integer t_company_no){
+        return organizationRepository.findOrganizationFromCompany(t_company_no);
+    };
 
     // 이미지 출력
     public Resource getImage(String imageName) throws IOException {
@@ -93,7 +70,7 @@ public class OrganizationService {
     public void editingOrganization(List<OrganizationEditDTO> insertDto, List<OrganizationEditDTO> updateDto, List<OrganizationEditDTO> deleteDto) {
         // 조직도 부서 추가
         for (OrganizationEditDTO dto : insertDto) {
-            organizationRepository.createOrganization(dto.getT_organization_name(), dto.getT_company_no());
+            organizationRepository.createOrganization(dto.getT_organization_name(), dto.getT_organization_parent());
         }
         // 조직도 부서 수정
         for (OrganizationEditDTO dto : updateDto) {
@@ -146,6 +123,10 @@ public class OrganizationService {
             +"&t_user_email="+dto.getT_user_email();
         System.out.println("longlink"+longLink);
         dto.setT_shortlink_link(longLink);
+        if(dto.getT_organization_no() == -1){
+            int c = organizationRepository.findCompanyOrgaNoFromName(dto.getT_organization_name());
+            dto.setT_organization_no(c);
+        }
         int a = organizationRepository.registerUser(dto);
         dto.setT_user_no(a);
         int b = organizationRepository.registerEmployee(dto);
@@ -159,7 +140,12 @@ public class OrganizationService {
         if(dto.getT_user_photo_path() != dto.getT_user_photo_path_prev()){
             organizationRepository.updateDetailUser(dto);
         }
+        if(dto.getT_organization_no() == -1){
+            int c = organizationRepository.findCompanyOrgaNoFromName(dto.getT_organization_name());
+            dto.setT_organization_no(c);
+        }
         organizationRepository.updateDetailEmployee(dto);
     }
+
 
 }
