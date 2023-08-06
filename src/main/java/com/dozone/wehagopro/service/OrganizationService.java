@@ -147,5 +147,10 @@ public class OrganizationService {
         organizationRepository.updateDetailEmployee(dto);
     }
 
+    public void updateEmployeeState(Integer t_employee_state, List<OrganizationSelectedDto> dto){
+        for(OrganizationSelectedDto dt : dto){
+            organizationRepository.updateEmployeeState(t_employee_state, dt.getT_employee_no());
+        }
+    }
 
 }

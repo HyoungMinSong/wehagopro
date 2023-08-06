@@ -37,7 +37,8 @@ public interface OrganizationMapper {
     void updateDetailUser(OrganizationEmplRegiDTO dto);
     // 직원 수정
     void updateDetailEmployee(OrganizationEmplRegiDTO dto);
-
+    // 직원 상태 수정
+    void updateEmployeeState(@Param("t_employee_state") Integer t_employee_state, @Param("t_employee_no") Integer t_employee_no);
 
 
 }

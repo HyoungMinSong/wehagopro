@@ -69,6 +69,9 @@ public class OrganizationRepository {
     public void updateDetailEmployee(OrganizationEmplRegiDTO dto){
         organizationMapper.updateDetailEmployee(dto);
     };
-
+    // 직원 상태 수정
+    public void updateEmployeeState(Integer t_employee_state, Integer t_employee_no){
+      organizationMapper.updateEmployeeState(t_employee_state, t_employee_no);
+    };
 
 }

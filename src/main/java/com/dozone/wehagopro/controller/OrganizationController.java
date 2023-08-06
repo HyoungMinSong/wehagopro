@@ -92,5 +92,10 @@ public class OrganizationController {
         mailService.sendMailToEmployee(dto.getEmployer(), dto.getCheckedEmployee());
     }
 
+    // 하단 바 체크한 직원 삭제
+    @PutMapping("/updateEmployeeState")
+    public void updateEmployeeState(@RequestBody OrganizationStateDto dto){
+        organizationService.updateEmployeeState(dto.getT_employee_state(), dto.getCheckedEmployee());
+    }
 
 }
