@@ -74,4 +74,5 @@ public class OrganizationRepository {
       organizationMapper.updateEmployeeState(t_employee_state, t_employee_no);
     };
 
+
 }

@@ -41,4 +41,6 @@ public interface OrganizationMapper {
     void updateEmployeeState(@Param("t_employee_state") Integer t_employee_state, @Param("t_employee_no") Integer t_employee_no);
 
 
+
+
 }
