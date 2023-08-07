@@ -93,6 +93,7 @@ public class SignUpService {
         int userNo = integerUserNo.intValue();
         dto.setUserNo(userNo);
         repository.updateEmployeeStateTo2(dto);
+        dto.setUserPw(passwordEncoder.encode(dto.getUserPw()));
         repository.updateInvitedUser(dto);
 
     }
