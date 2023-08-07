@@ -20,12 +20,16 @@ public class LoginService1 {
     private  final PasswordEncoder passwordEncoder;
 
     public Integer employeeStateCheck(int empNo){
-        System.out.println("serviceEmpNo = " + empNo);
+        System.out.println("employeeStateCheck = " + empNo);
         return loginrepository.employeeStateCheck(empNo);
     }
 
-    public ShortLinkLoginDto findRedirectLink(int empNo){
-        System.out.println("serviceEmpNo = " + empNo);
-        return loginrepository.findShortLinkByEmpNo(empNo);
+    public ShortLinkLoginDto shortLinkDeadLine(int empNo){
+        System.out.println("shortLinkDeadLine = " + empNo);
+        return loginrepository.shortLinkDeadLine(empNo);
     }
+
+
+
+
 }

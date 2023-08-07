@@ -28,5 +28,6 @@ public interface ItemMapper {
 
     Integer employeeStateCheck(int empNo);
 
-    ShortLinkLoginDto findShortLinkByEmpNo(int empNo);
+    ShortLinkLoginDto shortLinkDeadLine(int empNo);
+
 }

@@ -116,31 +116,43 @@ public class LoginController {
 
     @ResponseBody
     @GetMapping("/l/{llink}")
-    public ShortLinkLoginDto invite(@PathVariable String llink) {
+    public ShortLinkLoginDto invite1(@PathVariable String llink) {
         String emNo = llink.substring(2);
         int num = Integer.parseInt(emNo);
         Integer integerState = service.employeeStateCheck(num);
-        if (integerState != null) {
-            System.out.println("empo 널 아님11");
-            if (integerState.intValue() == 1) {
-                System.out.println("회원 대기상태11");
-                ShortLinkLoginDto shortLinkDto = service.findRedirectLink(num);
-                Date findSqlDate = shortLinkDto.getShortLinkDeadLine();
-                LocalDate localDate = shortLinkDto.getShortLinkDeadLine().toLocalDate();
-                if (findSqlDate == null) {
-                    System.out.println("SQL 값이 없음11");
-                } else if (findSqlDate.toLocalDate().compareTo(LocalDate.now()) < 0) {
-                    System.out.println("시간 만료11");
-                } else {
-                    shortLinkDto.setEmpNo(num);
-                    return shortLinkDto;
-                }
-            }
-            System.out.println("회원 대기 상태 아님11");
+        System.out.println("/링크 en뒤에 추출한 값 : " + num);
+        if (integerState.intValue() == 1) {
+            System.out.println("1 이다(대기상태)");
+        } else if (integerState.intValue() == -1) {
+            System.out.println("-1 이다(퇴사상태)");
+        } else if (integerState.intValue() == 0) {
+            System.out.println("0 이다(미가입상태");
+        } else if (integerState.intValue() == 2) {
+            System.out.println("2 이다(사용중인상태)");
+        } else {
+            System.out.println("3 이다(중지상태");
         }
-        return null;
+
+        ShortLinkLoginDto shortLinkDto = service.shortLinkDeadLine(num);
+        Date findSqlDate = shortLinkDto.getShortLinkDeadLine();
+        if (findSqlDate == null) {
+            System.out.println("DeadLine 값이 없음");
+            return null;
+        } else if (findSqlDate.toLocalDate().compareTo(LocalDate.now()) < 0) {
+            System.out.println("DeadLine 시간이 만료됨");
+            return null;
+        } else {
+            shortLinkDto.setEmpNo(num);
+            System.out.println("접속이 유효하다");
+            return shortLinkDto;
+        }
     }
+
 }
+
+
+
+
 
 
 
