@@ -3,20 +3,28 @@ package com.dozone.wehagopro.controller;
 import com.dozone.wehagopro.domain.Item2;
 import com.dozone.wehagopro.domain.Login;
 import com.dozone.wehagopro.domain.LoginForm;
+import com.dozone.wehagopro.domain.ShortLinkLoginDto;
+import com.dozone.wehagopro.repository.login.Loginrepository;
 import com.dozone.wehagopro.repository.mybatis.MyBatisItemRepository;
+import com.dozone.wehagopro.service.loginservice.LoginService1;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.java.Log;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cglib.core.Local;
 import org.springframework.web.bind.annotation.*;
 
 import javax.swing.*;
+import java.sql.Date;
+import java.time.LocalDate;
 import java.util.Map;
 
 @CrossOrigin(origins = "http://localhost:3000")
 @RestController
 public class LoginController {
     @Autowired
+    LoginService1 service;
+    @Autowired
     MyBatisItemRepository repository;
-
 
 
     @PostMapping("/login")
@@ -33,7 +41,7 @@ public class LoginController {
     }
 
     @PostMapping("/findid1")
-    public Login test2(@RequestBody Login login){
+    public Login test2(@RequestBody Login login) {
         System.out.println("아이디찾기1");
         String id = login.getT_user_id();
         System.out.println("id = " + id);
@@ -49,7 +57,7 @@ public class LoginController {
 
 
     @PostMapping("/findid2")
-    public Login test3(@RequestBody Login login){
+    public Login test3(@RequestBody Login login) {
         System.out.println("아이디찾기2");
         String id = login.getT_user_id();
         System.out.println("id = " + id);
@@ -64,7 +72,7 @@ public class LoginController {
     }
 
     @PostMapping("/findpw")
-    public Login test4(@RequestBody Login login){
+    public Login test4(@RequestBody Login login) {
         System.out.println("비밀번호찾기1");
         String id = login.getT_user_id();
         System.out.println("id = " + id);
@@ -76,21 +84,21 @@ public class LoginController {
         return findpwemail;
     }
 
-    @PostMapping("findpw2")
-    public Login test5(@RequestBody Login login){
-        System.out.println("비밀번호찾기2");
-        String id = login.getT_user_id();
-        System.out.println("id = " + id);
-        String phone = login.getT_user_phone();
-        System.out.println("phone = " + phone);
-
-        Login findpwphone = repository.findpwphone(id, phone);
-        System.out.println(findpwphone.getT_user_password() + findpwphone.getT_user_phone() + findpwphone.getT_user_id());
-        return findpwphone;
-    }
+//    @PostMapping("findpw2")
+//    public Login test5(@RequestBody Login login){
+//        System.out.println("비밀번호찾기2");
+//        String id = login.getT_user_id();
+//        System.out.println("id = " + id);
+//        String phone = login.getT_user_phone();
+//        System.out.println("phone = " + phone);
+//
+//        Login findpwphone = repository.findpwphone(id, phone);
+//        System.out.println(findpwphone.getT_user_password() + findpwphone.getT_user_phone() + findpwphone.getT_user_id());
+//        return findpwphone;
+//    }
 
     @PostMapping("updatepw")
-    public int test6(@RequestBody Login login){
+    public int test6(@RequestBody Login login) {
         System.out.println("비밀번호재설정");
         String id = login.getT_user_id();
         System.out.println("id = " + id);
@@ -103,7 +111,48 @@ public class LoginController {
     }
 
 
+    @Autowired
+    Loginrepository loginrepository;
+
+    @ResponseBody
+    @GetMapping("/l/{llink}")
+    public ShortLinkLoginDto invite1(@PathVariable String llink) {
+        String emNo = llink.substring(2);
+        int num = Integer.parseInt(emNo);
+        Integer integerState = service.employeeStateCheck(num);
+        System.out.println("/링크 en뒤에 추출한 값 : " + num);
+        if (integerState.intValue() == 1) {
+            System.out.println("1 이다(대기상태)");
+        } else if (integerState.intValue() == -1) {
+            System.out.println("-1 이다(퇴사상태)");
+        } else if (integerState.intValue() == 0) {
+            System.out.println("0 이다(미가입상태");
+        } else if (integerState.intValue() == 2) {
+            System.out.println("2 이다(사용중인상태)");
+        } else {
+            System.out.println("3 이다(중지상태");
+        }
+
+        ShortLinkLoginDto shortLinkDto = service.shortLinkDeadLine(num);
+        Date findSqlDate = shortLinkDto.getShortLinkDeadLine();
+        if (findSqlDate == null) {
+            System.out.println("DeadLine 값이 없음");
+            return null;
+        } else if (findSqlDate.toLocalDate().compareTo(LocalDate.now()) < 0) {
+            System.out.println("DeadLine 시간이 만료됨");
+            return null;
+        } else {
+            shortLinkDto.setEmpNo(num);
+            System.out.println("접속이 유효하다");
+            return shortLinkDto;
+        }
+    }
+
 }
+
+
+
+
 
 
 
