@@ -136,4 +136,8 @@ public class SignUpService {
         System.out.println("empNo = " + empNo + ", serviceNo = " + serviceNo);
         repository.updateUnPublish(empNo,serviceNo);
     }
+    public Integer findPublishedCount(int serviceNo, int comNo){
+        System.out.println("serviceNo = " + serviceNo + ", comNo = " + comNo);
+        return repository.findPublishedCount(serviceNo,comNo);
+    }
 }

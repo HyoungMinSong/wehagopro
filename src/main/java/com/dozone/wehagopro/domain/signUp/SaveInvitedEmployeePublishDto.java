@@ -7,4 +7,6 @@ public class SaveInvitedEmployeePublishDto {
 
     private int serviceNo;
     private int employeeNo;
+    private int comNo;
+    private int packCt;
 }

@@ -28,4 +28,5 @@ public interface SignUpMapper {
     List<UnPublishedUserDto> findUnPublishedUser(int param1, int param2);
     List<UnPublishedUserDto> findPublishedUser(int param1, int param2);
     void updateUnPublish(int param1, int param2);
+    Integer findPublishedCount (int param1, int param2);
 }

@@ -95,6 +95,7 @@
         t_service_no AS empNo
         from t_service_published
         where t_service_no = #{param1}
+        and t_service_recall = -1
         and t_employee_no
         in (select t_employee_no from t_employee where t_company_no = #{param2} ) GROUP BY t_service_no;
     </select>
@@ -152,4 +153,13 @@
     <update id="updateUnPublish">
         UPDATE t_service_published SET t_service_recall = 0, t_service_recall_date = CURRENT_DATE WHERE t_employee_no = #{param1} AND t_service_no = #{param2};
     </update>
+
+    <select id="findPublishedCount" resultType="java.lang.Integer">
+        select count(t_service_published_no) from t_service_published
+        where t_service_no = #{param1}
+        and t_service_recall = -1
+        and t_employee_no
+        in (select t_employee_no from t_employee where t_company_no = #{param2} );
+    </select>
+
 </mapper>

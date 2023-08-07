@@ -150,10 +150,20 @@ public class SignUpController {
 
     @ResponseBody
     @PostMapping("/saveinvitedemployeepublish")
-    public String saveInvitedEmployeePublish(@RequestBody SaveInvitedEmployeePublishDto dto) {
+    public int saveInvitedEmployeePublish(@RequestBody SaveInvitedEmployeePublishDto dto) {
         System.out.println("dto = " + dto);
-        service.saveInvitedEmployeePublish(dto.getEmployeeNo(), dto.getServiceNo());
-        return "배포성공";
+        Integer integerPC = service.findPublishedCount(dto.getServiceNo(), dto.getComNo());
+        if (integerPC != null){
+            System.out.println("integerPC = " + integerPC.intValue());
+            if (dto.getPackCt()>integerPC.intValue()){
+                service.saveInvitedEmployeePublish(dto.getEmployeeNo(), dto.getServiceNo());
+                return 0; //정상
+            } else {
+                return 1; //산 패키지 보다 초과
+            }
+        }
+        return 2; //에러
+
     }
 
     @ResponseBody

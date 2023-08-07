@@ -129,4 +129,9 @@ public class SignUpRepository {
         System.out.println("empNo = " + empNo + ", serviceNo = " + serviceNo);
         mapper.updateUnPublish(empNo,serviceNo);
     }
+
+    public Integer findPublishedCount(int serviceNo, int comNo){
+        System.out.println("serviceNo = " + serviceNo + ", comNo = " + comNo);
+        return mapper.findPublishedCount(serviceNo,comNo);
+    }
 }
