@@ -6,8 +6,11 @@ import com.dozone.wehagopro.service.common.ImageCache;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.Resource;
 import org.springframework.core.io.ResourceLoader;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
@@ -82,6 +85,33 @@ public class OrganizationService {
         }
     }
 
+    // 사진 삭제
+    public ResponseEntity<String> deleteEmployeePhoto(String fileName){
+        // 따옴표 제거
+        fileName = fileName.replace("\"", "");
+        System.out.println("fileName : "+fileName);
+        try {
+            // 이미지 경로를 상대 경로에서 절대 경로로 변환합니다.
+            Path uploadDir = Paths.get(UPLOAD_DIR).toAbsolutePath();
+            Path filePath = uploadDir.resolve(fileName);
+            System.out.println("filePath : "+filePath);
+            // 파일이 존재하는지 확인하고, 존재하면 삭제합니다.
+            if (Files.exists(filePath)) {
+                Files.delete(filePath);
+                // ImageCache에서도 해당 이미지를 삭제합니다. (옵션)
+                ImageCache.removeImage(fileName);
+                System.out.println("파일 존재");
+                return ResponseEntity.ok("Image deleted successfully.");
+            } else {
+                System.out.println("파일 없음");
+                return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Image not found.");
+            }
+        } catch (Exception e) {
+            System.out.println("에러 : "+e);
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Failed to delete the image.");
+        }
+    };
+
     // 사진 등록
     public PhotoDto uploadEmployeePhoto(MultipartFile file) {
         if (file.isEmpty()) {
@@ -145,6 +175,11 @@ public class OrganizationService {
             dto.setT_organization_no(c);
         }
         organizationRepository.updateDetailEmployee(dto);
+    }
+    public void updateEmployeeState(Integer t_employee_state, List<OrganizationSelectedDto> dto){
+        for(OrganizationSelectedDto dt : dto){
+            organizationRepository.updateEmployeeState(t_employee_state, dt.getT_employee_no());
+        }
     }
 
 

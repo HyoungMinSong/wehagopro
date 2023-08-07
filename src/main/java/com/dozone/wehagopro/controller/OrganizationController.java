@@ -2,16 +2,22 @@ package com.dozone.wehagopro.controller;
 
 import com.dozone.wehagopro.domain.*;
 import com.dozone.wehagopro.service.OrganizationService;
+import com.dozone.wehagopro.service.common.ImageCache;
 import com.dozone.wehagopro.service.common.MailService;
 import org.apache.ibatis.annotations.Param;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.Resource;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.mail.MessagingException;
 import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -40,6 +46,12 @@ public class OrganizationController {
     public Resource getImage(@PathVariable String imageName) throws IOException {
         System.out.println("요청왔다" + imageName);
         return organizationService.getImage(imageName);
+    }
+
+    // 이미지 삭제
+    @PostMapping("/deleteEmployeePhoto")
+    public ResponseEntity<String> deleteEmployeePhoto(@RequestBody String fileName) {
+        return organizationService.deleteEmployeePhoto(fileName);
     }
 
     // 이미지 저장
@@ -92,5 +104,10 @@ public class OrganizationController {
         mailService.sendMailToEmployee(dto.getEmployer(), dto.getCheckedEmployee());
     }
 
+    // 하단 바 체크한 직원 삭제
+    @PutMapping("/updateEmployeeState")
+    public void updateEmployeeState(@RequestBody OrganizationStateDto dto){
+        organizationService.updateEmployeeState(dto.getT_employee_state(), dto.getCheckedEmployee());
+    }
 
 }
