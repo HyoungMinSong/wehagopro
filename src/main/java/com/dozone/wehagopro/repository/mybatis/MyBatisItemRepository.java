@@ -41,4 +41,10 @@ public class MyBatisItemRepository{
     public int updatepw(String id, String npw){
         return itemMapper.updatepw(id, passwordEncoder.encode(npw));
     }
+
+    public int findusernobyidpw(String t_user_id, String t_user_password)
+    {return itemMapper.findusernobyidpw(t_user_id,t_user_password);}
+
+    public void updateusernobyempno(int t_user_no, int t_employee_no)
+    {itemMapper.updateusernobyempno(t_user_no,t_employee_no);}
 }
