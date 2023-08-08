@@ -144,6 +144,11 @@ public class OrganizationService {
         }
     }
 
+    // 이메일 중복 확인
+    public int checkRegisterEmail(String t_user_email){
+        return organizationRepository.checkRegisterEmail(t_user_email);
+    }
+
     // 직원 등록
     @Transactional
     public void makeRoomForANewEmployee(OrganizationEmplRegiDTO dto){

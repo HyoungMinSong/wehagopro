@@ -41,6 +41,10 @@ public class OrganizationRepository {
     public Integer findCompanyOrgaNoFromName(String t_organization_name){
         return organizationMapper.findCompanyOrgaNoFromName(t_organization_name);
     };
+    // 이메일 중복 확인
+    public int checkRegisterEmail(String t_user_email){
+        return organizationMapper.checkRegisterEmail(t_user_email);
+    }
     // 직원 등록
     public Integer registerEmployee(OrganizationEmplRegiDTO dto){
         return organizationMapper.registerEmployee(dto);

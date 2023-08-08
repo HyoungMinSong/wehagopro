@@ -19,6 +19,8 @@ public interface OrganizationMapper {
     void updateOrganization(@Param("t_organization_name") String t_organization_name, @Param("t_organization_no") Integer t_organization_no);
     // 조직도 부서 삭제
     void deleteOrganization(Integer t_organization_no);
+    // 이메일 중복 확인
+    int checkRegisterEmail(String t_user_email);
     // 임시 회원 등록
     int registerUser(OrganizationEmplRegiDTO dto);
     // 회사 이름의 부서 번호 찾아오기
