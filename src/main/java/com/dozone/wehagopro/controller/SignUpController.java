@@ -114,8 +114,8 @@ public class SignUpController {
         int comNo = dto.getComNo();
         List<CompanyServiceListDto> companyServiceListDto = service.companyServiceList(comNo);
         List<CountPublishedServiceAndEmpNoDto> countPublishedServiceAndEmpNoDtos = service.eachCompanyPublishedCount(companyServiceListDto, comNo);
-        for (CountPublishedServiceAndEmpNoDto countP:
-        countPublishedServiceAndEmpNoDtos) {
+        for (CountPublishedServiceAndEmpNoDto countP: countPublishedServiceAndEmpNoDtos) {
+            System.out.println("countP = " + countP);
             int serviceNo = countP.getEmpNo(); //서비스no임
             int publishedCount = countP.getPublishedCount();
             for (CompanyServiceListDto listDto:

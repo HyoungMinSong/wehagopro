@@ -112,6 +112,8 @@ public class SignUpService {
         List<CountPublishedServiceAndEmpNoDto> listDto = new ArrayList<CountPublishedServiceAndEmpNoDto>();
         for (CompanyServiceListDto dto : companyServiceListDto) {
             CountPublishedServiceAndEmpNoDto countPublishedServiceAndEmpNoDto = repository.eachCompanyPublishedCount(dto.getServiceNo(), comNo);
+            countPublishedServiceAndEmpNoDto.setEmpNo(dto.getServiceNo());
+            System.out.println("countPublishedServiceAndEmpNoDto = " + countPublishedServiceAndEmpNoDto);
             listDto.add(countPublishedServiceAndEmpNoDto);
         }
 

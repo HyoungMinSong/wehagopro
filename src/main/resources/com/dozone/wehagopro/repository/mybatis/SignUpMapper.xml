@@ -91,13 +91,12 @@
     </select>
 
     <select id="eachCompanyPublishedCount" resultType="CountPublishedServiceAndEmpNoDto">
-        select count(t_service_published_no) AS publishedCount,
-        t_service_no AS empNo
+        select count(t_service_published_no) AS publishedCount
         from t_service_published
         where t_service_no = #{param1}
         and t_service_recall = -1
         and t_employee_no
-        in (select t_employee_no from t_employee where t_company_no = #{param2} ) GROUP BY t_service_no;
+        in (select t_employee_no from t_employee where t_company_no = #{param2} )
     </select>
 
     <select id="findUnPublishedUser" resultType="UnPublishedUserDto">
