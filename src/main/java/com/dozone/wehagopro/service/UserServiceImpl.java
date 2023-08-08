@@ -137,19 +137,29 @@ public class UserServiceImpl implements UserService {
 
     @Transactional
     @Override
-    public PhotoDto updateUserInfo(MultipartFile file, String name, String id, String email, String phone) {
+    public PhotoDto updateUserInfo(MultipartFile file, boolean isDelete, String name, String id, String email, String phone) {
+        String defaultImgUrl = "https://static.wehago.com/imgs/dummy/@dummy_02.jpg";
         if (file == null) {
-            System.out.println("왜 없지?");
-
-            UserDto userDto = userMapper.findByUserId(id).get();
-            // 바뀐 유저 정보 DB에 저장
-            if(userMapper.findByUserId(id).isPresent()) {
-                userMapper.updateUser(null, name, id, email, phone);
+            if(isDelete) {
+                userMapper.updateUser(defaultImgUrl, name, id, email, phone);
+                UserDto UpdateUserDto = userMapper.findByUserId(id).get();
 
                 PhotoDto photoDto = new PhotoDto();
-                photoDto.setPhoto_name(userDto.getT_user_photo_name());
-                photoDto.setPhoto_path(userDto.getT_user_photo_path());
+                photoDto.setPhoto_name(UpdateUserDto.getT_user_photo_name());
+                photoDto.setPhoto_path(UpdateUserDto.getT_user_photo_path());
+                System.out.println("-----image path : " + UpdateUserDto.getT_user_photo_path());
                 return photoDto;
+            } else {
+                UserDto userDto = userMapper.findByUserId(id).get();
+                // 바뀐 유저 정보 DB에 저장
+                if(userMapper.findByUserId(id).isPresent()) {
+                    userMapper.updateUser(null, name, id, email, phone);
+
+                    PhotoDto photoDto = new PhotoDto();
+                    photoDto.setPhoto_name(userDto.getT_user_photo_name());
+                    photoDto.setPhoto_path(userDto.getT_user_photo_path());
+                    return photoDto;
+                }
             }
         }
 

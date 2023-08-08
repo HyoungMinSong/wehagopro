@@ -11,6 +11,6 @@ public interface UserService {
     public boolean logout(TokenDto tokenDto);
 //    public TokenDto reissueAccessToken(String refreshToken);
     public UserInfoDto getUserInfo(String accessToken);
-    public PhotoDto updateUserInfo(MultipartFile file, String name, String id, String email, String phone);
+    public PhotoDto updateUserInfo(MultipartFile file, boolean isDelete, String name, String id, String email, String phone);
     public boolean updateUserPassword(String id, String currentPassword, String newPassword);
 }
