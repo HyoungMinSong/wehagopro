@@ -60,6 +60,13 @@ public class OrganizationController {
         return organizationService.uploadEmployeePhoto(file);
     }
 
+    // 이메일 중복확인
+    @GetMapping("/checkRegisterEmail")
+    public int checkRegisterEmail(String t_user_email){
+        System.out.println("t_"+t_user_email);
+        return organizationService.checkRegisterEmail(t_user_email);
+    }
+
     // 직원 등록
     @PostMapping("/makeRoomForANewEmployee")
     public void makeRoomForANewEmployee(@RequestBody OrganizationEmplRegiDTO dto){

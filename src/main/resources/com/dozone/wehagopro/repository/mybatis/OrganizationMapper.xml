@@ -37,6 +37,11 @@
     <delete id="deleteOrganization">
         DELETE FROM t_organization WHERE t_organization_no = #{t_organization_no};
     </delete>
+    <select id="checkRegisterEmail">
+        SELECT count(*)
+        FROM t_user
+        WHERE t_user_email = #{t_user_email};
+    </select>
     <select id="registerUser">
         INSERT INTO t_user
         (t_user_name, t_user_phone, t_user_email, t_user_photo_path, t_user_state)
