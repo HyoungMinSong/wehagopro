@@ -48,12 +48,12 @@
     </select>
 
     
-    <select id="findusernobyidpw" >
-        select t_user_no from t_user where t_user_id = #{t_user_id} and t_user_password = #{t_user_password};
+    <select id="findusernopwbyid" resultType="UserNoPwDto">
+        select t_user_no, t_user_password from t_user where t_user_id = #{t_user_id};
     </select>
 
     <update id="updateusernobyempno">
-        update t_employee set t_user_no = #{t_user_no}, t_employee_state = 2 where t_employee_no = #{t_employee_no};
+        update t_employee set t_user_no = #{param1}, t_employee_state = 2 where t_employee_no = #{param2};
     </update>
 
 </mapper>
