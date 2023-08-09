@@ -55,5 +55,7 @@
     <update id="updateusernobyempno">
         update t_employee set t_user_no = #{t_user_no}, t_employee_state = 2 where t_employee_no = #{t_employee_no};
     </update>
-
+    <select id="findPackageByEmpNo">
+        SELECT t_package_no FROM t_company WHERE t_company_no = (SELECT t_company_no FROM t_employee WHERE t_employee_no = #{t_employee_no});
+    </select>
 </mapper>

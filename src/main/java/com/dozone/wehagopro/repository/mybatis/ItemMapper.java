@@ -34,4 +34,6 @@ public interface ItemMapper {
 
 
     void updateusernobyempno(@Param("t_user_no") int t_user_no, @Param("t_employee_no") int t_employee_no);
+
+    int findPackageByEmpNo(int t_employee_no);
 }
