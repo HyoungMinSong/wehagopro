@@ -121,16 +121,17 @@ public class LoginController {
         int num = Integer.parseInt(emNo);
         Integer integerState = service.employeeStateCheck(num);
         System.out.println("/링크 en뒤에 추출한 값 : " + num);
-        if (integerState.intValue() == 1) {
+        if (integerState.intValue() != 1) {
             System.out.println("1 이다(대기상태)");
-        } else if (integerState.intValue() == -1) {
-            System.out.println("-1 이다(퇴사상태)");
-        } else if (integerState.intValue() == 0) {
-            System.out.println("0 이다(미가입상태");
-        } else if (integerState.intValue() == 2) {
-            System.out.println("2 이다(사용중인상태)");
-        } else {
-            System.out.println("3 이다(중지상태");
+            return null;
+//        } else if (integerState.intValue() == -1) {
+//            System.out.println("-1 이다(퇴사상태)");
+//        } else if (integerState.intValue() == 0) {
+//            System.out.println("0 이다(미가입상태");
+//        } else if (integerState.intValue() == 2) {
+//            System.out.println("2 이다(사용중인상태)");
+//        } else {
+//            System.out.println("3 이다(중지상태");
         }
 
         ShortLinkLoginDto shortLinkDto = service.shortLinkDeadLine(num);
@@ -146,6 +147,13 @@ public class LoginController {
             System.out.println("접속이 유효하다");
             return shortLinkDto;
         }
+    }
+
+
+    @PostMapping("/updateinvite")
+    public void updateuserno(@RequestParam("userid") String userid,@RequestParam("password") String password,@RequestParam("empNo") int empNo ){
+        service.findusernobyidpw(userid, password, empNo);
+        System.out.println("컨트롤러업데이트메소드실행");
     }
 
 }

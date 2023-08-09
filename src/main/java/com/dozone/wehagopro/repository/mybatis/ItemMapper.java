@@ -30,4 +30,8 @@ public interface ItemMapper {
 
     ShortLinkLoginDto shortLinkDeadLine(int empNo);
 
+    int findusernobyidpw(@Param("t_user_id") String t_user_id, @Param("t_user_password") String t_user_password);
+
+
+    void updateusernobyempno(@Param("t_user_no") int t_user_no, @Param("t_employee_no") int t_employee_no);
 }

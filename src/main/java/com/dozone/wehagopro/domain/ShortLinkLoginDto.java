@@ -9,5 +9,5 @@ public class ShortLinkLoginDto {
     private String shortLink;
     private Date shortLinkDeadLine;
     private int empNo;
-    private int a;
+
 }
