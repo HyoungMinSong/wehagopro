@@ -17,7 +17,10 @@ public class SignUpRepository {
         System.out.println("repsitoryid = " + id);
         return mapper.idCheck(id);
     }
-
+    public String emailCheck(String email){
+        System.out.println("email = " + email);
+        return mapper.emailCheck(email);
+    }
     public String signUpUser(UserSignUpDto dto){
         System.out.println("리포지토리");
         System.out.println("dto = " + dto);

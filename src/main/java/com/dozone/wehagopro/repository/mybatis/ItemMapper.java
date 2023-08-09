@@ -3,6 +3,7 @@ package com.dozone.wehagopro.repository.mybatis;
 import com.dozone.wehagopro.domain.Item2;
 import com.dozone.wehagopro.domain.Login;
 import com.dozone.wehagopro.domain.ShortLinkLoginDto;
+import com.dozone.wehagopro.domain.UserNoPwDto;
 import com.dozone.wehagopro.domain.signUp.ShortLinkSignUpDto;
 import com.dozone.wehagopro.repository.ItemSearchCond;
 import com.dozone.wehagopro.repository.ItemUpdateDto;
@@ -30,10 +31,9 @@ public interface ItemMapper {
 
     ShortLinkLoginDto shortLinkDeadLine(int empNo);
 
-    int findusernobyidpw(@Param("t_user_id") String t_user_id, @Param("t_user_password") String t_user_password);
-
-
-    void updateusernobyempno(@Param("t_user_no") int t_user_no, @Param("t_employee_no") int t_employee_no);
+    UserNoPwDto findusernopwbyid(String t_user_id);
 
     int findPackageByEmpNo(int t_employee_no);
+  
+    void updateusernobyempno(int param1, int param2);
 }

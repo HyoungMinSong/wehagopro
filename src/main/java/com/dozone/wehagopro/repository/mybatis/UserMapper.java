@@ -18,4 +18,6 @@ public interface UserMapper {
     void updateUser(@Param("userPhoto") String userPhoto, @Param("userName") String userName,
                    @Param("userId") String userId, @Param("userEmail") String userEmail, @Param("userPhone") String userPhone);
     boolean updateUserPassword(@Param("userId") String userId, @Param("newPassword") String newPassword);
+
+    String findByUserEmail(@Param("userEmail") String userEmail);
 }

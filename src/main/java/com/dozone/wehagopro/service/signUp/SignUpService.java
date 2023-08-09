@@ -9,6 +9,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
+import java.util.LinkedList;
 import java.util.List;
 
 @RequiredArgsConstructor
@@ -22,6 +23,10 @@ public class SignUpService {
     public String checkId(String id) {
         System.out.println("serviceid = " + id);
         return repository.idCheck(id);
+    }
+    public String emailCheck(String email){
+        System.out.println("email = " + email);
+        return repository.emailCheck(email);
     }
 
     @Transactional
@@ -95,7 +100,12 @@ public class SignUpService {
         repository.updateEmployeeStateTo2(dto);
         dto.setUserPw(passwordEncoder.encode(dto.getUserPw()));
         repository.updateInvitedUser(dto);
-
+        List<Integer> serviceNoByServiceFree = repository.findServiceNoByServiceFree();
+        for (int num:
+                serviceNoByServiceFree) {
+            System.out.println("num = " + num);
+            repository.signUpServicePublished(empNo, num);
+        }
     }
 
     public List<CompanyServiceListDto> companyServiceList(int comNo){
@@ -143,4 +153,6 @@ public class SignUpService {
         System.out.println("serviceNo = " + serviceNo + ", comNo = " + comNo);
         return repository.findPublishedCount(serviceNo,comNo);
     }
+
+
 }

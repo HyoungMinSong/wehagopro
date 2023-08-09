@@ -2,6 +2,7 @@ package com.dozone.wehagopro.repository.mybatis;
 
 import com.dozone.wehagopro.domain.Item2;
 import com.dozone.wehagopro.domain.Login;
+import com.dozone.wehagopro.domain.UserNoPwDto;
 import com.dozone.wehagopro.repository.ItemSearchCond;
 import com.dozone.wehagopro.repository.ItemUpdateDto;
 import lombok.RequiredArgsConstructor;
@@ -42,8 +43,10 @@ public class MyBatisItemRepository{
         return itemMapper.updatepw(id, passwordEncoder.encode(npw));
     }
 
-    public int findusernobyidpw(String t_user_id, String t_user_password)
-    {return itemMapper.findusernobyidpw(t_user_id,t_user_password);}
+    public UserNoPwDto findusernopwbyid(String t_user_id)
+    {
+        System.out.println("t_user_id"+t_user_id);
+        return itemMapper.findusernopwbyid(t_user_id);}
 
     public void updateusernobyempno(int t_user_no, int t_employee_no)
     {itemMapper.updateusernobyempno(t_user_no,t_employee_no);}

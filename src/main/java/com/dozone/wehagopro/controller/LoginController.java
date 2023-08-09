@@ -4,6 +4,7 @@ import com.dozone.wehagopro.domain.Item2;
 import com.dozone.wehagopro.domain.Login;
 import com.dozone.wehagopro.domain.LoginForm;
 import com.dozone.wehagopro.domain.ShortLinkLoginDto;
+import com.dozone.wehagopro.domain.signUp.Loginupdatedto;
 import com.dozone.wehagopro.repository.login.Loginrepository;
 import com.dozone.wehagopro.repository.mybatis.MyBatisItemRepository;
 import com.dozone.wehagopro.service.loginservice.LoginService1;
@@ -121,7 +122,8 @@ public class LoginController {
         int num = Integer.parseInt(emNo);
         Integer integerState = service.employeeStateCheck(num);
         System.out.println("/링크 en뒤에 추출한 값 : " + num);
-        if (integerState.intValue() != 1) {
+        System.out.println("integerState: " + integerState);
+        if (integerState != 1) {
             System.out.println("1 이다(대기상태)");
             return null;
 //        } else if (integerState.intValue() == -1) {
@@ -151,9 +153,11 @@ public class LoginController {
 
 
     @PostMapping("/updateinvite")
-    public void updateuserno(@RequestParam("userid") String userid,@RequestParam("password") String password,@RequestParam("empNo") int empNo ){
-        service.findusernobyidpw(userid, password, empNo);
+    public void updateuserno(@RequestBody Loginupdatedto loginupdatedto){
+        System.out.println("loginupdatedto = " + loginupdatedto);
+        service.findusernopwbyid(loginupdatedto);
         System.out.println("컨트롤러업데이트메소드실행");
+        System.out.println("loginupdatedto = " + loginupdatedto);
     }
 
 }
