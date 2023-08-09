@@ -50,18 +50,11 @@ public class LoginService1 {
         itemRepository.updateusernobyempno(noPwDto.getT_user_no(), dto.getT_employee_no());
         System.out.println("찾은 유저넘버로 employee num을 업데이트 실행");
 
-        int t_package_no = itemRepository.findPackageByEmpNo(empNo);
-        List<Integer> serviceNo = repository.findServiceNoByPackageNo(t_package_no);
-        for (int a:
-                serviceNo) {
-            System.out.println("a = " + a);
-        }
-        List<Integer> serviceNoByServiceFree = repository.findServiceNoByServiceFree();
-        serviceNo.addAll(serviceNoByServiceFree);
+        List<Integer> serviceNo = repository.findServiceNoByServiceFree();
         for (int num:
                 serviceNo) {
             System.out.println("num = " + num);
-            repository.signUpServicePublished(empNo, num);
+            repository.signUpServicePublished(dto.getT_employee_no(), num);
         }
     }
 
