@@ -126,7 +126,6 @@ public class MailService {
         MimeMessageHelper helper = new MimeMessageHelper(mimeMessage, true);
         RegisterMail registerMail = new RegisterMail();
         String compName;
-
         for(OrganizationSelectedDto empl : dto){
             compName = organizationRepository.findCompanyNameFromCompanyNo(empl.getT_company_no());
             empl.setT_company_name(compName);
