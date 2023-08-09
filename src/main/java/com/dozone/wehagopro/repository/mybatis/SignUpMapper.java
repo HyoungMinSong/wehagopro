@@ -9,6 +9,7 @@ import java.util.List;
 public interface SignUpMapper {
 
     String idCheck(String id);
+    String emailCheck(String email);
     void userSave(UserSignUpDto dto);
     void companySave(CompanySignUpDto dto);
     void organizationSave(OrganizationSignUpDto dto);

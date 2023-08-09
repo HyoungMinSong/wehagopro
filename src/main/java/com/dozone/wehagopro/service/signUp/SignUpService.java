@@ -23,6 +23,10 @@ public class SignUpService {
         System.out.println("serviceid = " + id);
         return repository.idCheck(id);
     }
+    public String emailCheck(String email){
+        System.out.println("email = " + email);
+        return repository.emailCheck(email);
+    }
 
     @Transactional
     public void signUpInsert(SignUpDto dto) {
