@@ -13,6 +13,7 @@
         c.t_company_sectors,
         c.t_company_representative,
         c.t_company_call_num,
+        c.t_company_clasification,
         e.t_employee_date,
         e.t_employee_auth,
         e.t_employee_position,
@@ -29,7 +30,8 @@
     <select id="getUserServiceList" parameterType="String" resultType="com.dozone.wehagopro.domain.UserServiceDto">
         SELECT
         t_service.t_service_name,
-        t_service.t_service_main_icon_path
+        t_service.t_service_main_icon_path,
+        t_service.t_service_description
         FROM
         t_user
         JOIN

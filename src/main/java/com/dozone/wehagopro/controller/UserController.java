@@ -50,11 +50,12 @@ public class UserController {
 
     @PostMapping("/update/change_image")
     public PhotoDto updateUserInfo(@RequestParam(value = "profileImage", required = false) MultipartFile file,
+                                   @RequestParam("isDelete") boolean isDelete,
                                    @RequestParam("name") String name,
                                    @RequestParam("id") String id,
                                    @RequestParam("email") String email,
                                    @RequestParam("phone") String phone) {
-        return userService.updateUserInfo(file, name, id, email, phone);
+        return userService.updateUserInfo(file, isDelete, name, id, email, phone);
     }
 
     @PostMapping("/update_password")

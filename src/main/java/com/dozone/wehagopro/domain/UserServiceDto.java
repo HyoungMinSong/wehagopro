@@ -10,4 +10,5 @@ import lombok.NoArgsConstructor;
 public class UserServiceDto {
     private String t_service_name;
     private String t_service_main_icon_path;
+    private String t_service_description;
 }
