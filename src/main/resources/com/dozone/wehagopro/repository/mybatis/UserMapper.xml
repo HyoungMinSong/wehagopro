@@ -41,7 +41,7 @@
         JOIN
         t_service ON t_service_published.t_service_no = t_service.t_service_no
         WHERE
-        t_user.t_user_id = #{userId};
+        t_user.t_user_id = #{userId} AND t_service_published.t_service_recall = -1;
     </select>
     <update id="updateUser" parameterType="String">
         UPDATE t_user
@@ -62,4 +62,9 @@
         t_user_update_date = now()
         WHERE t_user_id = #{userId}
     </update>
+    <select id="findByUserEmail" parameterType="String" resultType="String">
+        SELECT t_user_email
+        FROM t_user
+        WHERE t_user_email = #{userEmail};
+    </select>
 </mapper>
