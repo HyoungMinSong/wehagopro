@@ -55,5 +55,4 @@
     <update id="updateusernobyempno">
         update t_employee set t_user_no = #{param1}, t_employee_state = 2 where t_employee_no = #{param2};
     </update>
-
 </mapper>

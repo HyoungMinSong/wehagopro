@@ -6,8 +6,10 @@ import com.dozone.wehagopro.service.OrganizationService;
 import com.dozone.wehagopro.service.UserService;
 import lombok.RequiredArgsConstructor;
 import org.apache.tomcat.util.http.parser.Authorization;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -48,20 +50,22 @@ public class UserController {
 //        return tokens;
 //    }
 
-    @PostMapping("/update/change_image")
-    public PhotoDto updateUserInfo(@RequestParam(value = "profileImage", required = false) MultipartFile file,
+    @PostMapping("/update/userInfo")
+    public PhotoDto updateUserInfo(@RequestHeader("Authorization") String accessToken,
+                                   @RequestParam(value = "profileImage", required = false) MultipartFile file,
                                    @RequestParam("isDelete") boolean isDelete,
                                    @RequestParam("name") String name,
                                    @RequestParam("id") String id,
                                    @RequestParam("email") String email,
                                    @RequestParam("phone") String phone) {
-        return userService.updateUserInfo(file, isDelete, name, id, email, phone);
+        return userService.updateUserInfo(accessToken, file, isDelete, name, id, email, phone);
     }
 
-    @PostMapping("/update_password")
-    public boolean updateUserPassword(@RequestParam("id") String id,
-                                        @RequestParam("currentPassword") String currentPassword,
-                                        @RequestParam("newPassword") String newPassword) {
-        return userService.updateUserPassword(id, currentPassword, newPassword);
+    @PostMapping("/update/userPassword")
+    public boolean updateUserPassword(@RequestHeader("Authorization") String accessToken,
+                                      @RequestParam("id") String id,
+                                      @RequestParam("currentPassword") String currentPassword,
+                                      @RequestParam("newPassword") String newPassword) {
+        return userService.updateUserPassword(accessToken, id, currentPassword, newPassword);
     }
 }

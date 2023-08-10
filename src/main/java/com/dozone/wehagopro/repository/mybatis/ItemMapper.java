@@ -32,7 +32,6 @@ public interface ItemMapper {
     ShortLinkLoginDto shortLinkDeadLine(int empNo);
 
     UserNoPwDto findusernopwbyid(String t_user_id);
-
-
+  
     void updateusernobyempno(int param1, int param2);
 }

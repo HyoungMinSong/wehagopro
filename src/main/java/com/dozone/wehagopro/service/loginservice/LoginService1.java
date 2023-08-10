@@ -6,6 +6,7 @@ import com.dozone.wehagopro.domain.signUp.Loginupdatedto;
 import com.dozone.wehagopro.domain.signUp.ShortLinkSignUpDto;
 import com.dozone.wehagopro.repository.login.Loginrepository;
 import com.dozone.wehagopro.repository.mybatis.MyBatisItemRepository;
+import com.dozone.wehagopro.repository.signUp.SignUpRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -13,6 +14,8 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.ResponseBody;
+
+import java.util.List;
 
 @RequiredArgsConstructor
 @Service
@@ -25,6 +28,8 @@ public class LoginService1 {
     MyBatisItemRepository itemRepository;
     @Autowired
     private  final PasswordEncoder passwordEncoder;
+    @Autowired
+    SignUpRepository repository;
 
     public Integer employeeStateCheck(int empNo){
         System.out.println("employeeStateCheck = " + empNo);
@@ -46,6 +51,12 @@ public class LoginService1 {
         itemRepository.updateusernobyempno(noPwDto.getT_user_no(), dto.getT_employee_no());
         System.out.println("찾은 유저넘버로 employee num을 업데이트 실행");
 
+        List<Integer> serviceNo = repository.findServiceNoByServiceFree();
+        for (int num:
+                serviceNo) {
+            System.out.println("num = " + num);
+            repository.signUpServicePublished(dto.getT_employee_no(), num);
+        }
     }
 
 

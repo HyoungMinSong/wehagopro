@@ -122,8 +122,16 @@ public class UserServiceImpl implements UserService {
     @Transactional
     @Override
     public UserInfoDto getUserInfo(String accessToken) {
+        if (!jwtTokenProvider.validateToken(accessToken.substring(7))) {
+            throw new IllegalArgumentException("유효하지 않은 토큰 입니다.");
+        }
+
         String userId = jwtTokenProvider.getUserId(accessToken.substring(7));
-        UserDto userDto = userMapper.findByUserId(userId).get();
+        UserDto userDto = userMapper.findByUserId(userId).orElse(null);
+
+        if (userDto == null) {
+            throw new IllegalArgumentException("유저 정보가 없습니다.");
+        }
         List<UserCompanyDto> userCompanyDtoList = userMapper.getUserCompanyList(userId);
         List<UserServiceDto> userServiceDtoList = userMapper.getUserServiceList(userId);
 
@@ -137,8 +145,17 @@ public class UserServiceImpl implements UserService {
 
     @Transactional
     @Override
-    public PhotoDto updateUserInfo(MultipartFile file, boolean isDelete, String name, String id, String email, String phone) {
+    public PhotoDto updateUserInfo(String accessToken, MultipartFile file, boolean isDelete, String name, String id, String email, String phone) {
+        if (!jwtTokenProvider.validateToken(accessToken.substring(7))) {
+            throw new IllegalArgumentException("유효하지 않은 토큰 입니다.");
+        }
+
         String defaultImgUrl = "https://static.wehago.com/imgs/dummy/@dummy_02.jpg";
+        if(userMapper.findByUserEmail(email) != null && userMapper.findByUserId(id).isPresent()) { // 중복된 이메일이 있으면
+            UserDto userDto = userMapper.findByUserId(id).get();
+            if(!userDto.getT_user_email().equals(email)) return null;
+        }
+
         if (file == null) {
             if(isDelete) {
                 userMapper.updateUser(defaultImgUrl, name, id, email, phone);
@@ -147,7 +164,6 @@ public class UserServiceImpl implements UserService {
                 PhotoDto photoDto = new PhotoDto();
                 photoDto.setPhoto_name(UpdateUserDto.getT_user_photo_name());
                 photoDto.setPhoto_path(UpdateUserDto.getT_user_photo_path());
-                System.out.println("-----image path : " + UpdateUserDto.getT_user_photo_path());
                 return photoDto;
             } else {
                 UserDto userDto = userMapper.findByUserId(id).get();
@@ -195,7 +211,11 @@ public class UserServiceImpl implements UserService {
 
     @Transactional
     @Override
-    public boolean updateUserPassword(String id, String currentPassword, String newPassword) {
+    public boolean updateUserPassword(String accessToken, String id, String currentPassword, String newPassword) {
+        if (!jwtTokenProvider.validateToken(accessToken.substring(7))) {
+            throw new IllegalArgumentException("유효하지 않은 토큰 입니다.");
+        }
+
         UserDto userDto = userMapper.findByUserId(id).get();
         if (!passwordEncoder.matches(currentPassword, userDto.getT_user_password())) {
             return false;
