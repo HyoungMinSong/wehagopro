@@ -20,6 +20,7 @@ public class LoginService1 {
 
     @Autowired
     Loginrepository loginrepository;
+
     @Autowired
     MyBatisItemRepository itemRepository;
     @Autowired
