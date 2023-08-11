@@ -1,5 +1,7 @@
 package com.dozone.wehagopro.service.loginservice;
 
+import com.dozone.wehagopro.domain.NoticeDto;
+import com.dozone.wehagopro.domain.NoticeSelectDto;
 import com.dozone.wehagopro.domain.ShortLinkLoginDto;
 import com.dozone.wehagopro.domain.UserNoPwDto;
 import com.dozone.wehagopro.domain.signUp.Loginupdatedto;
@@ -30,6 +32,8 @@ public class LoginService1 {
     private  final PasswordEncoder passwordEncoder;
     @Autowired
     SignUpRepository repository;
+    @Autowired
+    MyBatisItemRepository myBatisItemRepository;
 
     public Integer employeeStateCheck(int empNo){
         System.out.println("employeeStateCheck = " + empNo);
@@ -59,6 +63,15 @@ public class LoginService1 {
         }
     }
 
+    public void createNotice(NoticeDto noticeDto){
+        System.out.println("noticeDto = " + noticeDto);
+        itemRepository.createNotice(noticeDto.getT_user_name(), noticeDto.getT_company_no(), noticeDto.getT_notice_title(), noticeDto.getT_notice_content());
+    }
 
+    public List<NoticeSelectDto> selectNotice(int t_company_no){
 
+               List<NoticeSelectDto> dto = myBatisItemRepository.selectNotice(t_company_no);
+        System.out.println("dto = " + dto);
+        return dto;
+    }
 }

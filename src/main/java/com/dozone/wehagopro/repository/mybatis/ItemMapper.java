@@ -1,9 +1,6 @@
 package com.dozone.wehagopro.repository.mybatis;
 
-import com.dozone.wehagopro.domain.Item2;
-import com.dozone.wehagopro.domain.Login;
-import com.dozone.wehagopro.domain.ShortLinkLoginDto;
-import com.dozone.wehagopro.domain.UserNoPwDto;
+import com.dozone.wehagopro.domain.*;
 import com.dozone.wehagopro.domain.signUp.ShortLinkSignUpDto;
 import com.dozone.wehagopro.repository.ItemSearchCond;
 import com.dozone.wehagopro.repository.ItemUpdateDto;
@@ -34,4 +31,10 @@ public interface ItemMapper {
     UserNoPwDto findusernopwbyid(String t_user_id);
   
     void updateusernobyempno(int param1, int param2);
+
+    void createNotice(@Param("t_user_name") String t_user_name, @Param("t_company_no") int t_company_no, @Param("t_notice_title") String t_notice_title, @Param("t_notice_content") String t_notice_content);
+
+    List<NoticeSelectDto> selectNotice(int t_company_no);
+
+
 }
