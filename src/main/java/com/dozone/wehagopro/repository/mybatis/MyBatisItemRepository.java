@@ -58,5 +58,12 @@ public class MyBatisItemRepository {
         return itemMapper.selectNotice(t_company_no);
     }
 
+    public  void updateNotice(String t_notice_title, String t_notice_content, int t_notice_no) {
+        itemMapper.updateNotice(t_notice_title, t_notice_content, t_notice_no);
+    }
+
+    public void deleteNotice(int t_notice_no){
+        itemMapper.deleteNotice(t_notice_no);
+    }
 }
 

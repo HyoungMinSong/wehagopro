@@ -72,6 +72,17 @@
         AND t_notice_state = 0;
     </select>
 
+    <update id="updateNotice">
+        UPDATE t_notice
+        SET t_notice_title = #{t_notice_title}, t_notice_content = #{t_notice_content}
+        WHERE t_notice_no = #{t_notice_no};
+    </update>
+
+    <update id="deleteNotice">
+        UPDATE t_notice
+        SET t_notice_state = -1
+        WHERE t_notice_no = #{t_notice_no};
+    </update>
 
 
 </mapper>

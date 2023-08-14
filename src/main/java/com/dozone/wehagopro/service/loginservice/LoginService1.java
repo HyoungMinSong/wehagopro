@@ -32,8 +32,8 @@ public class LoginService1 {
     private  final PasswordEncoder passwordEncoder;
     @Autowired
     SignUpRepository repository;
-    @Autowired
-    MyBatisItemRepository myBatisItemRepository;
+
+
 
     public Integer employeeStateCheck(int empNo){
         System.out.println("employeeStateCheck = " + empNo);
@@ -69,9 +69,18 @@ public class LoginService1 {
     }
 
     public List<NoticeSelectDto> selectNotice(int t_company_no){
-
-               List<NoticeSelectDto> dto = myBatisItemRepository.selectNotice(t_company_no);
+        List<NoticeSelectDto> dto = itemRepository.selectNotice(t_company_no);
         System.out.println("dto = " + dto);
         return dto;
+    }
+
+    public void updateNotice(NoticeSelectDto noticeSelectDto){
+        System.out.println("noticeSelectDto = " + noticeSelectDto);
+        itemRepository.updateNotice(noticeSelectDto.getT_notice_title(), noticeSelectDto.getT_notice_content(), noticeSelectDto.getT_notice_no());
+    }
+
+    public void deleteNotice(NoticeSelectDto noticeSelectDto){
+        System.out.println("noticeSelectDto = " + noticeSelectDto);
+        itemRepository.deleteNotice(noticeSelectDto.getT_notice_no());
     }
 }
