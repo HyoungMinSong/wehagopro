@@ -12,6 +12,7 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
+import java.net.URLDecoder;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
@@ -121,19 +122,18 @@ public class UserServiceImpl implements UserService {
 
     @Transactional
     @Override
-    public UserInfoDto getUserInfo(String accessToken) {
-        if (!jwtTokenProvider.validateToken(accessToken.substring(7))) {
+    public UserInfoDto getUserInfo(Authentication authentication) {
+        if (authentication == null) {
             throw new IllegalArgumentException("유효하지 않은 토큰 입니다.");
         }
 
-        String userId = jwtTokenProvider.getUserId(accessToken.substring(7));
-        UserDto userDto = userMapper.findByUserId(userId).orElse(null);
+        UserDto userDto = userMapper.findByUserId(authentication.getName()).orElse(null);
 
         if (userDto == null) {
             throw new IllegalArgumentException("유저 정보가 없습니다.");
         }
-        List<UserCompanyDto> userCompanyDtoList = userMapper.getUserCompanyList(userId);
-        List<UserServiceDto> userServiceDtoList = userMapper.getUserServiceList(userId);
+        List<UserCompanyDto> userCompanyDtoList = userMapper.getUserCompanyList(authentication.getName());
+        List<UserServiceDto> userServiceDtoList = userMapper.getUserServiceList(authentication.getName());
 
         UserInfoDto userInfoDto = new UserInfoDto();
         userInfoDto.setUserDto(userDto);
@@ -145,8 +145,8 @@ public class UserServiceImpl implements UserService {
 
     @Transactional
     @Override
-    public PhotoDto updateUserInfo(String accessToken, MultipartFile file, boolean isDelete, String name, String id, String email, String phone) {
-        if (!jwtTokenProvider.validateToken(accessToken.substring(7))) {
+    public PhotoDto updateUserInfo(Authentication authentication, MultipartFile file, boolean isDelete, String name, String id, String email, String phone) {
+        if (authentication == null) {
             throw new IllegalArgumentException("유효하지 않은 토큰 입니다.");
         }
 
@@ -211,8 +211,8 @@ public class UserServiceImpl implements UserService {
 
     @Transactional
     @Override
-    public boolean updateUserPassword(String accessToken, String id, String currentPassword, String newPassword) {
-        if (!jwtTokenProvider.validateToken(accessToken.substring(7))) {
+    public boolean updateUserPassword(Authentication authentication, String id, String currentPassword, String newPassword) {
+        if (authentication == null) {
             throw new IllegalArgumentException("유효하지 않은 토큰 입니다.");
         }
 

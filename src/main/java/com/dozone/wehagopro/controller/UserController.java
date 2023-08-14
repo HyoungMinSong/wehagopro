@@ -34,13 +34,13 @@ public class UserController {
 
     @PostMapping("/login")
     public TokenDto login(@RequestBody UserLoginRequestDto request) {
-        TokenDto tokens = userService.login(request.getUserid(), request.getPassword());
-        return tokens;
+        TokenDto token = userService.login(request.getUserid(), request.getPassword());
+        return token;
     }
 
     @GetMapping("/data")
-    public UserInfoDto loginUserData(@RequestHeader("Authorization") String accessToken) {
-        UserInfoDto userInfoDto = userService.getUserInfo(accessToken);
+    public UserInfoDto loginUserData(final Authentication authentication) {
+        UserInfoDto userInfoDto = userService.getUserInfo(authentication);
         return userInfoDto;
     }
 
@@ -51,21 +51,21 @@ public class UserController {
 //    }
 
     @PostMapping("/update/userInfo")
-    public PhotoDto updateUserInfo(@RequestHeader("Authorization") String accessToken,
+    public PhotoDto updateUserInfo(final Authentication authentication,
                                    @RequestParam(value = "profileImage", required = false) MultipartFile file,
                                    @RequestParam("isDelete") boolean isDelete,
                                    @RequestParam("name") String name,
                                    @RequestParam("id") String id,
                                    @RequestParam("email") String email,
                                    @RequestParam("phone") String phone) {
-        return userService.updateUserInfo(accessToken, file, isDelete, name, id, email, phone);
+        return userService.updateUserInfo(authentication, file, isDelete, name, id, email, phone);
     }
 
     @PostMapping("/update/userPassword")
-    public boolean updateUserPassword(@RequestHeader("Authorization") String accessToken,
+    public boolean updateUserPassword(final Authentication authentication,
                                       @RequestParam("id") String id,
                                       @RequestParam("currentPassword") String currentPassword,
                                       @RequestParam("newPassword") String newPassword) {
-        return userService.updateUserPassword(accessToken, id, currentPassword, newPassword);
+        return userService.updateUserPassword(authentication, id, currentPassword, newPassword);
     }
 }

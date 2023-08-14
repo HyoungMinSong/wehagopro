@@ -51,7 +51,7 @@ public class LoginController {
         System.out.println("name = " + name);
 
         Login findidemail = repository.findidemail(email, name);
-        System.out.println(findidemail.getT_user_id() + findidemail.getT_user_email() + findidemail.getT_user_name());
+        System.out.println(findidemail);
         return findidemail;
     }
 
