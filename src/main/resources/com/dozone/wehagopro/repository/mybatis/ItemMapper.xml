@@ -53,6 +53,25 @@
     </select>
 
     <update id="updateusernobyempno">
-        update t_employee set t_user_no = #{param1}, t_employee_state = 2 where t_employee_no = #{param2};
+        update t_employee
+        set t_user_no = #{param1}, t_employee_state = 2
+        where t_employee_no = #{param2};
     </update>
+
+    <insert id="createNotice">
+        INSERT INTO t_notice
+        (t_user_name, t_company_no, t_notice_title, t_notice_content)
+        VALUES
+        (#{t_user_name}, #{t_company_no}, #{t_notice_title}, #{t_notice_content});
+    </insert>
+
+    <select id="selectNotice" resultType="NoticeSelectDto">
+        SELECT *
+        FROM t_notice
+        WHERE t_company_no = #{t_company_no}
+        AND t_notice_state = 0;
+    </select>
+
+
+
 </mapper>

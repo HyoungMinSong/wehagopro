@@ -1,9 +1,6 @@
 package com.dozone.wehagopro.controller;
 
-import com.dozone.wehagopro.domain.Item2;
-import com.dozone.wehagopro.domain.Login;
-import com.dozone.wehagopro.domain.LoginForm;
-import com.dozone.wehagopro.domain.ShortLinkLoginDto;
+import com.dozone.wehagopro.domain.*;
 import com.dozone.wehagopro.domain.signUp.Loginupdatedto;
 import com.dozone.wehagopro.repository.login.Loginrepository;
 import com.dozone.wehagopro.repository.mybatis.MyBatisItemRepository;
@@ -12,11 +9,13 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.java.Log;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cglib.core.Local;
+import org.springframework.security.core.parameters.P;
 import org.springframework.web.bind.annotation.*;
 
 import javax.swing.*;
 import java.sql.Date;
 import java.time.LocalDate;
+import java.util.List;
 import java.util.Map;
 
 @CrossOrigin(origins = "http://localhost:3000")
@@ -160,6 +159,18 @@ public class LoginController {
         System.out.println("loginupdatedto = " + loginupdatedto);
     }
 
+    @PostMapping("/createNotice")
+    public void createNotice(@RequestBody NoticeDto noticeDto){
+        System.out.println("noticeDto = " + noticeDto);
+        service.createNotice(noticeDto);
+
+    }
+
+    @GetMapping("/selectNotice")
+    public List<NoticeSelectDto> selectNotice(int t_company_no){
+        System.out.println("t_company_no = " + t_company_no);
+        return service.selectNotice(t_company_no);
+    }
 }
 
 
