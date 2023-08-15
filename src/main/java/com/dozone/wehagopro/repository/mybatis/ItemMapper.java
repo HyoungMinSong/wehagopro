@@ -7,6 +7,7 @@ import com.dozone.wehagopro.repository.ItemUpdateDto;
 import lombok.extern.java.Log;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
+import org.springframework.security.core.parameters.P;
 
 import java.util.List;
 
@@ -36,5 +37,8 @@ public interface ItemMapper {
 
     List<NoticeSelectDto> selectNotice(int t_company_no);
 
+    void updateNotice(@Param("t_notice_title") String t_notice_title, @Param("t_notice_content") String t_notice_content, @Param("t_notice_no") int t_notice_no);
+
+    void deleteNotice(int t_notice_no);
 
 }

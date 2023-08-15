@@ -196,6 +196,18 @@ public class LoginController {
         System.out.println("t_company_no = " + t_company_no);
         return service.selectNotice(t_company_no);
     }
+
+    @PostMapping("/updateNotice")
+    public void updateNotice(@RequestBody NoticeSelectDto noticeSelectDto){
+        System.out.println("noticeSelectDto = " + noticeSelectDto);
+        service.updateNotice(noticeSelectDto);
+    }
+
+    @PostMapping("/deleteNotice")
+    public void deleteNotice(@RequestBody NoticeSelectDto noticeSelectDto){
+        System.out.println("noticeSelectDto = " + noticeSelectDto);
+        service.deleteNotice(noticeSelectDto);
+    }
 }
 
 
