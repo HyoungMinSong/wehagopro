@@ -4,6 +4,7 @@ import com.dozone.wehagopro.domain.*;
 import com.dozone.wehagopro.domain.signUp.Loginupdatedto;
 import com.dozone.wehagopro.repository.login.Loginrepository;
 import com.dozone.wehagopro.repository.mybatis.MyBatisItemRepository;
+import com.dozone.wehagopro.service.common.PhoneService;
 import com.dozone.wehagopro.service.loginservice.LoginService1;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.java.Log;
@@ -25,6 +26,8 @@ public class LoginController {
     LoginService1 service;
     @Autowired
     MyBatisItemRepository repository;
+    @Autowired
+    PhoneService memberService;
 
 
     @PostMapping("/login")
@@ -59,17 +62,39 @@ public class LoginController {
     @PostMapping("/findid2")
     public Login test3(@RequestBody Login login) {
         System.out.println("아이디찾기2");
-        String id = login.getT_user_id();
-        System.out.println("id = " + id);
         String phone = login.getT_user_phone();
         System.out.println("phone = " + phone);
         String name = login.getT_user_name();
         System.out.println("name = " + name);
 
-        Login findidphone = repository.findidphone(id, phone, name);
-        System.out.println(findidphone.getT_user_id() + findidphone.getT_user_phone() + findidphone.getT_user_name());
+        Login findidphone = repository.findidphone(name, phone);
+        System.out.println(findidphone.getT_user_phone() + findidphone.getT_user_name());
         return findidphone;
     }
+
+    @PostMapping("/phoneAuth")
+    public String phoneAuth(@RequestBody String email) {
+
+        System.out.println("email : "+email);
+        String code = memberService.sendRandomMessage(email);
+
+        return code;
+    }
+
+//    @PostMapping("phoneAuthOk")
+//    public Boolean phoneAuthOk() {
+//        String rand = (String) session.getAttribute("rand");
+//        String code = (String) request.getParameter("code");
+//
+//        System.out.println(rand + " : " + code);
+//
+//        if (rand.equals(code)) {
+//            session.removeAttribute("rand");
+//            return false;
+//        }
+//
+//        return true;
+//    }
 
     @PostMapping("/findpw")
     public Login test4(@RequestBody Login login) {

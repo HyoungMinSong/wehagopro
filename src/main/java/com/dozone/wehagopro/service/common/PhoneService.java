@@ -8,6 +8,7 @@ import java.util.Random;
 public class PhoneService {
 
     public String sendRandomMessage(String tel) {
+        System.out.println("tel : "+tel);
         Naver_Sens_V2 message = new Naver_Sens_V2();
         Random rand = new Random();
         String numStr = "";
@@ -16,6 +17,7 @@ public class PhoneService {
             numStr += ran;
         }
         System.out.println("회원가입 문자 인증 => " + numStr);
+        tel.replace("\"","");
 
         message.send_msg(tel, numStr);
 

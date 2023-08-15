@@ -36,6 +36,7 @@ public class Naver_Sens_V2 {
         // current timestamp (epoch)
         String timestamp = Long.toString(System.currentTimeMillis());
         requestUrl += serviceId + requestUrlType;
+        // https://sens.apigw.ntruss.com/sms/v2/services/ncp:sms:kr:313669182847:wehagopro/messages
         String apiUrl = hostNameUrl + requestUrl;
 
         // JSON 을 활용한 body data 생성
@@ -44,8 +45,9 @@ public class Naver_Sens_V2 {
         JSONArray  toArr = new JSONArray();
 
         // 난수와 함께 전송
-        toJson.put("content","Going 본인인증 ["+rand+"]");
-        toJson.put("to",tel);
+        toJson.put("content","WEHAGO 인증번호 ["+rand+"]");
+        String cleanPhoneNumber = tel.replace("\"", "").replace("\\", "");
+        toJson.put("to", cleanPhoneNumber);
         toArr.add(toJson);
 
         // 메시지 Type (sms | lms)
@@ -55,6 +57,7 @@ public class Naver_Sens_V2 {
 
         // 발신번호 * 사전에 인증/등록된 번호만 사용할 수 있습니다.
         bodyJson.put("from","01093704871");
+        bodyJson.put("content","인증번호 ["+rand+"]");
         bodyJson.put("messages", toArr);
 
         String body = bodyJson.toJSONString();

@@ -25,8 +25,8 @@ public class MyBatisItemRepository {
         return itemMapper.findidemail(email, name);
     }
 
-    public Login findidphone(String username, String phone, String id) {
-        return itemMapper.findidphone(username, phone, id);
+    public Login findidphone(String username, String phone) {
+        return itemMapper.findidphone(username, phone);
     }
 
     public Login findpwemail(String id, String email) {
