@@ -61,10 +61,10 @@ public class OrganizationController {
     }
 
     // 이메일 중복확인
-    @GetMapping("/checkRegisterEmail")
-    public int checkRegisterEmail(String t_user_email){
-        System.out.println("t_"+t_user_email);
-        return organizationService.checkRegisterEmail(t_user_email);
+    @GetMapping("/checkRegister")
+    public int checkRegister(String t_user_email, String t_user_phone){
+        System.out.println("t_"+t_user_email+"  "+t_user_phone);
+        return organizationService.checkRegister(t_user_email, t_user_phone);
     }
 
     // 직원 등록

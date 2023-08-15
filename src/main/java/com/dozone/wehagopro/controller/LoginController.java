@@ -81,21 +81,6 @@ public class LoginController {
         return code;
     }
 
-//    @PostMapping("phoneAuthOk")
-//    public Boolean phoneAuthOk() {
-//        String rand = (String) session.getAttribute("rand");
-//        String code = (String) request.getParameter("code");
-//
-//        System.out.println(rand + " : " + code);
-//
-//        if (rand.equals(code)) {
-//            session.removeAttribute("rand");
-//            return false;
-//        }
-//
-//        return true;
-//    }
-
     @PostMapping("/findpw")
     public Login test4(@RequestBody Login login) {
         System.out.println("비밀번호찾기1");
@@ -109,18 +94,18 @@ public class LoginController {
         return findpwemail;
     }
 
-//    @PostMapping("findpw2")
-//    public Login test5(@RequestBody Login login){
-//        System.out.println("비밀번호찾기2");
-//        String id = login.getT_user_id();
-//        System.out.println("id = " + id);
-//        String phone = login.getT_user_phone();
-//        System.out.println("phone = " + phone);
-//
-//        Login findpwphone = repository.findpwphone(id, phone);
-//        System.out.println(findpwphone.getT_user_password() + findpwphone.getT_user_phone() + findpwphone.getT_user_id());
-//        return findpwphone;
-//    }
+    @PostMapping("findpw2")
+    public Login test5(@RequestBody Login login){
+        System.out.println("비밀번호찾기2");
+        String id = login.getT_user_id();
+        System.out.println("id = " + id);
+        String phone = login.getT_user_phone();
+        System.out.println("phone = " + phone);
+
+        Login findpwphone = repository.findpwphone(id, phone);
+        System.out.println(findpwphone.getT_user_password() + findpwphone.getT_user_phone() + findpwphone.getT_user_id());
+        return findpwphone;
+    }
 
     @PostMapping("updatepw")
     public int test6(@RequestBody Login login) {

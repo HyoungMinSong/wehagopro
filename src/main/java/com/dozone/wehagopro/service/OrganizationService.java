@@ -144,9 +144,17 @@ public class OrganizationService {
         }
     }
 
-    // 이메일 중복 확인
-    public int checkRegisterEmail(String t_user_email){
-        return organizationRepository.checkRegisterEmail(t_user_email);
+    // 이메일, 폰 중복 확인
+    public int checkRegister(String t_user_email, String t_user_phone){
+        int emailNum = organizationRepository.checkRegisterEmail(t_user_email);
+        int phoneNum = organizationRepository.checkRegisterPhone(t_user_phone);
+        if(phoneNum >0){
+            return 1;
+        }else if(emailNum >0){
+            return 2;
+        }else{
+            return 0;
+        }
     }
 
     // 직원 등록
