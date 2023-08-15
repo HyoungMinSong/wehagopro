@@ -45,6 +45,10 @@ public class OrganizationRepository {
     public int checkRegisterEmail(String t_user_email){
         return organizationMapper.checkRegisterEmail(t_user_email);
     }
+    // 핸드폰 번호 중복 확인
+    public int checkRegisterPhone(String t_user_phone){
+        return organizationMapper.checkRegisterPhone(t_user_phone);
+    }
     // 직원 등록
     public Integer registerEmployee(OrganizationEmplRegiDTO dto){
         return organizationMapper.registerEmployee(dto);

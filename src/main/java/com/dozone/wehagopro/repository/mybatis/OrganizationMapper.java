@@ -21,6 +21,8 @@ public interface OrganizationMapper {
     void deleteOrganization(Integer t_organization_no);
     // 이메일 중복 확인
     int checkRegisterEmail(String t_user_email);
+    // 핸드폰 번호 중복 확인
+    int checkRegisterPhone(String t_user_phone);
     // 임시 회원 등록
     int registerUser(OrganizationEmplRegiDTO dto);
     // 회사 이름의 부서 번호 찾아오기
