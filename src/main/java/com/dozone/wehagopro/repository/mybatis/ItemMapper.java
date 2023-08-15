@@ -17,7 +17,7 @@ public interface ItemMapper {
 
     Login findidemail(@Param("email") String email, @Param("name") String name);
 
-    Login findidphone(String param1, String param2, String param3);
+    Login findidphone(String param1, String param2);
 
     Login findpwemail(String param1, String param2);
 

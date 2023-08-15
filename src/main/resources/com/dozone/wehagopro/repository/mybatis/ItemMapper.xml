@@ -19,7 +19,7 @@
     <select id="findidphone" parameterType="String" resultType="Login">
         SELECT t_user_id FROM t_user
         WHERE t_user_phone = #{param2}
-        AND t_user_name = #{param3}
+        AND t_user_name = #{param1}
     </select>
 
     <select id="findpwemail" parameterType="String" resultType="Login">
