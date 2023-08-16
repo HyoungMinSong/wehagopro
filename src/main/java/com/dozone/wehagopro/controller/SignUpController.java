@@ -26,7 +26,7 @@ public class SignUpController {
     @PostMapping("/idcheck")
     public UserCheckResponseDto idCheck(@RequestBody User user) {
         System.out.println("id = " + user.getId());
-        return new UserCheckResponseDto(service.checkId(user.getId()),service.emailCheck(user.getEmail()));
+        return new UserCheckResponseDto(service.checkId(user.getId()),service.emailCheck(user.getEmail()), service.phoneNumberCheck(user.getPhoneNumber()));
     }
 
     @ResponseBody

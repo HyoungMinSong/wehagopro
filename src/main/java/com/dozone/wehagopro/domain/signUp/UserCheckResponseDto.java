@@ -6,9 +6,12 @@ import lombok.Data;
 public class UserCheckResponseDto {
     private String checkId;
     private String checkEmail;
+    private String checkPhoneNumber;
 
-    public UserCheckResponseDto(String checkId, String checkEmail) {
+    public UserCheckResponseDto(String checkId, String checkEmail, String checkPhoneNumber) {
         this.checkId = checkId;
         this.checkEmail = checkEmail;
+        this.checkPhoneNumber = checkPhoneNumber;
     }
+
 }

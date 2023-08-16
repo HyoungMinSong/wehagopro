@@ -29,6 +29,11 @@ public class SignUpService {
         return repository.emailCheck(email);
     }
 
+    public String phoneNumberCheck(String phoneNumber){
+        System.out.println("phoneNumber = " + phoneNumber);
+        return repository.phoneNumberCheck(phoneNumber);
+    }
+
     @Transactional
     public void signUpInsert(SignUpDto dto) {
         System.out.println("서비스");

@@ -7,5 +7,6 @@ public class User {
 
     private String id;
     private String email;
+    private String phoneNumber;
     private String companyName;
 }

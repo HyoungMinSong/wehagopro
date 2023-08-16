@@ -10,6 +10,7 @@ public interface SignUpMapper {
 
     String idCheck(String id);
     String emailCheck(String email);
+    String phoneNumberCheck(String phoneNumber);
     void userSave(UserSignUpDto dto);
     void companySave(CompanySignUpDto dto);
     void organizationSave(OrganizationSignUpDto dto);
