@@ -8,16 +8,17 @@
     <select id="getUserCompanyList" parameterType="String" resultType="com.dozone.wehagopro.domain.UserCompanyDto">
         SELECT
         c.t_company_no,
-        c.t_company_name,
-        c.t_company_business,
-        c.t_company_sectors,
-        c.t_company_representative,
-        c.t_company_call_num,
-        c.t_company_clasification,
-        e.t_employee_date,
-        e.t_employee_auth,
-        e.t_employee_position,
-        e.t_employee_duty
+        MAX(c.t_company_name) AS t_company_name,
+        MAX(c.t_company_business) AS t_company_business,
+        MAX(c.t_company_sectors) AS t_company_sectors,
+        MAX(c.t_company_representative) AS t_company_representative,
+        MAX(c.t_company_call_num) AS t_company_call_num,
+        MAX(c.t_company_clasification) AS t_company_clasification,
+        MAX(e.t_employee_no) AS t_employee_no,
+        MAX(e.t_employee_date) AS t_employee_date,
+        MAX(e.t_employee_auth) AS t_employee_auth,
+        MAX(e.t_employee_position) AS t_employee_position,
+        MAX(e.t_employee_duty) AS t_employee_duty
         FROM
         t_user u
         JOIN
@@ -25,10 +26,13 @@
         JOIN
         t_company c ON e.t_company_no = c.t_company_no
         WHERE
-        u.t_user_id = #{userId};
+        u.t_user_id = #{userId}
+        GROUP BY
+        c.t_company_no;
     </select>
     <select id="getUserServiceList" parameterType="String" resultType="com.dozone.wehagopro.domain.UserServiceDto">
         SELECT
+        t_employee.t_employee_no,
         t_service.t_service_name,
         t_service.t_service_main_icon_path,
         t_service.t_service_description
@@ -66,5 +70,10 @@
         SELECT t_user_email
         FROM t_user
         WHERE t_user_email = #{userEmail};
+    </select>
+    <select id="findByUserPhone" parameterType="String" resultType="String">
+        SELECT t_user_phone
+        FROM t_user
+        WHERE t_user_phone = #{userPhone};
     </select>
 </mapper>
