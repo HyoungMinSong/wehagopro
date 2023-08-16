@@ -17,6 +17,7 @@ public class UserCompanyDto {
     private String t_company_sectors;
     private String t_company_representative;
     private String t_company_call_num;
+    private String t_employee_no;
     private String t_employee_auth;
     private Date t_employee_date;
     private String t_employee_duty;

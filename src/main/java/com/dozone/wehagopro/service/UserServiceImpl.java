@@ -151,9 +151,15 @@ public class UserServiceImpl implements UserService {
         }
 
         String defaultImgUrl = "https://static.wehago.com/imgs/dummy/@dummy_02.jpg";
-        if(userMapper.findByUserEmail(email) != null && userMapper.findByUserId(id).isPresent()) { // 중복된 이메일이 있으면
+        if(userMapper.findByUserId(id).isPresent()) {
             UserDto userDto = userMapper.findByUserId(id).get();
-            if(!userDto.getT_user_email().equals(email)) return null;
+            PhotoDto photoDto1 = new PhotoDto("duplicatedEmail", "duplicatedEmail");
+            PhotoDto photoDto2 = new PhotoDto("duplicatedPhone", "duplicatedPhone");
+            if(userMapper.findByUserEmail(email) != null && !userDto.getT_user_email().equals(email)) { // 중복된 이메일이 있으면
+                return photoDto1;
+            } else if(userMapper.findByUserPhone(phone) != null && !userDto.getT_user_phone().equals(phone)) { // 중복된 휴대전화번호가 있으면
+                return photoDto2;
+            }
         }
 
         if (file == null) {

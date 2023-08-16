@@ -20,4 +20,5 @@ public interface UserMapper {
     boolean updateUserPassword(@Param("userId") String userId, @Param("newPassword") String newPassword);
 
     String findByUserEmail(@Param("userEmail") String userEmail);
+    String findByUserPhone(@Param("userPhone") String userPhone);
 }
