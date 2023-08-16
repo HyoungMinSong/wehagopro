@@ -105,7 +105,26 @@
     </update>
     <update id="updateEmployeeState">
         UPDATE t_employee
-        SET t_employee_state = #{t_employee_state}
+        SET
+        t_employee_state = #{t_employee_state},
+        t_employee_delete_date =
+        <choose>
+            <when test="t_employee_state == -1">
+                CURRENT_DATE
+            </when>
+            <otherwise>
+                t_employee_delete_date
+            </otherwise>
+        </choose>,
+        t_employee_update_date =
+        <choose>
+            <when test="t_employee_state != -1">
+                CURRENT_DATE
+            </when>
+            <otherwise>
+                t_employee_update_date
+            </otherwise>
+        </choose>
         WHERE t_employee_no = #{t_employee_no};
     </update>
 </mapper>
