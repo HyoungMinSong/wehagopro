@@ -203,7 +203,7 @@ public class LoginController {
         service.deleteNotice(noticeSelectDto);
     }
 
-    @PostMapping("/withDrawal")
+    @PutMapping("/withDrawal")
     public void withdrawal(@RequestBody WithdrawalDto withdrawalDto){
         System.out.println("withdrawalDto = " + withdrawalDto);
         service.withdrawal(withdrawalDto);
