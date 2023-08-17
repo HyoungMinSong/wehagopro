@@ -30,37 +30,46 @@ public class LoginController {
     PhoneService memberService;
 
 
-    @PostMapping("/login")
-    public Item2 test1(@RequestBody LoginForm loginForm) {
-        System.out.println("로그인");
-        String userid = loginForm.getUserid();
-        System.out.println("userid = " + userid);
-        String password = loginForm.getPassword();
-        System.out.println("password = " + password);
-
-        Item2 qqq = repository.findidpw(userid, password);
-        System.out.println(qqq.getT_user_id() + qqq.getT_user_password());
-        return qqq;
-    }
+//    @PostMapping("/login")
+//    public Item2 test1(@RequestBody LoginForm loginForm) {
+//        System.out.println("로그인");
+//        String userid = loginForm.getUserid();
+//        System.out.println("userid = " + userid);
+//        String password = loginForm.getPassword();
+//        System.out.println("password = " + password);
+//
+//        Item2 qqq = repository.findidpw(userid, password);
+//        System.out.println(qqq.getT_user_id() + qqq.getT_user_password());
+//        return qqq;
+//    }
 
     @PostMapping("/findid1")
     public Login test2(@RequestBody Login login) {
+        //PostMapping 으로 받으면 @RequestBoday를 이용해서 객체형식으로 값을 받아야한다
         System.out.println("아이디찾기1");
         String id = login.getT_user_id();
+        //login 객체의 자료형인 Login의 get함수로 login에 담긴 id값을 찾아서 id에 담음
         System.out.println("id = " + id);
         String email = login.getT_user_email();
+        //login 객체의 자료형인 Login의 get함수로 login에 담긴 email값을 찾아서 email에 담음
         System.out.println("email = " + email);
         String name = login.getT_user_name();
+        //login 객체의 자료형인 Login의 get함수로 login에 담긴 name값을 찾아서 name에 담음
         System.out.println("name = " + name);
 
         Login findidemail = repository.findidemail(email, name);
+        //findidemail 객체에 repository의 findidemail 매소드를 email,name 을 매개변수로 담아서 실행한 값을 담는다
         System.out.println(findidemail);
         return findidemail;
+        //select문을 사용할거라 리턴을 해서 db 갔다온 값을 리턴해야한다
+        //여기다가는 리턴자료형을 쓰는게 아니고 뭘 보여줄건지 매소드를 실행했을때 결과가 리턴값이다
+        //리턴  자료형과 맞는 객체를 반환한다
     }
 
 
     @PostMapping("/findid2")
     public Login test3(@RequestBody Login login) {
+
         System.out.println("아이디찾기2");
         String phone = login.getT_user_phone();
         System.out.println("phone = " + phone);
@@ -193,6 +202,13 @@ public class LoginController {
         System.out.println("noticeSelectDto = " + noticeSelectDto);
         service.deleteNotice(noticeSelectDto);
     }
+
+    @PostMapping("/withDrawal")
+    public void withdrawal(@RequestBody WithdrawalDto withdrawalDto){
+        System.out.println("withdrawalDto = " + withdrawalDto);
+        service.withdrawal(withdrawalDto);
+    }
+
 }
 
 
