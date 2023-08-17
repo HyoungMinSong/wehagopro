@@ -1,9 +1,6 @@
 package com.dozone.wehagopro.service.loginservice;
 
-import com.dozone.wehagopro.domain.NoticeDto;
-import com.dozone.wehagopro.domain.NoticeSelectDto;
-import com.dozone.wehagopro.domain.ShortLinkLoginDto;
-import com.dozone.wehagopro.domain.UserNoPwDto;
+import com.dozone.wehagopro.domain.*;
 import com.dozone.wehagopro.domain.signUp.Loginupdatedto;
 import com.dozone.wehagopro.domain.signUp.ShortLinkSignUpDto;
 import com.dozone.wehagopro.repository.login.Loginrepository;
@@ -82,5 +79,10 @@ public class LoginService1 {
     public void deleteNotice(NoticeSelectDto noticeSelectDto){
         System.out.println("noticeSelectDto = " + noticeSelectDto);
         itemRepository.deleteNotice(noticeSelectDto.getT_notice_no());
+    }
+
+    public void withdrawal(WithdrawalDto withdrawalDto){
+        System.out.println("withrawalDto = " + withdrawalDto);
+        itemRepository.withdrawal(withdrawalDto.getT_user_no(),withdrawalDto.getT_user_delete_reason());
     }
 }

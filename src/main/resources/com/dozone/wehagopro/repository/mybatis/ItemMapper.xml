@@ -84,5 +84,13 @@
         WHERE t_notice_no = #{t_notice_no};
     </update>
 
+    <update id="withdrawal">
+        UPDATE t_user
+        SET t_user_delete_date = CURRENT_DATE,
+        t_user_state = -1,
+        t_user_delete_reason = #{t_user_delete_reason}
+        WHERE t_user_no = #{t_user_no};
+    </update>
+
 
 </mapper>

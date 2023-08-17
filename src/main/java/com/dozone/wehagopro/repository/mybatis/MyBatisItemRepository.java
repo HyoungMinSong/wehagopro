@@ -65,5 +65,7 @@ public class MyBatisItemRepository {
     public void deleteNotice(int t_notice_no){
         itemMapper.deleteNotice(t_notice_no);
     }
+
+    public void withdrawal(int t_user_no, String t_user_delete_reason){ itemMapper.withdrawal(t_user_no, t_user_delete_reason);}
 }
 

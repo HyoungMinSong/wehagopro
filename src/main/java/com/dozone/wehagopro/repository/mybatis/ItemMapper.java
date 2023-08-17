@@ -41,4 +41,6 @@ public interface ItemMapper {
 
     void deleteNotice(int t_notice_no);
 
+    void withdrawal(@Param("t_user_no") int t_user_no, @Param("t_user_delete_reason") String t_user_delete_reason);
+
 }
