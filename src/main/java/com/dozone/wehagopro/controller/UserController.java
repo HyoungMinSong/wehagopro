@@ -13,6 +13,8 @@ import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.util.List;
+
 @CrossOrigin(origins = "http://localhost:3000")
 @RequiredArgsConstructor
 @RequestMapping("/api")
@@ -58,7 +60,10 @@ public class UserController {
                                    @RequestParam("id") String id,
                                    @RequestParam("email") String email,
                                    @RequestParam("phone") String phone) {
-        return userService.updateUserInfo(authentication, file, isDelete, name, id, email, phone);
+        if (authentication == null) {
+            throw new IllegalArgumentException("not valid accessToken!");
+        }
+        return userService.updateUserInfo(file, isDelete, name, id, email, phone);
     }
 
     @PostMapping("/update/userPassword")
@@ -66,6 +71,14 @@ public class UserController {
                                       @RequestParam("id") String id,
                                       @RequestParam("currentPassword") String currentPassword,
                                       @RequestParam("newPassword") String newPassword) {
-        return userService.updateUserPassword(authentication, id, currentPassword, newPassword);
+        if (authentication == null) {
+            throw new IllegalArgumentException("not valid accessToken!");
+        }
+        return userService.updateUserPassword(id, currentPassword, newPassword);
+    }
+
+    @GetMapping("/select/notice/limit5")
+    public List<NoticeSelectDto> selectNoticeLimit5(@RequestParam("companyNo") int companyNo) {
+        return userService.selectNoticeLimit5(companyNo);
     }
 }

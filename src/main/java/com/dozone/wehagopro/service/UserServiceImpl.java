@@ -124,7 +124,7 @@ public class UserServiceImpl implements UserService {
     @Override
     public UserInfoDto getUserInfo(Authentication authentication) {
         if (authentication == null) {
-            throw new IllegalArgumentException("유효하지 않은 토큰 입니다.");
+            throw new IllegalArgumentException("not valid accessToken!");
         }
 
         UserDto userDto = userMapper.findByUserId(authentication.getName()).orElse(null);
@@ -145,11 +145,7 @@ public class UserServiceImpl implements UserService {
 
     @Transactional
     @Override
-    public PhotoDto updateUserInfo(Authentication authentication, MultipartFile file, boolean isDelete, String name, String id, String email, String phone) {
-        if (authentication == null) {
-            throw new IllegalArgumentException("유효하지 않은 토큰 입니다.");
-        }
-
+    public PhotoDto updateUserInfo(MultipartFile file, boolean isDelete, String name, String id, String email, String phone) {
         String defaultImgUrl = "https://static.wehago.com/imgs/dummy/@dummy_02.jpg";
         if(userMapper.findByUserId(id).isPresent()) {
             UserDto userDto = userMapper.findByUserId(id).get();
@@ -217,16 +213,20 @@ public class UserServiceImpl implements UserService {
 
     @Transactional
     @Override
-    public boolean updateUserPassword(Authentication authentication, String id, String currentPassword, String newPassword) {
-        if (authentication == null) {
-            throw new IllegalArgumentException("유효하지 않은 토큰 입니다.");
-        }
-
+    public boolean updateUserPassword(String id, String currentPassword, String newPassword) {
         UserDto userDto = userMapper.findByUserId(id).get();
         if (!passwordEncoder.matches(currentPassword, userDto.getT_user_password())) {
             return false;
         } else {
             return userMapper.updateUserPassword(id, passwordEncoder.encode(newPassword));
         }
+    }
+
+    @Transactional
+    @Override
+    public List<NoticeSelectDto> selectNoticeLimit5(int companyNo){
+        List<NoticeSelectDto> dto = userMapper.selectNoticeLimit5(companyNo);
+        System.out.println("dto = " + dto);
+        return dto;
     }
 }

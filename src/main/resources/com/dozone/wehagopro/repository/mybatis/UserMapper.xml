@@ -14,7 +14,7 @@
         MAX(c.t_company_representative) AS t_company_representative,
         MAX(c.t_company_call_num) AS t_company_call_num,
         MAX(c.t_company_clasification) AS t_company_clasification,
-        MAX(e.t_employee_no) AS t_employee_no,
+        e.t_employee_no,
         MAX(e.t_employee_date) AS t_employee_date,
         MAX(e.t_employee_auth) AS t_employee_auth,
         MAX(e.t_employee_position) AS t_employee_position,
@@ -26,9 +26,9 @@
         JOIN
         t_company c ON e.t_company_no = c.t_company_no
         WHERE
-        u.t_user_id = #{userId}
+        u.t_user_id = #{userId} AND e.t_employee_state != -1
         GROUP BY
-        c.t_company_no;
+        c.t_company_no, e.t_employee_no;
     </select>
     <select id="getUserServiceList" parameterType="String" resultType="com.dozone.wehagopro.domain.UserServiceDto">
         SELECT
@@ -75,5 +75,13 @@
         SELECT t_user_phone
         FROM t_user
         WHERE t_user_phone = #{userPhone};
+    </select>
+    <select id="selectNoticeLimit5" resultType="NoticeSelectDto">
+        SELECT *
+        FROM t_notice
+        WHERE t_company_no = #{companyNo}
+        AND t_notice_state = 0
+        ORDER BY t_notice_no DESC
+        LIMIT 5;
     </select>
 </mapper>

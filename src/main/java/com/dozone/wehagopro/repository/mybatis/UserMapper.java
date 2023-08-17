@@ -1,5 +1,6 @@
 package com.dozone.wehagopro.repository.mybatis;
 
+import com.dozone.wehagopro.domain.NoticeSelectDto;
 import com.dozone.wehagopro.domain.UserDto;
 import com.dozone.wehagopro.domain.UserCompanyDto;
 import com.dozone.wehagopro.domain.UserServiceDto;
@@ -21,4 +22,5 @@ public interface UserMapper {
 
     String findByUserEmail(@Param("userEmail") String userEmail);
     String findByUserPhone(@Param("userPhone") String userPhone);
+    List<NoticeSelectDto> selectNoticeLimit5(@Param("companyNo") int companyNo);
 }
