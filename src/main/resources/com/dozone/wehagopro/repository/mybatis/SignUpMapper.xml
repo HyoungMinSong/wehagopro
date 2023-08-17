@@ -4,15 +4,15 @@
 <mapper namespace="com.dozone.wehagopro.repository.mybatis.SignUpMapper">
 
     <select id="idCheck" resultType="java.lang.String">
-        select t_user_id from t_user where t_user_id = #{id}
+        select t_user_id from t_user where t_user_id = #{id} AND t_user_state != 0;
     </select>
 
     <select id="emailCheck" resultType="java.lang.String">
-    select t_user_email from t_user where t_user_email = #{email} LIMIT 1;
+    select t_user_email from t_user where t_user_email = #{email} AND t_user_state != 0 LIMIT 1;
     </select>
 
     <select id="phoneNumberCheck" resultType="java.lang.String">
-        select t_user_phone from t_user where t_user_phone = #{phoneNumber} LIMIT 1;
+        select t_user_phone from t_user where t_user_phone = #{phoneNumber} AND t_user_state != 0 LIMIT 1;
     </select>
 
     <insert id="userSave" useGeneratedKeys="true" keyProperty="no">

@@ -40,12 +40,14 @@
     <select id="checkRegisterEmail">
         SELECT count(*)
         FROM t_user
-        WHERE t_user_email = #{t_user_email};
+        WHERE t_user_email = #{t_user_email}
+        AND t_user_state != 0;
     </select>
     <select id="checkRegisterPhone">
         SELECT count(*)
         FROM t_user
-        WHERE t_user_phone = #{t_user_phone};
+        WHERE t_user_phone = #{t_user_phone}
+        AND t_user_state != 0;
     </select>
     <select id="registerUser">
         INSERT INTO t_user
@@ -91,7 +93,8 @@
     <update id="updateDetailUser">
         UPDATE t_user
         SET t_user_photo_path = #{t_user_photo_path}
-        WHERE t_user_no = #{t_user_no};
+        WHERE t_user_no = #{t_user_no}
+        AND t_user_state != 0;
     </update>
     <update id="updateDetailEmployee">
         UPDATE t_employee

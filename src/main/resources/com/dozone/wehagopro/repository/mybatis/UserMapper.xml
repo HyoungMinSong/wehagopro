@@ -3,7 +3,7 @@
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.dozone.wehagopro.repository.mybatis.UserMapper">
     <select id="findByUserId" parameterType="String" resultType="com.dozone.wehagopro.domain.UserDto">
-        select * from t_user where t_user_id = #{userId};
+        select * from t_user where t_user_id = #{userId} AND t_user_state != 0;
     </select>
     <select id="getUserCompanyList" parameterType="String" resultType="com.dozone.wehagopro.domain.UserCompanyDto">
         SELECT
@@ -57,23 +57,23 @@
         t_user_email = #{userEmail},
         t_user_phone = #{userPhone},
         t_user_update_date = now()
-        WHERE t_user_id = #{userId};
+        WHERE t_user_id = #{userId} AND t_user_state != 0;
     </update>
     <update id="updateUserPassword" parameterType="String">
         UPDATE t_user
         SET
         t_user_password = #{newPassword},
         t_user_update_date = now()
-        WHERE t_user_id = #{userId}
+        WHERE t_user_id = #{userId} AND t_user_state != 0
     </update>
     <select id="findByUserEmail" parameterType="String" resultType="String">
         SELECT t_user_email
         FROM t_user
-        WHERE t_user_email = #{userEmail};
+        WHERE t_user_email = #{userEmail} AND t_user_state != 0;
     </select>
     <select id="findByUserPhone" parameterType="String" resultType="String">
         SELECT t_user_phone
         FROM t_user
-        WHERE t_user_phone = #{userPhone};
+        WHERE t_user_phone = #{userPhone} AND t_user_state != 0;
     </select>
 </mapper>
