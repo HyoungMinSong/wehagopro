@@ -26,7 +26,7 @@
         JOIN
         t_company c ON e.t_company_no = c.t_company_no
         WHERE
-        u.t_user_id = #{userId} AND e.t_employee_state != -1
+        u.t_user_id = #{userId} AND e.t_employee_state = 2
         GROUP BY
         c.t_company_no, e.t_employee_no;
     </select>
@@ -34,6 +34,7 @@
         SELECT
         t_employee.t_employee_no,
         t_service.t_service_name,
+        t_service.t_service_path,
         t_service.t_service_main_icon_path,
         t_service.t_service_description
         FROM
@@ -64,7 +65,7 @@
         SET
         t_user_password = #{newPassword},
         t_user_update_date = now()
-        WHERE t_user_id = #{userId} AND t_user_state != 0
+        WHERE t_user_id = #{userId} AND t_user_state != 0;
     </update>
     <select id="findByUserEmail" parameterType="String" resultType="String">
         SELECT t_user_email
