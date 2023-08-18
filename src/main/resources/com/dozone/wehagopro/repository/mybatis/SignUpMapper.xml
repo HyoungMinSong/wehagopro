@@ -104,7 +104,7 @@
         where t_service_no = #{param1}
         and t_service_recall = -1
         and t_employee_no
-        in (select t_employee_no from t_employee where t_company_no = #{param2} )
+        in (select t_employee_no from t_employee where t_company_no = #{param2} and t_employee_state != -1 )
     </select>
 
     <select id="findUnPublishedUser" resultType="UnPublishedUserDto">
@@ -120,14 +120,14 @@
         t_employee te ON tu.t_user_no = te.t_user_no
         WHERE
         te.t_company_no = #{param1}
-        AND te.t_employee_state = 2
+        AND te.t_employee_state > 1
         AND te.t_employee_no NOT IN (
         SELECT tp.t_employee_no
         FROM t_service_published tp
         INNER JOIN t_employee te ON tp.t_employee_no = te.t_employee_no
         WHERE tp.t_service_no = #{param2}
         AND te.t_company_no = #{param1}
-        AND te.t_employee_state = 2
+        AND te.t_employee_state > 1
         AND tp.t_service_recall = -1
         );
     </select>
@@ -145,14 +145,14 @@
         t_employee te ON tu.t_user_no = te.t_user_no
         WHERE
         te.t_company_no = #{param1}
-        AND te.t_employee_state = 2
+        AND te.t_employee_state != -1
         AND te.t_employee_no IN (
         SELECT tp.t_employee_no
         FROM t_service_published tp
         INNER JOIN t_employee te ON tp.t_employee_no = te.t_employee_no
         WHERE tp.t_service_no = #{param2}
         AND te.t_company_no = #{param1}
-        AND te.t_employee_state = 2
+        AND te.t_employee_state != -1
         AND tp.t_service_recall = -1
         );
     </select>
@@ -166,7 +166,7 @@
         where t_service_no = #{param1}
         and t_service_recall = -1
         and t_employee_no
-        in (select t_employee_no from t_employee where t_company_no = #{param2} );
+        in (select t_employee_no from t_employee where t_company_no = #{param2} and t_employee_state != -1 );
     </select>
 
 </mapper>
