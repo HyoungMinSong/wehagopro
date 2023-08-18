@@ -43,7 +43,8 @@ public interface OrganizationMapper {
     void updateDetailEmployee(OrganizationEmplRegiDTO dto);
     // 직원 상태 수정
     void updateEmployeeState(@Param("t_employee_state") Integer t_employee_state, @Param("t_employee_no") Integer t_employee_no);
-
+    // 퇴사시 배포서비스 해제
+    void updateFiredPublish(Integer t_employee_no);
 
 
 

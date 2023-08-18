@@ -191,6 +191,9 @@ public class OrganizationService {
     }
     public void updateEmployeeState(Integer t_employee_state, List<OrganizationSelectedDto> dto){
         for(OrganizationSelectedDto dt : dto){
+            if(t_employee_state == -1){
+                organizationRepository.updateFiredPublish(dt.getT_employee_no());
+            }
             organizationRepository.updateEmployeeState(t_employee_state, dt.getT_employee_no());
         }
     }
