@@ -75,7 +75,7 @@
     </update>
 
     <update id="updateInvitedUser">
-        UPDATE t_user SET t_user_id = #{userId}, t_user_password = #{userPw} WHERE t_user_no = #{userNo};
+        UPDATE t_user SET t_user_id = #{userId}, t_user_password = #{userPw}, t_user_state = -1  WHERE t_user_no = #{userNo};
     </update>
 
     <select id="companyServiceList" resultType="CompanyServiceListDto">

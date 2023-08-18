@@ -45,7 +45,7 @@ public class SecurityConfig {
                 .antMatchers("/findpw2").permitAll()
                 .antMatchers("/l/**").permitAll()
                 .antMatchers("/idcheck").permitAll()
-                .antMatchers("/companyCheck").permitAll()
+                .antMatchers("/companycheck").permitAll()
                 .antMatchers("/signupinsert").permitAll()
                 .antMatchers("/s/**").permitAll()
                 .antMatchers("/signupinviteupdate").permitAll()
