@@ -179,4 +179,38 @@ public class SignUpController {
         service.updateUnPublish(dto.getEmpNo(), dto.getServiceNo());
         return "배포해제업데이트";
     }
+
+
+    @ResponseBody
+    @PostMapping("/savearrayinvitedemployeepublish")
+    public int saveArrayInvitedEmployeePublish(@RequestBody SaveArrayInvitedEmployeePublishRequestDto dto) {
+        System.out.println("dto = " + dto);
+        Integer integerPC = service.findPublishedCount(dto.getServiceNo(), dto.getComNo());
+        if (integerPC != null){
+            System.out.println("integerPC = " + integerPC.intValue());
+            if (dto.getPackCt()>=(integerPC.intValue()+dto.getTotalAddEmployeeCount())){
+                for (int empNo:
+                     dto.getArrayEmployeeNo()) {
+                    service.saveInvitedEmployeePublish(empNo, dto.getServiceNo());
+                }
+
+                return 0; //정상
+            } else {
+                return 1; //산 패키지 보다 초과
+            }
+        }
+        return 2; //에러
+
+    }
+
+    @ResponseBody
+    @PostMapping("/updatearrayunpublish")
+    public String updateArrayUnPublish(@RequestBody UpdateArrayUnPublishRequestDto dto) {
+        System.out.println("dto = " + dto);
+        for (int empNo:
+                dto.getArrayEmployeeNo()) {
+            service.updateUnPublish(empNo, dto.getServiceNo());
+        }
+        return "배포해제업데이트";
+    }
 }
