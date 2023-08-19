@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.dozone.wehagopro.repository.mybatis.LogMapper">
+    <insert id="saveLog">
+        INSERT INTO t_log (t_employee_no, t_log_type, t_log_content)
+        VALUES(#{t_employee_no}, #{t_log_type}, #{t_log_content});
+    </insert>
+</mapper>
