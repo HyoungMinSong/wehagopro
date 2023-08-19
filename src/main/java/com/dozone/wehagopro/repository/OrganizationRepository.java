@@ -81,6 +81,10 @@ public class OrganizationRepository {
     public void updateEmployeeState(Integer t_employee_state, Integer t_employee_no){
       organizationMapper.updateEmployeeState(t_employee_state, t_employee_no);
     };
+    // 퇴사시 서비스 배포해제
+    public void updateFiredPublish(Integer t_employee_no){
+        organizationMapper.updateFiredPublish(t_employee_no);
+    }
 
 
 }

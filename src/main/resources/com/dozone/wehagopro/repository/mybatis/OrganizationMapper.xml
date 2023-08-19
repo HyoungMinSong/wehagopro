@@ -130,4 +130,9 @@
         </choose>
         WHERE t_employee_no = #{t_employee_no};
     </update>
+    <update id="updateFiredPublish">
+        UPDATE t_service_published
+        SET t_service_recall = 0, t_service_recall_date = CURRENT_DATE
+        WHERE t_employee_no = #{t_employee_no};
+    </update>
 </mapper>

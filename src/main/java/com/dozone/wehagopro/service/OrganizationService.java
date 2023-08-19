@@ -3,6 +3,7 @@ package com.dozone.wehagopro.service;
 import com.dozone.wehagopro.domain.*;
 import com.dozone.wehagopro.repository.OrganizationRepository;
 import com.dozone.wehagopro.service.common.ImageCache;
+import com.dozone.wehagopro.service.common.Loggable;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.Resource;
 import org.springframework.core.io.ResourceLoader;
@@ -189,11 +190,17 @@ public class OrganizationService {
         }
         organizationRepository.updateDetailEmployee(dto);
     }
+    @Loggable
+    @Transactional
     public void updateEmployeeState(Integer t_employee_state, List<OrganizationSelectedDto> dto){
         for(OrganizationSelectedDto dt : dto){
+            if(t_employee_state == -1){
+                organizationRepository.updateFiredPublish(dt.getT_employee_no());
+            }
             organizationRepository.updateEmployeeState(t_employee_state, dt.getT_employee_no());
         }
     }
+
 
 
 }
