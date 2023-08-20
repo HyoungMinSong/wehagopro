@@ -2,6 +2,7 @@ package com.dozone.wehagopro.service.signUp;
 
 import com.dozone.wehagopro.domain.signUp.*;
 import com.dozone.wehagopro.repository.signUp.SignUpRepository;
+import com.dozone.wehagopro.service.common.Loggable;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -140,6 +141,7 @@ public class SignUpService {
         return repository.findUnPublishedUser(comNo, serviceNo);
     }
 
+    @Loggable
     public void saveInvitedEmployeePublish(int empNo, int serviceNo){
         System.out.println("empNo = " + empNo + ", serviceNo = " + serviceNo);
         repository.signUpServicePublished(empNo,serviceNo);
@@ -150,6 +152,7 @@ public class SignUpService {
         return repository.findPublishedUser(comNo, serviceNo);
     }
 
+    @Loggable
     public void updateUnPublish(int empNo, int serviceNo){
         System.out.println("empNo = " + empNo + ", serviceNo = " + serviceNo);
         repository.updateUnPublish(empNo,serviceNo);
