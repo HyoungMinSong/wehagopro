@@ -3,6 +3,7 @@ package com.dozone.wehagopro.controller;
 import com.dozone.wehagopro.domain.*;
 import com.dozone.wehagopro.service.OrganizationService;
 import com.dozone.wehagopro.service.common.ImageCache;
+import com.dozone.wehagopro.service.common.LogAspect;
 import com.dozone.wehagopro.service.common.MailService;
 import org.apache.ibatis.annotations.Param;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -116,5 +117,23 @@ public class OrganizationController {
     public void updateEmployeeState(@RequestBody OrganizationStateDto dto){
         organizationService.updateEmployeeState(dto.getT_employee_state(), dto.getCheckedEmployee());
     }
+
+    // 로그 목록
+    @GetMapping("/findLogByEmployee")
+    public List<LogDto> findLogByEmployee(Integer t_employee_no){
+        return organizationService.findLogByEmployee(t_employee_no);
+    }
+
+    @PutMapping("/updateLogByEmployee")
+    public void updateLogByEmployee(@RequestBody Integer t_employee_no){
+        organizationService.updateLogByEmployee(t_employee_no);
+    }
+
+    @PutMapping("/deleteLogByEmployee")
+    public void deleteLogByEmployee(@RequestBody Integer t_employee_no){
+        organizationService.deleteLogByEmployee(t_employee_no);
+    }
+
+
 
 }
