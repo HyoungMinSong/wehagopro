@@ -4,6 +4,7 @@ import com.dozone.wehagopro.domain.*;
 import com.dozone.wehagopro.domain.signUp.Loginupdatedto;
 import com.dozone.wehagopro.repository.login.Loginrepository;
 import com.dozone.wehagopro.repository.mybatis.MyBatisItemRepository;
+import com.dozone.wehagopro.service.common.Loggable;
 import com.dozone.wehagopro.service.common.PhoneService;
 import com.dozone.wehagopro.service.loginservice.LoginService1;
 import lombok.RequiredArgsConstructor;
@@ -180,6 +181,7 @@ public class LoginController {
         System.out.println("loginupdatedto = " + loginupdatedto);
     }
 
+    @Loggable
     @PostMapping("/createNotice")
     public void createNotice(@RequestBody NoticeDto noticeDto){
         System.out.println("noticeDto = " + noticeDto);

@@ -1,8 +1,10 @@
 package com.dozone.wehagopro.service;
 
 import com.dozone.wehagopro.domain.*;
+import com.dozone.wehagopro.repository.LogRepository;
 import com.dozone.wehagopro.repository.OrganizationRepository;
 import com.dozone.wehagopro.service.common.ImageCache;
+import com.dozone.wehagopro.service.common.Loggable;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.Resource;
 import org.springframework.core.io.ResourceLoader;
@@ -26,6 +28,8 @@ public class OrganizationService {
     private final OrganizationRepository organizationRepository;
     @Autowired
     private final ResourceLoader resourceLoader;
+    @Autowired
+    private LogRepository logRepository;
 
     public OrganizationService(OrganizationRepository organizationRepository, ResourceLoader resourceLoader) {
         this.organizationRepository = organizationRepository;
@@ -99,7 +103,7 @@ public class OrganizationService {
             if (Files.exists(filePath)) {
                 Files.delete(filePath);
                 // ImageCache에서도 해당 이미지를 삭제합니다. (옵션)
-                ImageCache.removeImage(fileName);
+//                ImageCache.removeImage(fileName);
                 System.out.println("파일 존재");
                 return ResponseEntity.ok("Image deleted successfully.");
             } else {
@@ -178,9 +182,15 @@ public class OrganizationService {
     }
 
     // 직원 수정
+    @Loggable
     @Transactional
     public void modifyRoomForAOldEmployee(OrganizationEmplRegiDTO dto){
         if(dto.getT_user_photo_path() != dto.getT_user_photo_path_prev()){
+            if(dto.getT_user_photo_path().contains("http:")){
+                String[] pathSegments = dto.getT_user_photo_path().split("/");
+                String fileName = pathSegments[pathSegments.length - 1];
+                dto.setT_user_photo_path(fileName);
+            }
             organizationRepository.updateDetailUser(dto);
         }
         if(dto.getT_organization_no() == -1){
@@ -189,11 +199,31 @@ public class OrganizationService {
         }
         organizationRepository.updateDetailEmployee(dto);
     }
+    @Loggable
+    @Transactional
     public void updateEmployeeState(Integer t_employee_state, List<OrganizationSelectedDto> dto){
         for(OrganizationSelectedDto dt : dto){
+            if(t_employee_state == -1){
+                organizationRepository.updateFiredPublish(dt.getT_employee_no());
+            }
             organizationRepository.updateEmployeeState(t_employee_state, dt.getT_employee_no());
         }
     }
 
+    public List<LogDto> findLogByEmployee(Integer t_employee_no){
+        return logRepository.findLogByEmployee(t_employee_no);
+    }
+
+    public void updateLogByEmployee(Integer t_employee_no){
+        logRepository.updateLogByEmployee(t_employee_no);
+    }
+
+    public void deleteLogByEmployee(Integer t_employee_no){
+        logRepository.deleteLogByEmployee(t_employee_no);
+    }
+
+    public List<Integer> findEmployeeByCompany(Integer t_company_no){
+        return logRepository.findEmployeeByCompany(t_company_no);
+    }
 
 }
