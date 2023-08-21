@@ -50,6 +50,7 @@ public class SecurityConfig {
                 .antMatchers("/s/**").permitAll()
                 .antMatchers("/signupinviteupdate").permitAll()
                 .antMatchers("/api/select/notice/limit5").permitAll()
+                .antMatchers("/mailConfirm").permitAll()
                 .anyRequest().authenticated()
                 .and()
                 .exceptionHandling()
