@@ -29,10 +29,6 @@ public class LogAspect {
     public void logMethodCall(JoinPoint joinPoint) {
         String methodName = joinPoint.getSignature().getName();
         Object[] args = joinPoint.getArgs();
-        System.out.println("methodName : "+methodName);
-        for(int i=0; i< args.length; i++) {
-            System.out.println("args["+i+"] : " + args[i]);
-        }
 
         if(methodName == "updateEmployeeState" && (int) args[0] != -1){
             // args[1]은 OrganizationSelectedDto 객체이므로 적절한 캐스팅을 수행합니다.
