@@ -145,7 +145,7 @@ public class LoginController {
         System.out.println("/링크 en뒤에 추출한 값 : " + num);
         System.out.println("integerState: " + integerState);
         if (integerState != 1) {
-            System.out.println("1 이다(대기상태)");
+            System.out.println("1이 아니다(대기상태아님)");
             return null;
 //        } else if (integerState.intValue() == -1) {
 //            System.out.println("-1 이다(퇴사상태)");
