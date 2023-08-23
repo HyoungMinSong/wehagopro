@@ -76,7 +76,7 @@ public class OrganizationController {
     }
 
     // 직원 수정
-    @PostMapping("/modifyRoomForAOldEmployee")
+    @PutMapping("/modifyRoomForAOldEmployee")
     public void modifyRoomForAOldEmployee(@RequestBody OrganizationEmplRegiDTO dto){
         System.out.println("dto : "+dto);
         organizationService.modifyRoomForAOldEmployee(dto);

@@ -195,7 +195,7 @@ public class LoginController {
         return service.selectNotice(t_company_no);
     }
 
-    @PostMapping("/updateNotice")
+    @PutMapping("/updateNotice")
     public void updateNotice(@RequestBody NoticeSelectDto noticeSelectDto){
         System.out.println("noticeSelectDto = " + noticeSelectDto);
         service.updateNotice(noticeSelectDto);
