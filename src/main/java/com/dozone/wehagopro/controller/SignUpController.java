@@ -173,7 +173,7 @@ public class SignUpController {
     }
 
     @ResponseBody
-    @PostMapping("/updateunpublish")
+    @PutMapping("/updateunpublish")
     public String updateUnPublish(@RequestBody UpdateUnPublishRequestDto dto) {
         System.out.println("dto = " + dto);
         service.updateUnPublish(dto.getEmpNo(), dto.getServiceNo());
@@ -204,7 +204,7 @@ public class SignUpController {
     }
 
     @ResponseBody
-    @PostMapping("/updatearrayunpublish")
+    @PutMapping("/updatearrayunpublish")
     public String updateArrayUnPublish(@RequestBody UpdateArrayUnPublishRequestDto dto) {
         System.out.println("dto = " + dto);
         for (int empNo:
