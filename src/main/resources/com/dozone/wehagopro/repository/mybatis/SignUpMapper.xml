@@ -4,15 +4,15 @@
 <mapper namespace="com.dozone.wehagopro.repository.mybatis.SignUpMapper">
 
     <select id="idCheck" resultType="java.lang.String">
-        select t_user_id from t_user where t_user_id = #{id} AND t_user_state != 0;
+        select t_user_id from t_user where t_user_id = #{id} AND t_user_state = -1;
     </select>
 
     <select id="emailCheck" resultType="java.lang.String">
-    select t_user_email from t_user where t_user_email = #{email} AND t_user_state != 0 LIMIT 1;
+    select t_user_email from t_user where t_user_email = #{email} AND t_user_state = -1 LIMIT 1;
     </select>
 
     <select id="phoneNumberCheck" resultType="java.lang.String">
-        select t_user_phone from t_user where t_user_phone = #{phoneNumber} AND t_user_state != 0 LIMIT 1;
+        select t_user_phone from t_user where t_user_phone = #{phoneNumber} AND t_user_state = -1 LIMIT 1;
     </select>
 
     <insert id="userSave" useGeneratedKeys="true" keyProperty="no">
@@ -37,8 +37,8 @@
 
     <insert id="employeeSave" useGeneratedKeys="true" keyProperty="no">
         INSERT INTO t_employee (t_user_no,t_company_no,t_employee_auth,
-        t_organization_no,t_employee_state) VALUES
-        (#{userNo},#{companyNo},#{employeeAuth},#{organizationNo},2)
+        t_organization_no,t_employee_state, t_employee_duty, t_employee_position) VALUES
+        (#{userNo},#{companyNo},#{employeeAuth},#{organizationNo},2, '최고경영자', '사장')
         RETURNING t_employee_no AS no;
     </insert>
 
@@ -75,7 +75,8 @@
     </update>
 
     <update id="updateInvitedUser">
-        UPDATE t_user SET t_user_id = #{userId}, t_user_password = #{userPw}, t_user_state = -1  WHERE t_user_no = #{userNo};
+        UPDATE t_user SET t_user_id = #{userId}, t_user_password = #{userPw}, t_user_state = -1,
+        t_user_name = #{userName}, t_user_email = #{userEmail}, t_user_phone = #{userPhone}  WHERE t_user_no = #{userNo};
     </update>
 
     <select id="companyServiceList" resultType="CompanyServiceListDto">

@@ -9,6 +9,9 @@ public class SignUpInviteUpdateDto {
     private String userId;
     private String userPw;
 
+    private String userName;
+    private String userEmail;
+    private String userPhone;
 
     private int userNo; //나중에 추가하는 필드.
 }
