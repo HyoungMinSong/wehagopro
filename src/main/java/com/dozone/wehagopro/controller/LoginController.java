@@ -11,6 +11,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.java.Log;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cglib.core.Local;
+import org.springframework.http.converter.json.GsonBuilderUtils;
 import org.springframework.security.core.parameters.P;
 import org.springframework.web.bind.annotation.*;
 
@@ -29,6 +30,7 @@ public class LoginController {
     MyBatisItemRepository repository;
     @Autowired
     PhoneService memberService;
+
 
 
 //    @PostMapping("/login")
@@ -143,7 +145,7 @@ public class LoginController {
         System.out.println("/링크 en뒤에 추출한 값 : " + num);
         System.out.println("integerState: " + integerState);
         if (integerState != 1) {
-            System.out.println("1 이다(대기상태)");
+            System.out.println("1이 아니다(대기상태아님)");
             return null;
 //        } else if (integerState.intValue() == -1) {
 //            System.out.println("-1 이다(퇴사상태)");
