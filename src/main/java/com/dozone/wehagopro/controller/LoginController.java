@@ -7,19 +7,12 @@ import com.dozone.wehagopro.repository.mybatis.MyBatisItemRepository;
 import com.dozone.wehagopro.service.common.Loggable;
 import com.dozone.wehagopro.service.common.PhoneService;
 import com.dozone.wehagopro.service.loginservice.LoginService1;
-import lombok.RequiredArgsConstructor;
-import lombok.extern.java.Log;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.cglib.core.Local;
-import org.springframework.http.converter.json.GsonBuilderUtils;
-import org.springframework.security.core.parameters.P;
 import org.springframework.web.bind.annotation.*;
 
-import javax.swing.*;
 import java.sql.Date;
 import java.time.LocalDate;
 import java.util.List;
-import java.util.Map;
 
 @CrossOrigin(origins = "http://localhost:3000")
 @RestController
@@ -60,7 +53,7 @@ public class LoginController {
         //login 객체의 자료형인 Login의 get함수로 login에 담긴 name값을 찾아서 name에 담음
         System.out.println("name = " + name);
 
-        Login findidemail = repository.findidemail(email, name);
+        Login findidemail = repository.selectIdEmail(email, name);
         //findidemail 객체에 repository의 findidemail 매소드를 email,name 을 매개변수로 담아서 실행한 값을 담는다
         System.out.println(findidemail);
         return findidemail;
@@ -79,7 +72,7 @@ public class LoginController {
         String name = login.getT_user_name();
         System.out.println("name = " + name);
 
-        Login findidphone = repository.findidphone(name, phone);
+        Login findidphone = repository.selectIdPhone(name, phone);
         System.out.println(findidphone.getT_user_phone() + findidphone.getT_user_name());
         return findidphone;
     }
@@ -101,7 +94,7 @@ public class LoginController {
         String email = login.getT_user_email();
         System.out.println("email = " + email);
 
-        Login findpwemail = repository.findpwemail(id, email);
+        Login findpwemail = repository.selectPwEmail(id, email);
         System.out.println(findpwemail.getT_user_password() + findpwemail.getT_user_email() + findpwemail.getT_user_id());
         return findpwemail;
     }
@@ -114,7 +107,7 @@ public class LoginController {
         String phone = login.getT_user_phone();
         System.out.println("phone = " + phone);
 
-        Login findpwphone = repository.findpwphone(id, phone);
+        Login findpwphone = repository.selectPwPhone(id, phone);
         System.out.println(findpwphone.getT_user_password() + findpwphone.getT_user_phone() + findpwphone.getT_user_id());
         return findpwphone;
     }
@@ -127,7 +120,7 @@ public class LoginController {
         String npw = login.getT_user_new_password();
         System.out.println("newpw = " + npw);
 
-        int updatepw = repository.updatepw(id, npw);
+        int updatepw = repository.updatePw(id, npw);
 //        System.out.println("새비밀번호 = " + updatepw.getT_user_new_password() + "유저 id = " +  updatepw.getT_user_id());
         return updatepw;
     }
@@ -141,7 +134,7 @@ public class LoginController {
     public ShortLinkLoginDto invite1(@PathVariable String llink) {
         String emNo = llink.substring(2);
         int num = Integer.parseInt(emNo);
-        Integer integerState = service.employeeStateCheck(num);
+        Integer integerState = service.findEmployeeStateCheck(num);
         System.out.println("/링크 en뒤에 추출한 값 : " + num);
         System.out.println("integerState: " + integerState);
         if (integerState != 1) {
@@ -157,7 +150,7 @@ public class LoginController {
 //            System.out.println("3 이다(중지상태");
         }
 
-        ShortLinkLoginDto shortLinkDto = service.shortLinkDeadLine(num);
+        ShortLinkLoginDto shortLinkDto = service.findShortLinkDeadLine(num);
         Date findSqlDate = shortLinkDto.getShortLinkDeadLine();
         if (findSqlDate == null) {
             System.out.println("DeadLine 값이 없음");
@@ -176,7 +169,7 @@ public class LoginController {
     @PostMapping("/updateinvite")
     public void updateuserno(@RequestBody Loginupdatedto loginupdatedto){
         System.out.println("loginupdatedto = " + loginupdatedto);
-        service.findusernopwbyid(loginupdatedto);
+        service.findUserNoPw(loginupdatedto);
         System.out.println("컨트롤러업데이트메소드실행");
         System.out.println("loginupdatedto = " + loginupdatedto);
     }
@@ -185,7 +178,7 @@ public class LoginController {
     @PostMapping("/createNotice")
     public void createNotice(@RequestBody NoticeDto noticeDto){
         System.out.println("noticeDto = " + noticeDto);
-        service.createNotice(noticeDto);
+        service.insertNotice(noticeDto);
 
     }
 
@@ -210,7 +203,7 @@ public class LoginController {
     @PutMapping("/withDrawal")
     public void withdrawal(@RequestBody WithdrawalDto withdrawalDto){
         System.out.println("withdrawalDto = " + withdrawalDto);
-        service.withdrawal(withdrawalDto);
+        service.deleteUser(withdrawalDto);
     }
 
 }

@@ -4,67 +4,67 @@
 <mapper namespace="com.dozone.wehagopro.repository.mybatis.ItemMapper">
 
 
-    <select id="findidpw" parameterType="String" resultType="Item2">
+    <select id="selectIdPw" parameterType="String" resultType="Item2">
         SELECT * FROM t_user
         WHERE t_user_id = #{param1}
         AND t_user_password = #{param2}
         AND t_user_state != 0;
     </select>
 
-    <select id="findidemail" parameterType="String" resultType="Login">
+    <select id="selectIdEmail" parameterType="String" resultType="Login">
         SELECT t_user_id FROM t_user
         WHERE t_user_email = #{email}
         AND t_user_name = #{name}
         AND t_user_state != 0;
     </select>
 
-    <select id="findidphone" parameterType="String" resultType="Login">
+    <select id="selectIdPhone" parameterType="String" resultType="Login">
         SELECT t_user_id FROM t_user
         WHERE t_user_phone = #{param2}
         AND t_user_name = #{param1}
         AND t_user_state != 0;
     </select>
 
-    <select id="findpwemail" parameterType="String" resultType="Login">
+    <select id="selectPwEmail" parameterType="String" resultType="Login">
         SELECT * FROM t_user
         WHERE t_user_email = #{param2}
         AND t_user_id = #{param1}
         AND t_user_state != 0;
     </select>
 
-    <select id="findpwphone" parameterType="String" resultType="Login">
+    <select id="selectPwPhone" parameterType="String" resultType="Login">
         SELECT * FROM t_user
         WHERE t_user_phone = #{param2}
         AND t_user_id = #{param1}
         AND t_user_state != 0;
     </select>
 
-    <update id="updatepw" parameterType="String">
+    <update id="updatePw" parameterType="String">
         UPDATE t_user SET t_user_password = #{param2}, t_user_update_date = CURRENT_DATE
         WHERE t_user_id = #{param1}
         AND t_user_state != 0;
     </update>
 
-    <select id="shortLinkDeadLine" resultType="ShortLinkLoginDto">
+    <select id="selectShortLinkDeadLine" resultType="ShortLinkLoginDto">
         select t_shortlink_link AS shortLink, t_shortlink_deadline AS shortLinkDeadLine  from t_shortlink where t_employee_no = #{empNo}
     </select>
 
-    <select id="employeeStateCheck" resultType="java.lang.Integer">
+    <select id="selectEmployeeStateCheck" resultType="java.lang.Integer">
         select t_employee_state from t_employee where t_employee_no = #{empNo}
     </select>
 
     
-    <select id="findusernopwbyid" resultType="UserNoPwDto">
+    <select id="selectUserNoPw" resultType="UserNoPwDto">
         select t_user_no, t_user_password from t_user where t_user_id = #{t_user_id} AND t_user_state != 0;
     </select>
 
-    <update id="updateusernobyempno">
+    <update id="updateUserNo">
         update t_employee
         set t_user_no = #{param1}, t_employee_state = 2
         where t_employee_no = #{param2};
     </update>
 
-    <insert id="createNotice">
+    <insert id="insertNotice">
         INSERT INTO t_notice
         (t_user_name, t_company_no, t_notice_title, t_notice_content)
         VALUES
@@ -90,7 +90,7 @@
         WHERE t_notice_no = #{t_notice_no};
     </update>
 
-    <update id="withdrawal">
+    <update id="deleteUser">
         UPDATE t_user
         SET t_user_delete_date = CURRENT_DATE,
         t_user_state = 0,

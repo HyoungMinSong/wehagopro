@@ -3,7 +3,7 @@
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.dozone.wehagopro.repository.mybatis.OrganizationMapper">
 
-    <select id="findUserEmplOrgaFromCompany" resultType="OrganizationUserEmplDto">
+    <select id="selectEmployeeList" resultType="OrganizationUserEmplDto">
         SELECT t_user.*, t_employee.*, t_organization.t_organization_name
         FROM t_user
         JOIN t_employee ON t_user.t_user_no = t_employee.t_user_no
@@ -21,13 +21,13 @@
         AND t_employee.t_company_no = #{t_company_no}
         AND t_user.t_user_state != 0 order by t_user.t_user_name;
     </select>
-    <select id="findOrganizationFromCompany" resultType="OrganizationDto">
+    <select id="selectOrganizationList" resultType="OrganizationDto">
         SELECT ROW_NUMBER() OVER(ORDER BY t_organization_no) AS RowNum, *
         FROM t_organization
         WHERE t_organization_parent = #{t_company_no}
         ORDER BY t_organization_no;
     </select>
-    <insert id="createOrganization">
+    <insert id="insertOrganization">
         INSERT INTO t_organization (t_organization_name, t_organization_parent)
         VALUES (#{t_organization_name}, #{t_organization_parent});
     </insert>
@@ -37,45 +37,33 @@
     <delete id="deleteOrganization">
         DELETE FROM t_organization WHERE t_organization_no = #{t_organization_no};
     </delete>
-    <select id="checkRegisterEmail">
-        SELECT count(*)
-        FROM t_user
-        WHERE t_user_email = #{t_user_email}
-        AND t_user_state != 0;
-    </select>
-    <select id="checkRegisterPhone">
-        SELECT count(*)
-        FROM t_user
-        WHERE t_user_phone = #{t_user_phone}
-        AND t_user_state != 0;
-    </select>
-    <select id="registerUser">
+    <select id="insertUser">
         INSERT INTO t_user
         (t_user_name, t_user_phone, t_user_email, t_user_photo_path, t_user_state)
         VALUES
         (#{t_user_name}, #{t_user_phone}, #{t_user_email}, #{t_user_photo_path}, 1)
         RETURNING t_user_no;
     </select>
-    <select id="findCompanyOrgaNoFromName">
+    <select id="selectOrganizationNo">
         SELECT t_organization_no
         FROM t_organization
         WHERE t_organization_name = #{t_organization_name}
         AND t_organization_parent = -1;
     </select>
-    <select id="registerEmployee">
+    <select id="insertEmployee">
         INSERT INTO t_employee
         (t_user_no, t_company_no, t_employee_auth, t_employee_duty, t_employee_position, t_employee_date, t_organization_no)
         VALUES
         (#{t_user_no}, #{t_company_no}, #{t_employee_auth}, #{t_employee_duty}, #{t_employee_position}, #{t_employee_date}, #{t_organization_no})
         RETURNING t_employee_no;
     </select>
-    <insert id="createShortLink">
+    <insert id="insertShortlink">
         INSERT INTO t_shortlink
         (t_employee_no, t_shortlink_link)
         VALUES
         (#{t_employee_no}, #{t_shortlink_link});
     </insert>
-    <select id="findCompanyNameFromCompanyNo">
+    <select id="selectCompanyName">
         SELECT t_company_name
         FROM t_company
         WHERE t_company_no=#{t_company_no};

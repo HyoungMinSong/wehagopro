@@ -3,25 +3,25 @@
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.dozone.wehagopro.repository.mybatis.SignUpMapper">
 
-    <select id="idCheck" resultType="java.lang.String">
+    <select id="selectIdCheck" resultType="java.lang.String">
         select t_user_id from t_user where t_user_id = #{id} AND t_user_state = -1;
     </select>
 
-    <select id="emailCheck" resultType="java.lang.String">
+    <select id="selectEmailCheck" resultType="java.lang.String">
     select t_user_email from t_user where t_user_email = #{email} AND t_user_state = -1 LIMIT 1;
     </select>
 
-    <select id="phoneNumberCheck" resultType="java.lang.String">
+    <select id="selectPhoneNumberCheck" resultType="java.lang.String">
         select t_user_phone from t_user where t_user_phone = #{phoneNumber} AND t_user_state = -1 LIMIT 1;
     </select>
 
-    <insert id="userSave" useGeneratedKeys="true" keyProperty="no">
+    <insert id="insertUser" useGeneratedKeys="true" keyProperty="no">
         INSERT INTO t_user (t_user_id,t_user_password,t_user_name,t_user_phone,t_user_email) VALUES
         (#{id},#{password},#{name},#{phoneNumber},#{email})
         RETURNING t_user_no AS no;
     </insert>
 
-    <insert id="companySave" useGeneratedKeys="true" keyProperty="no">
+    <insert id="insertCompany" useGeneratedKeys="true" keyProperty="no">
         INSERT INTO t_company (t_company_name,t_package_no,t_company_com_reg_num,t_company_clasification,
         t_company_business,t_company_sectors, t_company_representative,t_company_call_num, t_package_count) VALUES
         (#{companyName},#{packageNo},#{businessRegistrationNumber},#{businessType},#{businessStatus},#{businessCategory},
@@ -29,44 +29,44 @@
         RETURNING t_company_no AS no;
     </insert>
 
-    <insert id="organizationSave" useGeneratedKeys="true" keyProperty="no">
+    <insert id="insertOrganization" useGeneratedKeys="true" keyProperty="no">
         INSERT INTO t_organization (t_organization_name) VALUES
         (#{companyName})
         RETURNING t_organization_no AS no;
     </insert>
 
-    <insert id="employeeSave" useGeneratedKeys="true" keyProperty="no">
+    <insert id="insertEmployee" useGeneratedKeys="true" keyProperty="no">
         INSERT INTO t_employee (t_user_no,t_company_no,t_employee_auth,
         t_organization_no,t_employee_state, t_employee_duty, t_employee_position) VALUES
         (#{userNo},#{companyNo},#{employeeAuth},#{organizationNo},2, '최고경영자', '사장')
         RETURNING t_employee_no AS no;
     </insert>
 
-    <select id="findServiceNoByPackageNo" resultType="java.lang.Integer">
+    <select id="selectServiceNoByPackageNo" resultType="java.lang.Integer">
         select t_service_no from t_components where t_package_no = #{no}
     </select>
 
-    <select id="findServiceNoByServiceFree" resultType="java.lang.Integer">
+    <select id="selectServiceNoByServiceFree" resultType="java.lang.Integer">
         select t_service_no from t_service where t_service_free = 0;
     </select>
 
-    <insert id="servicePublishedSave">
+    <insert id="insertServicePublished">
         INSERT INTO t_service_published (t_employee_no,t_service_no) VALUES
         (#{param1},#{param2})
     </insert>
-    <select id="companyCheck" resultType="java.lang.String">
+    <select id="selectCompanyCheck" resultType="java.lang.String">
         select t_company_name from t_company where t_company_name = #{companyName}
     </select>
 
-    <select id="findShortLinkByEmpNo" resultType="ShortLinkSignUpDto">
+    <select id="selectShortLinkByEmpNo" resultType="ShortLinkSignUpDto">
         select t_shortlink_link AS shortLink, t_shortlink_deadline AS shortLinkDeadLine  from t_shortlink where t_employee_no = #{empNo}
     </select>
 
-    <select id="employeeStateCheck" resultType="java.lang.Integer">
+    <select id="selectEmployeeStateCheck" resultType="java.lang.Integer">
         select t_employee_state from t_employee where t_employee_no = #{empNo}
     </select>
 
-    <select id="findUserNoByEmployeeNo" resultType="java.lang.Integer">
+    <select id="selectUserNoByEmployeeNo" resultType="java.lang.Integer">
         select t_user_no from t_employee where t_employee_no = #{empNo}
     </select>
 
@@ -79,7 +79,7 @@
         t_user_name = #{userName}, t_user_email = #{userEmail}, t_user_phone = #{userPhone}  WHERE t_user_no = #{userNo};
     </update>
 
-    <select id="companyServiceList" resultType="CompanyServiceListDto">
+    <select id="selectCompanyServiceList" resultType="CompanyServiceListDto">
         SELECT
         t_service.t_service_no AS serviceNo,
         t_service.t_service_name AS serviceName,
@@ -95,11 +95,11 @@
         WHERE t_company_no =#{comNo});
     </select>
 
-    <select id="findPackageCountByCompanyNo" resultType="java.lang.Integer">
+    <select id="selectPackageCountByCompanyNo" resultType="java.lang.Integer">
         select t_package_count from t_company where t_company_no = #{comNo};
     </select>
 
-    <select id="eachCompanyPublishedCount" resultType="CountPublishedServiceAndEmpNoDto">
+    <select id="selectEachCompanyPublishedCount" resultType="CountPublishedServiceAndEmpNoDto">
         select count(t_service_published_no) AS publishedCount
         from t_service_published
         where t_service_no = #{param1}
@@ -108,7 +108,7 @@
         in (select t_employee_no from t_employee where t_company_no = #{param2} and t_employee_state != -1 )
     </select>
 
-    <select id="findUnPublishedUser" resultType="UnPublishedUserDto">
+    <select id="selectUnPublishedUser" resultType="UnPublishedUserDto">
         SELECT
         tu.t_user_id AS userId,
         tu.t_user_name AS userName,
@@ -133,7 +133,7 @@
         );
     </select>
 
-    <select id="findPublishedUser" resultType="UnPublishedUserDto">
+    <select id="selectPublishedUser" resultType="UnPublishedUserDto">
         SELECT
         tu.t_user_id AS userId,
         tu.t_user_name AS userName,
@@ -162,7 +162,7 @@
         UPDATE t_service_published SET t_service_recall = 0, t_service_recall_date = CURRENT_DATE WHERE t_employee_no = #{param1} AND t_service_no = #{param2};
     </update>
 
-    <select id="findPublishedCount" resultType="java.lang.Integer">
+    <select id="selectPublishedCount" resultType="java.lang.Integer">
         select count(t_service_published_no) from t_service_published
         where t_service_no = #{param1}
         and t_service_recall = -1

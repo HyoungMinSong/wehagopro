@@ -1,12 +1,10 @@
 package com.dozone.wehagopro.service.common;
 
-import com.dozone.wehagopro.domain.LogDto;
 import com.dozone.wehagopro.domain.NoticeDto;
 import com.dozone.wehagopro.domain.OrganizationEmplRegiDTO;
 import com.dozone.wehagopro.domain.OrganizationSelectedDto;
 import com.dozone.wehagopro.repository.LogRepository;
 import com.dozone.wehagopro.service.OrganizationService;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import org.aspectj.lang.JoinPoint;
 import org.aspectj.lang.annotation.After;
 import org.aspectj.lang.annotation.Aspect;
@@ -46,7 +44,7 @@ public class LogAspect {
                     break;
             }
             String t_log_type = "조직관리";
-            logRepository.saveLog(t_employee_no, t_log_type, t_log_content);
+            logRepository.insertLog(t_employee_no, t_log_type, t_log_content);
         }
         if(methodName == "createNotice"){
             int t_company_no = ((NoticeDto) args[0]).getT_company_no();
@@ -54,26 +52,26 @@ public class LogAspect {
             String t_log_type = "공지사항";
             String t_log_content = "새로운 공지사항이 작성되었습니다.";
             for(int t_employee_no : employeeList){
-                logRepository.saveLog(t_employee_no, t_log_type, t_log_content);
+                logRepository.insertLog(t_employee_no, t_log_type, t_log_content);
             }
         }
         if(methodName == "modifyRoomForAOldEmployee"){
             int t_employee_no = ((OrganizationEmplRegiDTO)args[0]).getT_employee_no();
             String t_log_type = "조직관리";
             String t_log_content = "직원 정보가 수정되었습니다.";
-            logRepository.saveLog(t_employee_no, t_log_type, t_log_content);
+            logRepository.insertLog(t_employee_no, t_log_type, t_log_content);
         }
         if(methodName == "saveInvitedEmployeePublish"){
             int t_employee_no = (int)args[0];
-            String t_log_type = logRepository.findServiceNameByNo((Integer)args[1]);
+            String t_log_type = logRepository.selectServiceName((Integer)args[1]);
             String t_log_content = "서비스가 배포되었습니다.";
-            logRepository.saveLog(t_employee_no, t_log_type, t_log_content);
+            logRepository.insertLog(t_employee_no, t_log_type, t_log_content);
         }
         if(methodName == "updateUnPublish"){
             int t_employee_no = (int)args[0];
-            String t_log_type = logRepository.findServiceNameByNo((Integer)args[1]);
+            String t_log_type = logRepository.selectServiceName((Integer)args[1]);
             String t_log_content = "서비스가 배포 해제되었습니다.";
-            logRepository.saveLog(t_employee_no, t_log_type, t_log_content);
+            logRepository.insertLog(t_employee_no, t_log_type, t_log_content);
         }
 
     }
