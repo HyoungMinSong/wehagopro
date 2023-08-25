@@ -2,10 +2,10 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.dozone.wehagopro.repository.mybatis.UserMapper">
-    <select id="findByUserId" parameterType="String" resultType="com.dozone.wehagopro.domain.UserDto">
+    <select id="selectByUserId" parameterType="String" resultType="com.dozone.wehagopro.domain.UserDto">
         select * from t_user where t_user_id = #{userId} AND t_user_state != 0;
     </select>
-    <select id="getUserCompanyList" parameterType="String" resultType="com.dozone.wehagopro.domain.UserCompanyDto">
+    <select id="selectUserCompanyList" parameterType="String" resultType="com.dozone.wehagopro.domain.UserCompanyDto">
         SELECT
         c.t_company_no,
         MAX(c.t_company_name) AS t_company_name,
@@ -30,7 +30,7 @@
         GROUP BY
         c.t_company_no, e.t_employee_no;
     </select>
-    <select id="getUserServiceList" parameterType="String" resultType="com.dozone.wehagopro.domain.UserServiceDto">
+    <select id="selectUserServiceList" parameterType="String" resultType="com.dozone.wehagopro.domain.UserServiceDto">
         SELECT
         t_employee.t_employee_no,
         t_service.t_service_name,
@@ -67,12 +67,12 @@
         t_user_update_date = now()
         WHERE t_user_id = #{userId} AND t_user_state != 0;
     </update>
-    <select id="findByUserEmail" parameterType="String" resultType="String">
+    <select id="selectByUserEmail" parameterType="String" resultType="String">
         SELECT t_user_email
         FROM t_user
         WHERE t_user_email = #{userEmail} AND t_user_state != 0;
     </select>
-    <select id="findByUserPhone" parameterType="String" resultType="String">
+    <select id="selectByUserPhone" parameterType="String" resultType="String">
         SELECT t_user_phone
         FROM t_user
         WHERE t_user_phone = #{userPhone} AND t_user_state != 0;

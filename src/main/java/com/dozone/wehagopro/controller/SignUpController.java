@@ -26,14 +26,14 @@ public class SignUpController {
     @PostMapping("/idcheck")
     public UserCheckResponseDto idCheck(@RequestBody User user) {
         System.out.println("id = " + user.getId());
-        return new UserCheckResponseDto(service.checkId(user.getId()),service.emailCheck(user.getEmail()), service.phoneNumberCheck(user.getPhoneNumber()));
+        return new UserCheckResponseDto(service.findCheckId(user.getId()),service.findEmailCheck(user.getEmail()), service.findPhoneNumberCheck(user.getPhoneNumber()));
     }
 
     @ResponseBody
     @PostMapping("/signupinsert")
     public String signUpInsert(@RequestBody SignUpDto dto) {
         System.out.println("dto = " + dto);
-        service.signUpInsert(dto);
+        service.addSignUp(dto);
         return "컨트롤라성공";
     }
 
@@ -41,7 +41,7 @@ public class SignUpController {
     @PostMapping("/companycheck")
     public String companyCheck(@RequestBody User user) {
         System.out.println("id = " + user.getCompanyName());
-        String result = service.checkCompanyName(user.getCompanyName());
+        String result = service.findCheckCompanyName(user.getCompanyName());
         return result;
     }
 
@@ -68,7 +68,7 @@ public class SignUpController {
     public ShortLinkSignUpDto greetUser(@PathVariable String slink) { // 앞 랜덤 두글자 + 직원번호 (나는 유저를 만들고 유저 no를 넣어나야함.
         String emNo = slink.substring(2);
         int num = Integer.parseInt(emNo);
-        Integer integerState = service.employeeStateCheck(num);
+        Integer integerState = service.findEmployeeStateCheck(num);
         if (integerState != null) {
             System.out.println("empno널아님");
             if (integerState.intValue() == 1){
@@ -102,7 +102,7 @@ public class SignUpController {
     @PostMapping("/signupinviteupdate")
     public String signUpInviteUpdate(@RequestBody SignUpInviteUpdateDto dto) {
         System.out.println("dto = " + dto);
-        service.signUpInviteUpdate(dto);
+        service.modifySignUpInvite(dto);
         return "초대성공";
     }
 
@@ -111,8 +111,8 @@ public class SignUpController {
     public List<CompanyServiceListDto> findServiceListByComNo(@RequestBody CompanyServiceListRequestDto dto) {
         System.out.println("dto = " + dto);
         int comNo = dto.getComNo();
-        List<CompanyServiceListDto> companyServiceListDto = service.companyServiceList(comNo);
-        List<CountPublishedServiceAndEmpNoDto> countPublishedServiceAndEmpNoDtos = service.eachCompanyPublishedCount(companyServiceListDto, comNo);
+        List<CompanyServiceListDto> companyServiceListDto = service.findCompanyServiceList(comNo);
+        List<CountPublishedServiceAndEmpNoDto> countPublishedServiceAndEmpNoDtos = service.findEachCompanyPublishedCount(companyServiceListDto, comNo);
         for (CountPublishedServiceAndEmpNoDto countP: countPublishedServiceAndEmpNoDtos) {
             System.out.println("countP = " + countP);
             int serviceNo = countP.getEmpNo(); //서비스no임
@@ -155,7 +155,7 @@ public class SignUpController {
         if (integerPC != null){
             System.out.println("integerPC = " + integerPC.intValue());
             if (dto.getPackCt()>integerPC.intValue()){
-                service.saveInvitedEmployeePublish(dto.getEmployeeNo(), dto.getServiceNo());
+                service.addInvitedEmployeePublish(dto.getEmployeeNo(), dto.getServiceNo());
                 return 0; //정상
             } else {
                 return 1; //산 패키지 보다 초과
@@ -176,7 +176,7 @@ public class SignUpController {
     @PutMapping("/updateunpublish")
     public String updateUnPublish(@RequestBody UpdateUnPublishRequestDto dto) {
         System.out.println("dto = " + dto);
-        service.updateUnPublish(dto.getEmpNo(), dto.getServiceNo());
+        service.modifyUnPublish(dto.getEmpNo(), dto.getServiceNo());
         return "배포해제업데이트";
     }
 
@@ -191,7 +191,7 @@ public class SignUpController {
             if (dto.getPackCt()>=(integerPC.intValue()+dto.getTotalAddEmployeeCount())){
                 for (int empNo:
                      dto.getArrayEmployeeNo()) {
-                    service.saveInvitedEmployeePublish(empNo, dto.getServiceNo());
+                    service.addInvitedEmployeePublish(empNo, dto.getServiceNo());
                 }
 
                 return 0; //정상
@@ -209,7 +209,7 @@ public class SignUpController {
         System.out.println("dto = " + dto);
         for (int empNo:
                 dto.getArrayEmployeeNo()) {
-            service.updateUnPublish(empNo, dto.getServiceNo());
+            service.modifyUnPublish(empNo, dto.getServiceNo());
         }
         return "배포해제업데이트";
     }

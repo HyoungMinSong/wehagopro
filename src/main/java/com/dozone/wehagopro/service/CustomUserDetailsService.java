@@ -19,7 +19,7 @@ public class CustomUserDetailsService implements UserDetailsService {
 
     @Override
     public UserDetails loadUserByUsername(String userId) throws UsernameNotFoundException {
-        Optional<UserDto> optional = userMapper.findByUserId(userId);
+        Optional<UserDto> optional = userMapper.selectByUserId(userId);
         if(!optional.isPresent()) {
             throw new UsernameNotFoundException("사용자가 없습니다.");
         } else {

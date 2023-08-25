@@ -13,89 +13,89 @@ public class SignUpRepository {
     @Autowired
     SignUpMapper mapper;
 
-    public String idCheck(String id){
+    public String selectIdCheck(String id){
         System.out.println("repsitoryid = " + id);
-        return mapper.idCheck(id);
+        return mapper.selectIdCheck(id);
     }
-    public String emailCheck(String email){
+    public String selectEmailCheck(String email){
         System.out.println("email = " + email);
-        return mapper.emailCheck(email);
+        return mapper.selectEmailCheck(email);
     }
 
-    public String phoneNumberCheck(String phoneNumber){
+    public String selectPhoneNumberCheck(String phoneNumber){
         System.out.println("phoneNumber = " + phoneNumber);
-        return mapper.phoneNumberCheck(phoneNumber);
+        return mapper.selectPhoneNumberCheck(phoneNumber);
     }
-    public String signUpUser(UserSignUpDto dto){
+    public String insertUser(UserSignUpDto dto){
         System.out.println("리포지토리");
         System.out.println("dto = " + dto);
-        mapper.userSave(dto);
+        mapper.insertUser(dto);
 
         return "리포지토리성공?";
     }
 
-    public String signUpCompany(CompanySignUpDto dto){
+    public String insertCompany(CompanySignUpDto dto){
         System.out.println("리포지토리");
         System.out.println("dto = " + dto);
-        mapper.companySave(dto);
+        mapper.insertCompany(dto);
 
         return "리포지토리성공?";
     }
 
-    public String signUpOrganization(OrganizationSignUpDto dto){
+    public String insertOrganization(OrganizationSignUpDto dto){
         System.out.println("리포지토리");
         System.out.println("dto = " + dto);
-        mapper.organizationSave(dto);
+        mapper.insertOrganization(dto);
 
         return "리포지토리성공?";
     }
 
-    public String signUpEmployee(EmployeeSignUpDto dto){
+    public String insertEmployee(EmployeeSignUpDto dto){
         System.out.println("리포지토리");
         System.out.println("dto = " + dto);
-        mapper.employeeSave(dto);
+        mapper.insertEmployee(dto);
 
         return "리포지토리성공?";
     }
 
-    public List<Integer> findServiceNoByPackageNo(int no){
+    public List<Integer> selectServiceNoByPackageNo(int no){
         System.out.println("리포지토리");
         System.out.println("PackageNo = " + no);
-        return mapper.findServiceNoByPackageNo(no);
+        return mapper.selectServiceNoByPackageNo(no);
     }
 
-    public List<Integer> findServiceNoByServiceFree(){
+    public List<Integer> selectServiceNoByServiceFree(){
         System.out.println("리포지토리");
         System.out.println("freeNo = ");
-        return mapper.findServiceNoByServiceFree();
+        return mapper.selectServiceNoByServiceFree();
     }
 
-    public String signUpServicePublished(int employeeNo, int serviceNo){
+    public String insertServicePublished(int employeeNo, int serviceNo){
         System.out.println("리포지토리");
         System.out.println("employeeNo = " + employeeNo + "serviceNo = " + serviceNo);
-        mapper.servicePublishedSave(employeeNo,serviceNo);
+        mapper.insertServicePublished(employeeNo,serviceNo);
 
         return "리포지토리성공?";
     }
 
-    public String companyCheck(String companyName) {
+    public String selectCompanyCheck(String companyName) {
         System.out.println("repsitorycompanyName = " + companyName);
-        return mapper.companyCheck(companyName);
+        return mapper.selectCompanyCheck(companyName);
     }
 
-    public ShortLinkSignUpDto findShortLinkByEmpNo(int empNo){
+    public ShortLinkSignUpDto selectShortLinkByEmpNo(int empNo){
         System.out.println("repsitoryempNo = " + empNo);
-        return mapper.findShortLinkByEmpNo(empNo);
+        return mapper.selectShortLinkByEmpNo(empNo);
     }
 
-    public Integer employeeStateCheck(int empNo){
+    public Integer selectEmployeeStateCheck(int empNo){
         System.out.println("repsitoryempNo = " + empNo);
-        return mapper.employeeStateCheck(empNo);
+        return mapper.selectEmployeeStateCheck(empNo);
     }
 
-    public Integer findUserNoByEmployeeNo(SignUpInviteUpdateDto dto){
+    public Integer selectUserNoByEmployeeNo(SignUpInviteUpdateDto dto){
         System.out.println("dto = " + dto);
-        return mapper.findUserNoByEmployeeNo(dto);
+        return mapper.selectUserNoByEmployeeNo(dto);
     }
 
     public void updateEmployeeStateTo2(SignUpInviteUpdateDto dto){
@@ -108,29 +108,29 @@ public class SignUpRepository {
         mapper.updateInvitedUser(dto);
     }
 
-    public List<CompanyServiceListDto> companyServiceList(int comNo){
+    public List<CompanyServiceListDto> selectCompanyServiceList(int comNo){
         System.out.println("comNo = " + comNo);
-        return mapper.companyServiceList(comNo);
+        return mapper.selectCompanyServiceList(comNo);
     }
 
-    public Integer findPackageCountByCompanyNo(int comNo){
+    public Integer selectPackageCountByCompanyNo(int comNo){
         System.out.println("comNo = " + comNo);
-        return mapper.findPackageCountByCompanyNo(comNo);
+        return mapper.selectPackageCountByCompanyNo(comNo);
     }
 
-    public CountPublishedServiceAndEmpNoDto eachCompanyPublishedCount(int serviceNo, int comNo){
+    public CountPublishedServiceAndEmpNoDto selectEachCompanyPublishedCount(int serviceNo, int comNo){
         System.out.println("serviceNo = " + serviceNo + ", comNo = " + comNo);
-        return mapper.eachCompanyPublishedCount(serviceNo,comNo);
+        return mapper.selectEachCompanyPublishedCount(serviceNo,comNo);
     }
 
-    public List<UnPublishedUserDto> findUnPublishedUser(int comNo, int serviceNo){
+    public List<UnPublishedUserDto> selectUnPublishedUser(int comNo, int serviceNo){
         System.out.println("comNo = " + comNo + ", serviceNo = " + serviceNo);
-        return mapper.findUnPublishedUser(comNo, serviceNo);
+        return mapper.selectUnPublishedUser(comNo, serviceNo);
     }
 
-    public List<UnPublishedUserDto> findPublishedUser(int comNo, int serviceNo){
+    public List<UnPublishedUserDto> selectPublishedUser(int comNo, int serviceNo){
         System.out.println("comNo = " + comNo + ", serviceNo = " + serviceNo);
-        return mapper.findPublishedUser(comNo, serviceNo);
+        return mapper.selectPublishedUser(comNo, serviceNo);
     }
 
     public void updateUnPublish(int empNo, int serviceNo){
@@ -138,8 +138,8 @@ public class SignUpRepository {
         mapper.updateUnPublish(empNo,serviceNo);
     }
 
-    public Integer findPublishedCount(int serviceNo, int comNo){
+    public Integer selectPublishedCount(int serviceNo, int comNo){
         System.out.println("serviceNo = " + serviceNo + ", comNo = " + comNo);
-        return mapper.findPublishedCount(serviceNo,comNo);
+        return mapper.selectPublishedCount(serviceNo,comNo);
     }
 }

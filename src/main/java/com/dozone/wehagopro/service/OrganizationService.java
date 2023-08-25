@@ -12,7 +12,6 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
@@ -43,7 +42,7 @@ public class OrganizationService {
     // 직원 목록 유저,직원,부서이름 from 회사번호
     public List<OrganizationUserEmplDto> findUserEmplOrgaFromCompany(Integer t_company_no){
         List<OrganizationUserEmplDto> employeeList;
-        employeeList = organizationRepository.findUserEmplOrgaFromCompany(t_company_no);
+        employeeList = organizationRepository.selectEmployeeList(t_company_no);
         // 각 객체의 t_user_photo_path에 String 추가
         employeeList.forEach(employee -> {
             if(!employee.getT_user_photo_path().contains("https")) {
@@ -56,11 +55,11 @@ public class OrganizationService {
     };
     // 부서 목록 from 회사번호
     public List<OrganizationDto> findOrganizationFromCompany(Integer t_company_no){
-        return organizationRepository.findOrganizationFromCompany(t_company_no);
+        return organizationRepository.selectOrganizationList(t_company_no);
     };
 
     // 이미지 출력
-    public Resource getImage(String imageName) throws IOException {
+    public Resource findImage(String imageName) throws IOException {
         Resource resource = resourceLoader.getResource("classpath:static/images/" + imageName);
         if (resource.exists()) {
             return resource;
@@ -74,10 +73,10 @@ public class OrganizationService {
 
     // 조직도 부서 수정
     @Transactional
-    public void editingOrganization(List<OrganizationEditDTO> insertDto, List<OrganizationEditDTO> updateDto, List<OrganizationEditDTO> deleteDto) {
+    public void saveOrganization(List<OrganizationEditDTO> insertDto, List<OrganizationEditDTO> updateDto, List<OrganizationEditDTO> deleteDto) {
         // 조직도 부서 추가
         for (OrganizationEditDTO dto : insertDto) {
-            organizationRepository.createOrganization(dto.getT_organization_name(), dto.getT_organization_parent());
+            organizationRepository.insertOrganization(dto.getT_organization_name(), dto.getT_organization_parent());
         }
         // 조직도 부서 수정
         for (OrganizationEditDTO dto : updateDto) {
@@ -90,7 +89,7 @@ public class OrganizationService {
     }
 
     // 사진 삭제
-    public ResponseEntity<String> deleteEmployeePhoto(String fileName){
+    public ResponseEntity<String> removeEmployeePhoto(String fileName){
         // 따옴표 제거
         fileName = fileName.replace("\"", "");
         System.out.println("fileName : "+fileName);
@@ -117,7 +116,7 @@ public class OrganizationService {
     };
 
     // 사진 등록
-    public PhotoDto uploadEmployeePhoto(MultipartFile file) {
+    public PhotoDto addEmployeePhoto(MultipartFile file) {
         if (file.isEmpty()) {
             System.out.println("왜 없지?");
             return null;
@@ -148,22 +147,9 @@ public class OrganizationService {
         }
     }
 
-    // 이메일, 폰 중복 확인
-    public int checkRegister(String t_user_email, String t_user_phone){
-        int emailNum = organizationRepository.checkRegisterEmail(t_user_email);
-        int phoneNum = organizationRepository.checkRegisterPhone(t_user_phone);
-        if(phoneNum >0){
-            return 1;
-        }else if(emailNum >0){
-            return 2;
-        }else{
-            return 0;
-        }
-    }
-
     // 직원 등록
     @Transactional
-    public void makeRoomForANewEmployee(OrganizationEmplRegiDTO dto){
+    public void addRoomForANewEmployee(OrganizationEmplRegiDTO dto){
         String longLink =  "/signup/invite?"
             +"t_user_name="+dto.getT_user_name()
             +"&t_user_phone="+dto.getT_user_phone()
@@ -171,14 +157,14 @@ public class OrganizationService {
         System.out.println("longlink"+longLink);
         dto.setT_shortlink_link(longLink);
         if(dto.getT_organization_no() == -1){
-            int c = organizationRepository.findCompanyOrgaNoFromName(dto.getT_organization_name());
+            int c = organizationRepository.selectOrganizationNo(dto.getT_organization_name());
             dto.setT_organization_no(c);
         }
-        int a = organizationRepository.registerUser(dto);
+        int a = organizationRepository.insertUser(dto);
         dto.setT_user_no(a);
-        int b = organizationRepository.registerEmployee(dto);
+        int b = organizationRepository.insertEmployee(dto);
         dto.setT_employee_no(b);
-        organizationRepository.createShortLink(dto);
+        organizationRepository.insertShortlink(dto);
     }
 
     // 직원 수정
@@ -194,14 +180,14 @@ public class OrganizationService {
             organizationRepository.updateDetailUser(dto);
         }
         if(dto.getT_organization_no() == -1){
-            int c = organizationRepository.findCompanyOrgaNoFromName(dto.getT_organization_name());
+            int c = organizationRepository.selectOrganizationNo(dto.getT_organization_name());
             dto.setT_organization_no(c);
         }
         organizationRepository.updateDetailEmployee(dto);
     }
     @Loggable
     @Transactional
-    public void updateEmployeeState(Integer t_employee_state, List<OrganizationSelectedDto> dto){
+    public void modifyEmployeeState(Integer t_employee_state, List<OrganizationSelectedDto> dto){
         for(OrganizationSelectedDto dt : dto){
             if(t_employee_state == -1){
                 organizationRepository.updateFiredPublish(dt.getT_employee_no());
@@ -211,19 +197,19 @@ public class OrganizationService {
     }
 
     public List<LogDto> findLogByEmployee(Integer t_employee_no){
-        return logRepository.findLogByEmployee(t_employee_no);
+        return logRepository.selectLog(t_employee_no);
     }
 
-    public void updateLogByEmployee(Integer t_employee_no){
-        logRepository.updateLogByEmployee(t_employee_no);
+    public void modifyLogByEmployee(Integer t_employee_no){
+        logRepository.updateLog(t_employee_no);
     }
 
-    public void deleteLogByEmployee(Integer t_employee_no){
-        logRepository.deleteLogByEmployee(t_employee_no);
+    public void removeLogByEmployee(Integer t_employee_no){
+        logRepository.deleteLog(t_employee_no);
     }
 
     public List<Integer> findEmployeeByCompany(Integer t_company_no){
-        return logRepository.findEmployeeByCompany(t_company_no);
+        return logRepository.selectEmployee(t_company_no);
     }
 
 }

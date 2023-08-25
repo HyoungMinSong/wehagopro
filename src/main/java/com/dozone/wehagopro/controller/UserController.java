@@ -1,14 +1,8 @@
 package com.dozone.wehagopro.controller;
 
-import com.dozone.wehagopro.config.JwtTokenProvider;
 import com.dozone.wehagopro.domain.*;
-import com.dozone.wehagopro.service.OrganizationService;
 import com.dozone.wehagopro.service.UserService;
 import lombok.RequiredArgsConstructor;
-import org.apache.tomcat.util.http.parser.Authorization;
-import org.springframework.http.HttpHeaders;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
@@ -36,13 +30,13 @@ public class UserController {
 
     @PostMapping("/login")
     public TokenDto login(@RequestBody UserLoginRequestDto request) {
-        TokenDto token = userService.login(request.getUserid(), request.getPassword());
+        TokenDto token = userService.findLogin(request.getUserid(), request.getPassword());
         return token;
     }
 
     @GetMapping("/data")
     public UserInfoDto loginUserData(final Authentication authentication) {
-        UserInfoDto userInfoDto = userService.getUserInfo(authentication);
+        UserInfoDto userInfoDto = userService.findUserInfo(authentication);
         return userInfoDto;
     }
 
@@ -63,7 +57,7 @@ public class UserController {
         if (authentication == null) {
             throw new IllegalArgumentException("not valid accessToken!");
         }
-        return userService.updateUserInfo(file, isDelete, name, id, email, phone);
+        return userService.modifyUserInfo(file, isDelete, name, id, email, phone);
     }
 
     @PostMapping("/update/userPassword")
@@ -74,11 +68,11 @@ public class UserController {
         if (authentication == null) {
             throw new IllegalArgumentException("not valid accessToken!");
         }
-        return userService.updateUserPassword(id, currentPassword, newPassword);
+        return userService.modifyUserPassword(id, currentPassword, newPassword);
     }
 
     @GetMapping("/select/notice/limit5")
     public List<NoticeSelectDto> selectNoticeLimit5(@RequestParam("companyNo") int companyNo) {
-        return userService.selectNoticeLimit5(companyNo);
+        return userService.findNoticeLimit5(companyNo);
     }
 }

@@ -10,7 +10,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
-import java.util.LinkedList;
 import java.util.List;
 
 @RequiredArgsConstructor
@@ -21,23 +20,23 @@ public class SignUpService {
     SignUpRepository repository;
     private final PasswordEncoder passwordEncoder;
 
-    public String checkId(String id) {
+    public String findCheckId(String id) {
         System.out.println("serviceid = " + id);
-        return repository.idCheck(id);
+        return repository.selectIdCheck(id);
     }
 
-    public String emailCheck(String email){
+    public String findEmailCheck(String email){
         System.out.println("email = " + email);
-        return repository.emailCheck(email);
+        return repository.selectEmailCheck(email);
     }
 
-    public String phoneNumberCheck(String phoneNumber){
+    public String findPhoneNumberCheck(String phoneNumber){
         System.out.println("phoneNumber = " + phoneNumber);
-        return repository.phoneNumberCheck(phoneNumber);
+        return repository.selectPhoneNumberCheck(phoneNumber);
     }
 
     @Transactional
-    public void signUpInsert(SignUpDto dto) {
+    public void addSignUp(SignUpDto dto) {
         System.out.println("서비스");
         System.out.println("dto = " + dto);
         String name = dto.getName();
@@ -55,20 +54,20 @@ public class SignUpService {
         int packageNo = dto.getPackageNo();
         int packageCount = dto.getPackageCount();
         UserSignUpDto userSignUpDto = new UserSignUpDto(id, password, name, phoneNumber, email);
-        repository.signUpUser(userSignUpDto);
+        repository.insertUser(userSignUpDto);
         CompanySignUpDto companySignUpDto = new CompanySignUpDto(companyName, packageNo, businessRegistrationNumber, businessType, businessStatus, businessCategory, representativeName, companyPhoneNumber, packageCount);
-        repository.signUpCompany(companySignUpDto);
+        repository.insertCompany(companySignUpDto);
         OrganizationSignUpDto organizationSignUpDto = new OrganizationSignUpDto(companyName);
-        repository.signUpOrganization(organizationSignUpDto);
+        repository.insertOrganization(organizationSignUpDto);
         EmployeeSignUpDto employeeSignUpDto = new EmployeeSignUpDto(userSignUpDto.getNo(), companySignUpDto.getNo(), 0, organizationSignUpDto.getNo());
-        repository.signUpEmployee(employeeSignUpDto);
+        repository.insertEmployee(employeeSignUpDto);
         int employeeSignUpDtoNo = employeeSignUpDto.getNo();
-        List<Integer> serviceNo = repository.findServiceNoByPackageNo(packageNo);
+        List<Integer> serviceNo = repository.selectServiceNoByPackageNo(packageNo);
         for (int a:
         serviceNo) {
             System.out.println("a = " + a);
         }
-        List<Integer> serviceNoByServiceFree = repository.findServiceNoByServiceFree();
+        List<Integer> serviceNoByServiceFree = repository.selectServiceNoByServiceFree();
         for (int a:
                 serviceNoByServiceFree) {
             System.out.println("a = " + a);
@@ -77,58 +76,58 @@ public class SignUpService {
         for (int num:
         serviceNo) {
             System.out.println("num = " + num);
-            repository.signUpServicePublished(employeeSignUpDtoNo, num);
+            repository.insertServicePublished(employeeSignUpDtoNo, num);
         }
 
     }
 
-    public String checkCompanyName(String companyName) {
+    public String findCheckCompanyName(String companyName) {
         System.out.println("servicecompanyName = " + companyName);
-        return repository.companyCheck(companyName);
+        return repository.selectCompanyCheck(companyName);
     }
 
     public ShortLinkSignUpDto findRedirectLink(int empNo){
         System.out.println("serviceEmpNo = " + empNo);
-        return repository.findShortLinkByEmpNo(empNo);
+        return repository.selectShortLinkByEmpNo(empNo);
     }
 
-    public Integer employeeStateCheck(int empNo){
+    public Integer findEmployeeStateCheck(int empNo){
         System.out.println("serviceEmpNo = " + empNo);
-        return repository.employeeStateCheck(empNo);
+        return repository.selectEmployeeStateCheck(empNo);
     }
 
     @Transactional
-    public void signUpInviteUpdate(SignUpInviteUpdateDto dto){
+    public void modifySignUpInvite(SignUpInviteUpdateDto dto){
         System.out.println("dto = " + dto);
         int empNo = dto.getEmpNo();
-        Integer integerUserNo = repository.findUserNoByEmployeeNo(dto);
+        Integer integerUserNo = repository.selectUserNoByEmployeeNo(dto);
         int userNo = integerUserNo.intValue();
         dto.setUserNo(userNo);
         repository.updateEmployeeStateTo2(dto);
         dto.setUserPw(passwordEncoder.encode(dto.getUserPw()));
         repository.updateInvitedUser(dto);
-        List<Integer> serviceNoByServiceFree = repository.findServiceNoByServiceFree();
+        List<Integer> serviceNoByServiceFree = repository.selectServiceNoByServiceFree();
         for (int num:
                 serviceNoByServiceFree) {
             System.out.println("num = " + num);
-            repository.signUpServicePublished(empNo, num);
+            repository.insertServicePublished(empNo, num);
         }
     }
 
-    public List<CompanyServiceListDto> companyServiceList(int comNo){
+    public List<CompanyServiceListDto> findCompanyServiceList(int comNo){
         System.out.println("comNo = " + comNo);
-        return repository.companyServiceList(comNo);
+        return repository.selectCompanyServiceList(comNo);
     }
 
     public Integer findPackageCountByCompanyNo(int comNo){
         System.out.println("comNo = " + comNo);
-        return repository.findPackageCountByCompanyNo(comNo);
+        return repository.selectPackageCountByCompanyNo(comNo);
     }
 
-    public List<CountPublishedServiceAndEmpNoDto> eachCompanyPublishedCount(List<CompanyServiceListDto> companyServiceListDto, int comNo) {
+    public List<CountPublishedServiceAndEmpNoDto> findEachCompanyPublishedCount(List<CompanyServiceListDto> companyServiceListDto, int comNo) {
         List<CountPublishedServiceAndEmpNoDto> listDto = new ArrayList<CountPublishedServiceAndEmpNoDto>();
         for (CompanyServiceListDto dto : companyServiceListDto) {
-            CountPublishedServiceAndEmpNoDto countPublishedServiceAndEmpNoDto = repository.eachCompanyPublishedCount(dto.getServiceNo(), comNo);
+            CountPublishedServiceAndEmpNoDto countPublishedServiceAndEmpNoDto = repository.selectEachCompanyPublishedCount(dto.getServiceNo(), comNo);
             countPublishedServiceAndEmpNoDto.setEmpNo(dto.getServiceNo());
             System.out.println("countPublishedServiceAndEmpNoDto = " + countPublishedServiceAndEmpNoDto);
             listDto.add(countPublishedServiceAndEmpNoDto);
@@ -139,28 +138,28 @@ public class SignUpService {
 
     public List<UnPublishedUserDto> findUnPublishedUser(int comNo, int serviceNo){
         System.out.println("comNo = " + comNo + ", serviceNo = " + serviceNo);
-        return repository.findUnPublishedUser(comNo, serviceNo);
+        return repository.selectUnPublishedUser(comNo, serviceNo);
     }
 
     @Loggable
-    public void saveInvitedEmployeePublish(int empNo, int serviceNo){
+    public void addInvitedEmployeePublish(int empNo, int serviceNo){
         System.out.println("empNo = " + empNo + ", serviceNo = " + serviceNo);
-        repository.signUpServicePublished(empNo,serviceNo);
+        repository.insertServicePublished(empNo,serviceNo);
     }
 
     public List<UnPublishedUserDto> findPublishedUser(int comNo, int serviceNo){
         System.out.println("comNo = " + comNo + ", serviceNo = " + serviceNo);
-        return repository.findPublishedUser(comNo, serviceNo);
+        return repository.selectPublishedUser(comNo, serviceNo);
     }
 
     @Loggable
-    public void updateUnPublish(int empNo, int serviceNo){
+    public void modifyUnPublish(int empNo, int serviceNo){
         System.out.println("empNo = " + empNo + ", serviceNo = " + serviceNo);
         repository.updateUnPublish(empNo,serviceNo);
     }
     public Integer findPublishedCount(int serviceNo, int comNo){
         System.out.println("serviceNo = " + serviceNo + ", comNo = " + comNo);
-        return repository.findPublishedCount(serviceNo,comNo);
+        return repository.selectPublishedCount(serviceNo,comNo);
     }
 
 

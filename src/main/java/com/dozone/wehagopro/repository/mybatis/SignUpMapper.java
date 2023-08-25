@@ -8,27 +8,27 @@ import java.util.List;
 @Mapper
 public interface SignUpMapper {
 
-    String idCheck(String id);
-    String emailCheck(String email);
-    String phoneNumberCheck(String phoneNumber);
-    void userSave(UserSignUpDto dto);
-    void companySave(CompanySignUpDto dto);
-    void organizationSave(OrganizationSignUpDto dto);
-    void employeeSave(EmployeeSignUpDto dto);
-    List<Integer> findServiceNoByPackageNo(int no);
-    List<Integer> findServiceNoByServiceFree();
-    void servicePublishedSave(int param1, int param2);
-    String companyCheck(String companyName);
-    ShortLinkSignUpDto findShortLinkByEmpNo(int empNo);
-    Integer employeeStateCheck(int empNo);
-    Integer findUserNoByEmployeeNo(SignUpInviteUpdateDto dto);
+    String selectIdCheck(String id);
+    String selectEmailCheck(String email);
+    String selectPhoneNumberCheck(String phoneNumber);
+    void insertUser(UserSignUpDto dto);
+    void insertCompany(CompanySignUpDto dto);
+    void insertOrganization(OrganizationSignUpDto dto);
+    void insertEmployee(EmployeeSignUpDto dto);
+    List<Integer> selectServiceNoByPackageNo(int no);
+    List<Integer> selectServiceNoByServiceFree();
+    void insertServicePublished(int param1, int param2);
+    String selectCompanyCheck(String companyName);
+    ShortLinkSignUpDto selectShortLinkByEmpNo(int empNo);
+    Integer selectEmployeeStateCheck(int empNo);
+    Integer selectUserNoByEmployeeNo(SignUpInviteUpdateDto dto);
     void updateEmployeeStateTo2(SignUpInviteUpdateDto dto);
     void updateInvitedUser(SignUpInviteUpdateDto dto);
-    List<CompanyServiceListDto> companyServiceList(int comNo);
-    Integer findPackageCountByCompanyNo(int comNo);
-    CountPublishedServiceAndEmpNoDto eachCompanyPublishedCount(int param1, int param2);
-    List<UnPublishedUserDto> findUnPublishedUser(int param1, int param2);
-    List<UnPublishedUserDto> findPublishedUser(int param1, int param2);
+    List<CompanyServiceListDto> selectCompanyServiceList(int comNo);
+    Integer selectPackageCountByCompanyNo(int comNo);
+    CountPublishedServiceAndEmpNoDto selectEachCompanyPublishedCount(int param1, int param2);
+    List<UnPublishedUserDto> selectUnPublishedUser(int param1, int param2);
+    List<UnPublishedUserDto> selectPublishedUser(int param1, int param2);
     void updateUnPublish(int param1, int param2);
-    Integer findPublishedCount (int param1, int param2);
+    Integer selectPublishedCount(int param1, int param2);
 }

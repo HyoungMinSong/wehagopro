@@ -12,7 +12,6 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
-import java.net.URLDecoder;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
@@ -32,8 +31,8 @@ public class UserServiceImpl implements UserService {
 
     @Transactional
     @Override
-    public TokenDto login(String id, String password) {
-        UserDto userDto = userMapper.findByUserId(id)
+    public TokenDto findLogin(String id, String password) {
+        UserDto userDto = userMapper.selectByUserId(id)
                 .orElseThrow(() -> new IllegalArgumentException("가입되지 않은 아이디 입니다."));
 
 //        // passwordEncoder.matches(로그인 할 때 비밀번호, DB에 저장된 비밀번호)
@@ -41,7 +40,7 @@ public class UserServiceImpl implements UserService {
             throw new IllegalArgumentException("잘못된 비밀번호 입니다.");
         }
 
-        List<UserCompanyDto> userCompanyDto = userMapper.getUserCompanyList(id);
+        List<UserCompanyDto> userCompanyDto = userMapper.selectUserCompanyList(id);
         Map<String, String> userRole = new HashMap<>();
         // 사용자 회사가 있을 때
         if(!userCompanyDto.isEmpty()) {
@@ -63,7 +62,7 @@ public class UserServiceImpl implements UserService {
 
     @Transactional
     @Override
-    public boolean logout(TokenDto tokenDto) {
+    public boolean findLogout(TokenDto tokenDto) {
         // Access Token 검증
         if (!jwtTokenProvider.validateToken(tokenDto.getAccessToken())) {
             new RuntimeException("유효하지 않은 Access Token 입니다.");
@@ -122,18 +121,18 @@ public class UserServiceImpl implements UserService {
 
     @Transactional
     @Override
-    public UserInfoDto getUserInfo(Authentication authentication) {
+    public UserInfoDto findUserInfo(Authentication authentication) {
         if (authentication == null) {
             throw new IllegalArgumentException("not valid accessToken!");
         }
 
-        UserDto userDto = userMapper.findByUserId(authentication.getName()).orElse(null);
+        UserDto userDto = userMapper.selectByUserId(authentication.getName()).orElse(null);
 
         if (userDto == null) {
             throw new IllegalArgumentException("유저 정보가 없습니다.");
         }
-        List<UserCompanyDto> userCompanyDtoList = userMapper.getUserCompanyList(authentication.getName());
-        List<UserServiceDto> userServiceDtoList = userMapper.getUserServiceList(authentication.getName());
+        List<UserCompanyDto> userCompanyDtoList = userMapper.selectUserCompanyList(authentication.getName());
+        List<UserServiceDto> userServiceDtoList = userMapper.selectUserServiceList(authentication.getName());
 
         UserInfoDto userInfoDto = new UserInfoDto();
         userInfoDto.setUserDto(userDto);
@@ -145,15 +144,15 @@ public class UserServiceImpl implements UserService {
 
     @Transactional
     @Override
-    public PhotoDto updateUserInfo(MultipartFile file, boolean isDelete, String name, String id, String email, String phone) {
+    public PhotoDto modifyUserInfo(MultipartFile file, boolean isDelete, String name, String id, String email, String phone) {
         String defaultImgUrl = "https://static.wehago.com/imgs/dummy/@dummy_02.jpg";
-        if(userMapper.findByUserId(id).isPresent()) {
-            UserDto userDto = userMapper.findByUserId(id).get();
+        if(userMapper.selectByUserId(id).isPresent()) {
+            UserDto userDto = userMapper.selectByUserId(id).get();
             PhotoDto photoDto1 = new PhotoDto("duplicatedEmail", "duplicatedEmail");
             PhotoDto photoDto2 = new PhotoDto("duplicatedPhone", "duplicatedPhone");
-            if(userMapper.findByUserEmail(email) != null && !userDto.getT_user_email().equals(email)) { // 중복된 이메일이 있으면
+            if(userMapper.selectByUserEmail(email) != null && !userDto.getT_user_email().equals(email)) { // 중복된 이메일이 있으면
                 return photoDto1;
-            } else if(userMapper.findByUserPhone(phone) != null && !userDto.getT_user_phone().equals(phone)) { // 중복된 휴대전화번호가 있으면
+            } else if(userMapper.selectByUserPhone(phone) != null && !userDto.getT_user_phone().equals(phone)) { // 중복된 휴대전화번호가 있으면
                 return photoDto2;
             }
         }
@@ -161,16 +160,16 @@ public class UserServiceImpl implements UserService {
         if (file == null) {
             if(isDelete) {
                 userMapper.updateUser(defaultImgUrl, name, id, email, phone);
-                UserDto UpdateUserDto = userMapper.findByUserId(id).get();
+                UserDto UpdateUserDto = userMapper.selectByUserId(id).get();
 
                 PhotoDto photoDto = new PhotoDto();
                 photoDto.setPhoto_name(UpdateUserDto.getT_user_photo_name());
                 photoDto.setPhoto_path(UpdateUserDto.getT_user_photo_path());
                 return photoDto;
             } else {
-                UserDto userDto = userMapper.findByUserId(id).get();
+                UserDto userDto = userMapper.selectByUserId(id).get();
                 // 바뀐 유저 정보 DB에 저장
-                if(userMapper.findByUserId(id).isPresent()) {
+                if(userMapper.selectByUserId(id).isPresent()) {
                     userMapper.updateUser(null, name, id, email, phone);
 
                     PhotoDto photoDto = new PhotoDto();
@@ -192,7 +191,7 @@ public class UserServiceImpl implements UserService {
             file.transferTo(filePath.toFile());
 
             // 바뀐 유저 정보 DB에 저장
-            if(userMapper.findByUserId(id).isPresent()) {
+            if(userMapper.selectByUserId(id).isPresent()) {
                 userMapper.updateUser(fileName, name, id, email, phone);
             }
 
@@ -213,8 +212,8 @@ public class UserServiceImpl implements UserService {
 
     @Transactional
     @Override
-    public boolean updateUserPassword(String id, String currentPassword, String newPassword) {
-        UserDto userDto = userMapper.findByUserId(id).get();
+    public boolean modifyUserPassword(String id, String currentPassword, String newPassword) {
+        UserDto userDto = userMapper.selectByUserId(id).get();
         if (!passwordEncoder.matches(currentPassword, userDto.getT_user_password())) {
             return false;
         } else {
@@ -224,7 +223,7 @@ public class UserServiceImpl implements UserService {
 
     @Transactional
     @Override
-    public List<NoticeSelectDto> selectNoticeLimit5(int companyNo){
+    public List<NoticeSelectDto> findNoticeLimit5(int companyNo){
         List<NoticeSelectDto> dto = userMapper.selectNoticeLimit5(companyNo);
         System.out.println("dto = " + dto);
         return dto;

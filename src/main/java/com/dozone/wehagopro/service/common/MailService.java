@@ -127,7 +127,7 @@ public class MailService {
         RegisterMail registerMail = new RegisterMail();
         String compName;
         for(OrganizationSelectedDto empl : dto){
-            compName = organizationRepository.findCompanyNameFromCompanyNo(empl.getT_company_no());
+            compName = organizationRepository.selectCompanyName(empl.getT_company_no());
             empl.setT_company_name(compName);
             helper.setTo(empl.getT_user_email());
             helper.setSubject(empl.getT_user_name()+"님을 WEHAGO(으)로 초대합니다.");
